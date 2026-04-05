@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentra Technologies | Intelligent Systems Consultancy</title>
+    <meta name="description" content="Sentra Technologies — a strategic AI and intelligent systems consultancy engineering enterprise-grade automation, communication, and analytics solutions. Smart. Secure. Sentra.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A192F'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Montserrat,sans-serif' font-weight='700' font-size='18' fill='%234FD1C5'%3ES%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="logo.png" alt="Sentra Technologies" class="nav-logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-menu" id="navMenu">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#solutions" class="nav-link">Solutions</a>
+                <a href="#platform" class="nav-link">Platform</a>
+                <a href="#results" class="nav-link">Results</a>
+                <a href="#team" class="nav-link">Leadership</a>
+                <a href="#contact" class="nav-link nav-cta">Get In Touch</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Intelligent Systems Consultancy</div>
+                <h1 class="hero-title">
+                    Engineering Intelligence<br>
+                    <span class="hero-title-accent">for Enterprise Growth</span>
+                </h1>
+                <p class="hero-subtitle">
+                    We architect and deploy intelligent systems that transform how enterprises communicate, operate, and scale — bridging the gap between advanced technology and measurable business outcomes.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="#contact" class="btn btn-primary">Schedule a Consultation</a>
+                    <a href="#platform" class="btn btn-outline">Explore the Platform</a>
+                </div>
+                <div class="hero-trust">
+                    <span class="hero-trust-label">Trusted across</span>
+                    <div class="hero-trust-items">
+                        <span>Healthcare</span>
+                        <span class="trust-dot"></span>
+                        <span>Financial Services</span>
+                        <span class="trust-dot"></span>
+                        <span>Logistics</span>
+                        <span class="trust-dot"></span>
+                        <span>Enterprise</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <canvas id="brainCanvas"></canvas>
+                <div class="hero-visual-glow"></div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="section section-light" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <span class="section-label">Who We Are</span>
+                    <h2 class="section-title">A Consultancy Built for the<br><span class="text-accent">Intelligent Enterprise</span></h2>
+                    <p class="about-text">
+                        Sentra Technologies is a strategic consultancy specialising in intelligent systems architecture. We work with forward-thinking organisations to design, build, and deploy AI-powered platforms that eliminate operational friction and unlock sustainable growth.
+                    </p>
+                    <p class="about-text">
+                        Our methodology is grounded in structured implementation — not off-the-shelf tools, but purpose-built systems engineered for your specific operational landscape. From initial consultation through deployment and beyond, we are your long-term technology partner.
+                    </p>
+                    <div class="about-values">
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            </div>
+                            <div>
+                                <strong>Structured Methodology</strong>
+                                <p>Every engagement follows a proven five-phase framework — from discovery through deployment.</p>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            </div>
+                            <div>
+                                <strong>Security-First Architecture</strong>
+                                <p>Enterprise-grade security is not an afterthought — it's foundational to every system we build.</p>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                            </div>
+                            <div>
+                                <strong>Scalable by Design</strong>
+                                <p>Systems built to grow with your organisation — from pilot to enterprise-wide deployment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" data-target="47">0</div>
+                        <div class="stat-suffix">+</div>
+                        <div class="stat-label">Enterprise Deployments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-target="98">0</div>
+                        <div class="stat-suffix">%</div>
+                        <div class="stat-label">Client Retention Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-target="12">0</div>
+                        <div class="stat-suffix"></div>
+                        <div class="stat-label">Industries Served</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-target="3">0</div>
+                        <div class="stat-suffix">M+</div>
+                        <div class="stat-label">Automated Interactions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SOLUTIONS ===================== -->
+    <section class="section section-dark" id="solutions">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label section-label-light">Our Solutions</span>
+                <h2 class="section-title section-title-light">Intelligent Systems for<br><span class="text-accent">Every Layer of Your Business</span></h2>
+                <p class="section-desc">Three integrated solution pillars designed to transform how your organisation communicates, operates, and makes decisions.</p>
+            </div>
+            <div class="solutions-grid">
+                <!-- Solution 1 -->
+                <div class="solution-card" data-solution="communication">
+                    <div class="solution-icon-wrap">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="20" stroke="#4FD1C5" stroke-width="2" opacity="0.3"/>
+                            <path d="M16 20C16 17.79 17.79 16 20 16H28C30.21 16 32 17.79 32 20V26C32 28.21 30.21 30 28 30H22L18 34V30H20C17.79 30 16 28.21 16 26V20Z" stroke="#4FD1C5" stroke-width="2"/>
+                            <circle cx="21" cy="23" r="1.5" fill="#4FD1C5"/>
+                            <circle cx="27" cy="23" r="1.5" fill="#4FD1C5"/>
+                            <path d="M21 26.5C21 26.5 22.5 28 24 28C25.5 28 27 26.5 27 26.5" stroke="#4FD1C5" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="solution-title">Intelligent Communication Systems</h3>
+                    <p class="solution-desc">AI-powered platforms that handle customer enquiries, qualify leads, and manage conversations across every channel — so your team can focus on what matters.</p>
+                    <ul class="solution-features">
+                        <li>Multi-channel AI communication (WhatsApp, Web, SMS)</li>
+                        <li>Automated lead qualification & routing</li>
+                        <li>Smart appointment scheduling</li>
+                        <li>24/7 intelligent response handling</li>
+                    </ul>
+                    <div class="solution-footer">
+                        <a href="#contact" class="solution-link">Discuss your needs <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"/></svg></a>
+                    </div>
+                </div>
+                <!-- Solution 2 -->
+                <div class="solution-card solution-card-featured" data-solution="automation">
+                    <div class="solution-badge">Most Requested</div>
+                    <div class="solution-icon-wrap">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="20" stroke="#4FD1C5" stroke-width="2" opacity="0.3"/>
+                            <path d="M14 24H18L21 18L25 30L28 22H34" stroke="#4FD1C5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="14" cy="24" r="2" fill="#4FD1C5"/>
+                            <circle cx="34" cy="24" r="2" fill="#4FD1C5"/>
+                        </svg>
+                    </div>
+                    <h3 class="solution-title">Workflow & Process Automation</h3>
+                    <p class="solution-desc">End-to-end automation systems that eliminate manual bottlenecks, streamline internal operations, and free your workforce to drive strategic initiatives.</p>
+                    <ul class="solution-features">
+                        <li>CRM & pipeline automation</li>
+                        <li>Internal process orchestration</li>
+                        <li>Multi-platform integration (APIs, databases)</li>
+                        <li>Automated reporting & compliance</li>
+                    </ul>
+                    <div class="solution-footer">
+                        <a href="#contact" class="solution-link">Discuss your needs <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"/></svg></a>
+                    </div>
+                </div>
+                <!-- Solution 3 -->
+                <div class="solution-card" data-solution="intelligence">
+                    <div class="solution-icon-wrap">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="20" stroke="#4FD1C5" stroke-width="2" opacity="0.3"/>
+                            <rect x="16" y="26" width="4" height="8" rx="1" fill="#4FD1C5" opacity="0.6"/>
+                            <rect x="22" y="20" width="4" height="14" rx="1" fill="#4FD1C5" opacity="0.8"/>
+                            <rect x="28" y="14" width="4" height="20" rx="1" fill="#4FD1C5"/>
+                            <path d="M15 16L20 18L25 13L31 15" stroke="#4FD1C5" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="31" cy="15" r="2" fill="#4FD1C5"/>
+                        </svg>
+                    </div>
+                    <h3 class="solution-title">Data Intelligence & Analytics</h3>
+                    <p class="solution-desc">Transform raw operational data into actionable business intelligence with AI-driven analytics, predictive insights, and real-time performance dashboards.</p>
+                    <ul class="solution-features">
+                        <li>Real-time performance dashboards</li>
+                        <li>Predictive analytics & forecasting</li>
+                        <li>Customer behaviour intelligence</li>
+                        <li>Automated insight generation</li>
+                    </ul>
+                    <div class="solution-footer">
+                        <a href="#contact" class="solution-link">Discuss your needs <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== INTERACTIVE PLATFORM DEMO ===================== -->
+    <section class="section section-light" id="platform">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Live Platform Preview</span>
+                <h2 class="section-title">Experience Sentra<br><span class="text-accent">Intelligence Platform</span></h2>
+                <p class="section-desc">Interact with a live preview of our enterprise platform. Switch between modules to see how Sentra transforms operations in real time.</p>
+            </div>
+            <div class="demo-window">
+                <div class="demo-chrome">
+                    <div class="demo-dots">
+                        <span class="demo-dot red"></span>
+                        <span class="demo-dot yellow"></span>
+                        <span class="demo-dot green"></span>
+                    </div>
+                    <div class="demo-url">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="12"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 1.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11z"/></svg>
+                        <span>platform.sentra.io/dashboard</span>
+                    </div>
+                </div>
+                <div class="demo-body">
+                    <div class="demo-sidebar">
+                        <div class="demo-sidebar-logo">
+                            <img src="logo.png" alt="Sentra" class="demo-sidebar-img">
+                        </div>
+                        <button class="demo-nav-btn active" data-tab="command">
+                            <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/></svg>
+                            Command Centre
+                        </button>
+                        <button class="demo-nav-btn" data-tab="automation">
+                            <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 8a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm6-6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm2 6a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/></svg>
+                            Automation Studio
+                        </button>
+                        <button class="demo-nav-btn" data-tab="analytics">
+                            <svg viewBox="0 0 20 20" fill="currentColor" width="16"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+                            Insights Engine
+                        </button>
+                    </div>
+                    <div class="demo-content">
+                        <!-- Command Centre Tab -->
+                        <div class="demo-tab active" id="tab-command">
+                            <div class="demo-header-bar">
+                                <h3>Command Centre</h3>
+                                <div class="demo-status"><span class="status-dot live"></span> Live</div>
+                            </div>
+                            <div class="demo-metrics-row">
+                                <div class="demo-metric">
+                                    <div class="demo-metric-value" id="metric-conversations">0</div>
+                                    <div class="demo-metric-label">Active Conversations</div>
+                                    <div class="demo-metric-change up">+12.4%</div>
+                                </div>
+                                <div class="demo-metric">
+                                    <div class="demo-metric-value" id="metric-response"><span id="response-time">0.0</span>s</div>
+                                    <div class="demo-metric-label">Avg. Response Time</div>
+                                    <div class="demo-metric-change down">-34.2%</div>
+                                </div>
+                                <div class="demo-metric">
+                                    <div class="demo-metric-value" id="metric-satisfaction"><span id="satisfaction-rate">0</span>%</div>
+                                    <div class="demo-metric-label">Satisfaction Score</div>
+                                    <div class="demo-metric-change up">+5.8%</div>
+                                </div>
+                                <div class="demo-metric">
+                                    <div class="demo-metric-value" id="metric-resolved"><span id="resolved-count">0</span></div>
+                                    <div class="demo-metric-label">Resolved Today</div>
+                                    <div class="demo-metric-change up">+22.1%</div>
+                                </div>
+                            </div>
+                            <div class="demo-main-grid">
+                                <div class="demo-chart-area">
+                                    <div class="demo-chart-header">
+                                        <h4>Engagement Overview</h4>
+                                        <div class="demo-chart-tabs">
+                                            <button class="active">7D</button>
+                                            <button>30D</button>
+                                            <button>90D</button>
+                                        </div>
+                                    </div>
+                                    <canvas id="demoChart" height="200"></canvas>
+                                </div>
+                                <div class="demo-feed">
+                                    <h4>Live Activity Feed</h4>
+                                    <div class="feed-list" id="feedList">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Automation Studio Tab -->
+                        <div class="demo-tab" id="tab-automation">
+                            <div class="demo-header-bar">
+                                <h3>Automation Studio</h3>
+                                <div class="demo-status"><span class="status-dot live"></span> 14 Active Workflows</div>
+                            </div>
+                            <div class="automation-canvas-wrap">
+                                <canvas id="automationCanvas"></canvas>
+                                <div class="automation-overlay">
+                                    <p class="automation-hint">Click any node to activate the workflow</p>
+                                </div>
+                            </div>
+                            <div class="automation-stats-row">
+                                <div class="auto-stat">
+                                    <span class="auto-stat-val">2,847</span>
+                                    <span class="auto-stat-label">Tasks Automated Today</span>
+                                </div>
+                                <div class="auto-stat">
+                                    <span class="auto-stat-val">14.2 hrs</span>
+                                    <span class="auto-stat-label">Time Saved Today</span>
+                                </div>
+                                <div class="auto-stat">
+                                    <span class="auto-stat-val">99.7%</span>
+                                    <span class="auto-stat-label">Success Rate</span>
+                                </div>
+                                <div class="auto-stat">
+                                    <span class="auto-stat-val">0</span>
+                                    <span class="auto-stat-label">Errors</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insights Engine Tab -->
+                        <div class="demo-tab" id="tab-analytics">
+                            <div class="demo-header-bar">
+                                <h3>Insights Engine</h3>
+                                <div class="demo-status"><span class="status-dot live"></span> Real-time</div>
+                            </div>
+                            <div class="insights-grid">
+                                <div class="insight-card">
+                                    <h4>Revenue Impact</h4>
+                                    <div class="insight-big-num">$<span class="counter-up" data-val="284">0</span>K</div>
+                                    <div class="insight-sub">Recovered this quarter through automation</div>
+                                    <div class="insight-bar-wrap">
+                                        <div class="insight-bar" style="--bar-width: 78%">
+                                            <span>78% of target</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="insight-card">
+                                    <h4>Operational Efficiency</h4>
+                                    <div class="efficiency-gauge" id="efficiencyGauge">
+                                        <canvas id="gaugeCanvas" width="180" height="110"></canvas>
+                                        <div class="gauge-value">0%</div>
+                                    </div>
+                                </div>
+                                <div class="insight-card insight-card-wide">
+                                    <h4>AI-Generated Recommendations</h4>
+                                    <div class="ai-recommendations" id="aiRecommendations">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                                <div class="insight-card">
+                                    <h4>Channel Distribution</h4>
+                                    <div class="channel-bars">
+                                        <div class="channel-bar-item">
+                                            <div class="channel-bar-label"><span>WhatsApp</span><span>42%</span></div>
+                                            <div class="channel-bar-track"><div class="channel-bar-fill" style="--fill: 42%"></div></div>
+                                        </div>
+                                        <div class="channel-bar-item">
+                                            <div class="channel-bar-label"><span>Web Chat</span><span>31%</span></div>
+                                            <div class="channel-bar-track"><div class="channel-bar-fill" style="--fill: 31%"></div></div>
+                                        </div>
+                                        <div class="channel-bar-item">
+                                            <div class="channel-bar-label"><span>Email</span><span>18%</span></div>
+                                            <div class="channel-bar-track"><div class="channel-bar-fill" style="--fill: 18%"></div></div>
+                                        </div>
+                                        <div class="channel-bar-item">
+                                            <div class="channel-bar-label"><span>SMS</span><span>9%</span></div>
+                                            <div class="channel-bar-track"><div class="channel-bar-fill" style="--fill: 9%"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="insight-card">
+                                    <h4>Sentiment Analysis</h4>
+                                    <div class="sentiment-display">
+                                        <div class="sentiment-ring" id="sentimentRing">
+                                            <canvas id="sentimentCanvas" width="140" height="140"></canvas>
+                                            <div class="sentiment-center">
+                                                <span class="sentiment-emoji">&#128578;</span>
+                                                <span class="sentiment-val">87%</span>
+                                                <span class="sentiment-label">Positive</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="demo-cta-wrap">
+                <p>This is a preview. The full platform is customised for each client engagement.</p>
+                <a href="#contact" class="btn btn-primary">Request a Full Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CASE STUDIES / RESULTS ===================== -->
+    <section class="section section-dark" id="results">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label section-label-light">Proven Results</span>
+                <h2 class="section-title section-title-light">Measurable Impact,<br><span class="text-accent">Across Industries</span></h2>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-industry">Healthcare</div>
+                    <h3 class="case-title">MediBridge Health Group</h3>
+                    <p class="case-challenge"><strong>Challenge:</strong> A 23-location clinic network struggling with manual appointment scheduling, high no-show rates, and overwhelmed front-desk staff across multiple time zones.</p>
+                    <div class="case-solution">
+                        <strong>Solution:</strong> Deployed an intelligent communication system with automated appointment management, patient follow-up sequences, and cross-location resource coordination.
+                    </div>
+                    <div class="case-results">
+                        <div class="case-metric">
+                            <span class="case-metric-val">40%</span>
+                            <span class="case-metric-label">Reduction in patient wait times</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">3x</span>
+                            <span class="case-metric-label">Appointment throughput</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">68%</span>
+                            <span class="case-metric-label">Fewer missed appointments</span>
+                        </div>
+                    </div>
+                    <div class="case-quote">
+                        <p>"Sentra's platform transformed how we manage patient flow. Our staff can now focus on patient care rather than admin."</p>
+                        <span class="case-author">— Dr. Amara Osei, COO, MediBridge Health Group</span>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-industry">Logistics & Supply Chain</div>
+                    <h3 class="case-title">Nexus Logistics International</h3>
+                    <p class="case-challenge"><strong>Challenge:</strong> Manual shipment tracking, inconsistent vendor communication, and siloed operational data causing delays and cost overruns across regional hubs.</p>
+                    <div class="case-solution">
+                        <strong>Solution:</strong> Implemented a full workflow automation suite with real-time tracking integration, automated vendor notifications, and a centralised analytics dashboard.
+                    </div>
+                    <div class="case-results">
+                        <div class="case-metric">
+                            <span class="case-metric-val">60%</span>
+                            <span class="case-metric-label">Reduction in manual processing</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">$2.1M</span>
+                            <span class="case-metric-label">Annual cost savings</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">4.2hrs</span>
+                            <span class="case-metric-label">Saved per team member daily</span>
+                        </div>
+                    </div>
+                    <div class="case-quote">
+                        <p>"The ROI was visible within the first quarter. Sentra didn't just automate — they re-engineered how we operate."</p>
+                        <span class="case-author">— Marcus Tan, VP Operations, Nexus Logistics</span>
+                    </div>
+                </div>
+
+                <div class="case-card">
+                    <div class="case-industry">Financial Services</div>
+                    <h3 class="case-title">Clearwater Financial Advisory</h3>
+                    <p class="case-challenge"><strong>Challenge:</strong> Lengthy client onboarding processes, manual compliance documentation, and limited visibility into customer engagement metrics.</p>
+                    <div class="case-solution">
+                        <strong>Solution:</strong> Deployed an integrated communication and data intelligence platform with automated KYC workflows, client portal, and real-time compliance tracking.
+                    </div>
+                    <div class="case-results">
+                        <div class="case-metric">
+                            <span class="case-metric-val">85%</span>
+                            <span class="case-metric-label">Faster client onboarding</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">99.9%</span>
+                            <span class="case-metric-label">Compliance accuracy</span>
+                        </div>
+                        <div class="case-metric">
+                            <span class="case-metric-val">2x</span>
+                            <span class="case-metric-label">Client capacity growth</span>
+                        </div>
+                    </div>
+                    <div class="case-quote">
+                        <p>"In financial services, trust and precision are everything. Sentra delivered both — on time and beyond expectations."</p>
+                        <span class="case-author">— Helen Drummond, Managing Director, Clearwater Financial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== TEAM ===================== -->
+    <section class="section section-light" id="team">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Leadership</span>
+                <h2 class="section-title">The Team Behind<br><span class="text-accent">Sentra Technologies</span></h2>
+                <p class="section-desc">A cross-disciplinary leadership team combining deep technical expertise with strategic business acumen.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #1F4068">
+                        <span>LD</span>
+                    </div>
+                    <h3 class="team-name">Lohan De Silva</h3>
+                    <span class="team-role">Chief Operating Officer</span>
+                    <p class="team-bio">Leads the operational backbone of Sentra, ensuring seamless delivery from consultation through deployment across all client engagements.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #4FD1C5">
+                        <span>Y</span>
+                    </div>
+                    <h3 class="team-name">Yudesh</h3>
+                    <span class="team-role">Head of Marketing & Growth</span>
+                    <p class="team-bio">Architects Sentra's market positioning and growth strategy, driving brand visibility and client acquisition across global markets.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #0A192F">
+                        <span>PL</span>
+                    </div>
+                    <h3 class="team-name">Pasan Laksitha</h3>
+                    <span class="team-role">Lead Solutions Architect</span>
+                    <p class="team-bio">Designs the technical architecture behind every Sentra deployment — translating complex business requirements into scalable intelligent systems.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #1F4068">
+                        <span>JC</span>
+                    </div>
+                    <h3 class="team-name">James Crawford</h3>
+                    <span class="team-role">Chief Strategy Officer</span>
+                    <p class="team-bio">Shapes Sentra's long-term vision and partnership strategy, with two decades of experience advising enterprise digital transformation initiatives.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #4FD1C5">
+                        <span>SM</span>
+                    </div>
+                    <h3 class="team-name">Sarah Mitchell</h3>
+                    <span class="team-role">Head of AI Research</span>
+                    <p class="team-bio">Leads Sentra's R&D division, pioneering proprietary machine learning models and ensuring our solutions remain at the frontier of applied AI.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="--avatar-bg: #0A192F">
+                        <span>DW</span>
+                    </div>
+                    <h3 class="team-name">Daniel Whitfield</h3>
+                    <span class="team-role">Director of Enterprise Relations</span>
+                    <p class="team-bio">Manages strategic client partnerships, ensuring each enterprise engagement delivers lasting value and a clear return on investment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="section section-dark" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-label section-label-light">Get In Touch</span>
+                    <h2 class="section-title section-title-light">Let's Discuss Your<br><span class="text-accent">Next Move</span></h2>
+                    <p class="contact-desc">Whether you're exploring AI automation for the first time or looking to scale an existing initiative — we're here to help you make informed decisions.</p>
+                    <div class="contact-methods">
+                        <a href="mailto:contact.sentra.technologies@gmail.com" class="contact-method">
+                            <div class="contact-method-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <div>
+                                <strong>Email Us</strong>
+                                <span>contact.sentra.technologies@gmail.com</span>
+                            </div>
+                        </a>
+                        <a href="https://wa.me/94704669834" target="_blank" rel="noopener" class="contact-method">
+                            <div class="contact-method-icon whatsapp">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            </div>
+                            <div>
+                                <strong>WhatsApp</strong>
+                                <span>+94 70 466 9834</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="contact-slogan">
+                        Smart. Secure. Sentra.
+                    </div>
+                </div>
+                <div class="contact-form-wrap">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Work Email</label>
+                            <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company" placeholder="Your company name">
+                        </div>
+                        <div class="form-group">
+                            <label for="interest">Area of Interest</label>
+                            <select id="interest" name="interest">
+                                <option value="">Select an area</option>
+                                <option value="communication">Intelligent Communication Systems</option>
+                                <option value="automation">Workflow & Process Automation</option>
+                                <option value="analytics">Data Intelligence & Analytics</option>
+                                <option value="consultation">General Consultation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Tell Us About Your Needs</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Briefly describe your business challenge or what you'd like to explore..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Send Enquiry</button>
+                        <p class="form-note">We typically respond within 24 hours. Your information is kept strictly confidential.</p>
+                    </form>
+                    <div class="form-success" id="formSuccess" style="display: none;">
+                        <div class="success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>Thank You</h3>
+                        <p>Your enquiry has been received. A member of our team will be in touch within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="logo.png" alt="Sentra Technologies" class="footer-logo-img">
+                    </div>
+                    <p class="footer-tagline">Smart. Secure. Sentra.</p>
+                    <p class="footer-desc">Intelligent systems consultancy engineering enterprise-grade automation, communication, and analytics solutions.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigate</h4>
+                    <a href="#about">About</a>
+                    <a href="#solutions">Solutions</a>
+                    <a href="#platform">Platform</a>
+                    <a href="#results">Results</a>
+                    <a href="#team">Leadership</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Solutions</h4>
+                    <a href="#solutions">Intelligent Communication</a>
+                    <a href="#solutions">Workflow Automation</a>
+                    <a href="#solutions">Data Intelligence</a>
+                    <a href="#contact">Custom Engagements</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <a href="mailto:contact.sentra.technologies@gmail.com">Email Us</a>
+                    <a href="https://wa.me/94704669834" target="_blank" rel="noopener">WhatsApp</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sentra Technologies (Pvt) Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/94704669834" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

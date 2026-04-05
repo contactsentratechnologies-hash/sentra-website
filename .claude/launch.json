@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sentra-site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/lohan/Desktop/sentra-website", "-p", "8080"],
+      "port": 8080
+    }
+  ]
+}
