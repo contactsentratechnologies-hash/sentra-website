@@ -43,357 +43,430 @@ function initNavbar() {
 }
 
 /* ============================================
-   NEURAL BRAIN ANIMATION — Anatomical Side-Profile
+   NEURAL BRAIN ANIMATION — Fluid & Dynamic
    ============================================ */
 function initBrainAnimation() {
     const canvas = document.getElementById('brainCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let width, height, nodes = [], mouse = { x: -999, y: -999 };
+    let W, H, nodes = [], edges = [], mouse = { x: -999, y: -999 };
+    let particles = [], cascades = [], ambientPulse = 0;
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        width = rect.width;
-        height = rect.height;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
+        W = rect.width; H = rect.height;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    // Brain side-profile outline (normalized 0-1 coords, side view of brain)
-    function brainOutlinePoint(t) {
-        // Parametric brain silhouette — side profile
-        // t goes 0..1 around the brain shape
-        const a = t * Math.PI * 2;
-
-        // Base ellipse
-        let x = Math.cos(a) * 0.48;
-        let y = Math.sin(a) * 0.42;
-
-        // Frontal lobe bulge (front-top)
-        x += 0.08 * Math.exp(-Math.pow((a - 1.2), 2) * 3);
-        y -= 0.12 * Math.exp(-Math.pow((a - 1.5), 2) * 2);
-
-        // Parietal bulge (top)
-        y -= 0.06 * Math.exp(-Math.pow((a - 2.0), 2) * 4);
-
-        // Occipital lobe (back bulge)
-        x -= 0.1 * Math.exp(-Math.pow((a - 3.5), 2) * 2);
-        y -= 0.04 * Math.exp(-Math.pow((a - 3.2), 2) * 3);
-
-        // Temporal lobe (bottom-front)
-        x += 0.06 * Math.exp(-Math.pow((a - 5.2), 2) * 3);
-        y += 0.08 * Math.exp(-Math.pow((a - 5.5), 2) * 2);
-
-        // Flatten bottom slightly
-        if (y > 0.28) y = 0.28 + (y - 0.28) * 0.3;
-
-        return { x, y };
+    // --- Brain shape (side profile, parametric) ---
+    function brainR(angle) {
+        const a = angle;
+        let r = 1.0;
+        // Frontal lobe (larger, front-top)
+        r += 0.18 * Math.exp(-((a - 1.8) * (a - 1.8)) * 1.5);
+        // Parietal dome
+        r += 0.10 * Math.exp(-((a - 2.5) * (a - 2.5)) * 2.5);
+        // Occipital bulge (back)
+        r += 0.12 * Math.exp(-((a - 3.8) * (a - 3.8)) * 2.0);
+        // Temporal (side-bottom)
+        r += 0.06 * Math.exp(-((a - 5.3) * (a - 5.3)) * 2.5);
+        // Flatten bottom
+        r -= 0.15 * Math.exp(-((a - 4.7) * (a - 4.7)) * 1.2);
+        // Indent at brain stem junction
+        r -= 0.20 * Math.exp(-((a - 4.4) * (a - 4.4)) * 5.0);
+        return r;
     }
 
-    // Sulci/fissure curves across the brain surface
-    function generateSulci(cx, cy, scaleX, scaleY) {
-        const sulci = [];
-        // Central sulcus (divides frontal/parietal)
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, 0.05, -0.38, 0.05, 0.15, 6, 0.04));
-        // Lateral sulcus (Sylvian fissure)
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.3, 0.05, 0.15, 0.12, 8, 0.03));
-        // Precentral sulcus
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, 0.15, -0.35, 0.18, 0.1, 5, 0.03));
-        // Superior frontal sulcus
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, 0.2, -0.18, 0.4, -0.12, 7, 0.025));
-        // Inferior frontal sulcus
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, 0.15, -0.02, 0.35, 0.0, 6, 0.02));
-        // Intraparietal sulcus
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.05, -0.3, -0.25, -0.15, 6, 0.03));
-        // Occipital sulci
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.35, -0.15, -0.35, 0.1, 5, 0.025));
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.28, -0.25, -0.4, -0.05, 4, 0.02));
-        // Temporal sulci
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.15, 0.18, 0.2, 0.2, 7, 0.02));
-        sulci.push(generateCurve(cx, cy, scaleX, scaleY, -0.1, 0.26, 0.15, 0.25, 5, 0.015));
-        return sulci;
+    function brainPoint(angle, cx, cy, sx, sy) {
+        const r = brainR(angle);
+        return { x: cx + Math.cos(angle) * r * sx, y: cy + Math.sin(angle) * r * sy };
     }
 
-    function generateCurve(cx, cy, sx, sy, x1, y1, x2, y2, segments, wobble) {
-        const points = [];
-        for (let i = 0; i <= segments; i++) {
-            const t = i / segments;
-            const x = x1 + (x2 - x1) * t + (Math.sin(t * Math.PI * 3) * wobble);
-            const y = y1 + (y2 - y1) * t + (Math.cos(t * Math.PI * 2.5) * wobble * 0.8);
-            points.push({ x: cx + x * sx, y: cy + y * sy });
-        }
-        return points;
+    function isInBrain(px, py, cx, cy, sx, sy) {
+        const dx = (px - cx), dy = (py - cy);
+        const angle = (Math.atan2(dy / sy, dx / sx) + Math.PI * 2) % (Math.PI * 2);
+        const r = brainR(angle);
+        return (dx * dx) / (sx * sx * r * r) + (dy * dy) / (sy * sy * r * r) < 1;
     }
 
-    // Check if point is inside the brain outline
-    function isInsideBrain(px, py, cx, cy, scaleX, scaleY) {
-        const dx = (px - cx) / scaleX;
-        const dy = (py - cy) / scaleY;
-        // Approximate brain shape test using polar distance
-        const angle = Math.atan2(dy, dx);
-        const ref = brainOutlinePoint((angle + Math.PI * 2) / (Math.PI * 2) % 1);
-        const refDist = Math.hypot(ref.x, ref.y);
-        const ptDist = Math.hypot(dx, dy);
-        return ptDist < refDist * 0.92;
-    }
+    // --- Build neural network ---
+    function buildNetwork() {
+        nodes = []; edges = []; particles = []; cascades = [];
+        const cx = W / 2, cy = H / 2 - H * 0.03;
+        const sx = Math.min(W, 520) * 0.36;
+        const sy = Math.min(H, 520) * 0.32;
+        const isMob = W < 600;
+        const N = isMob ? 120 : 220;
 
-    function generateBrainNodes() {
-        nodes = [];
-        const cx = width / 2, cy = height / 2 - 10;
-        const scaleX = Math.min(width, 500) * 0.42;
-        const scaleY = Math.min(height, 500) * 0.38;
-        const nodeCount = window.innerWidth < 768 ? 100 : 200;
-
-        // Place nodes along the brain outline
-        for (let i = 0; i < Math.floor(nodeCount * 0.3); i++) {
-            const t = i / Math.floor(nodeCount * 0.3);
-            const bp = brainOutlinePoint(t);
-            const jitter = 0.03;
-            const x = cx + (bp.x + (Math.random() - 0.5) * jitter) * scaleX;
-            const y = cy + (bp.y + (Math.random() - 0.5) * jitter) * scaleY;
-            nodes.push(createNode(x, y, 1.2 + Math.random() * 1.5, 'outline'));
+        // Outline nodes (for visible brain shape)
+        const outlineN = Math.floor(N * 0.2);
+        for (let i = 0; i < outlineN; i++) {
+            const a = (i / outlineN) * Math.PI * 2;
+            const p = brainPoint(a, cx, cy, sx, sy);
+            addNode(p.x, p.y, 1.0 + Math.random() * 1.2, 'edge');
         }
 
-        // Fill interior with nodes
-        let attempts = 0;
-        while (nodes.length < nodeCount && attempts < nodeCount * 10) {
-            attempts++;
-            const angle = Math.random() * Math.PI * 2;
-            const r = Math.random() * 0.85;
-            const bp = brainOutlinePoint(angle / (Math.PI * 2));
-            const x = cx + bp.x * r * scaleX + (Math.random() - 0.5) * 10;
-            const y = cy + bp.y * r * scaleY + (Math.random() - 0.5) * 10;
-            if (isInsideBrain(x, y, cx, cy, scaleX, scaleY)) {
-                nodes.push(createNode(x, y, 1 + Math.random() * 2.5, 'interior'));
+        // Interior nodes — Poisson-disc-ish fill
+        let tries = 0;
+        while (nodes.length < N && tries < N * 15) {
+            tries++;
+            const a = Math.random() * Math.PI * 2;
+            const rFrac = Math.pow(Math.random(), 0.6) * 0.88; // bias towards centre
+            const r = brainR(a) * rFrac;
+            const x = cx + Math.cos(a) * r * sx + (Math.random() - 0.5) * 6;
+            const y = cy + Math.sin(a) * r * sy + (Math.random() - 0.5) * 6;
+            if (!isInBrain(x, y, cx, cy, sx, sy)) continue;
+            // Min distance check
+            let tooClose = false;
+            for (const n of nodes) {
+                if (Math.hypot(n.baseX - x, n.baseY - y) < (isMob ? 14 : 18)) { tooClose = true; break; }
             }
+            if (tooClose) continue;
+            addNode(x, y, 1.2 + Math.random() * 2.0, 'inner');
         }
-
-        // Brain stem nodes
-        for (let i = 0; i < 15; i++) {
-            const t = i / 15;
-            const x = cx - 0.02 * scaleX + (Math.random() - 0.5) * scaleX * 0.12;
-            const y = cy + 0.32 * scaleY + t * scaleY * 0.35;
-            nodes.push(createNode(x, y, 1 + Math.random() * 1.5, 'stem'));
-        }
-
-        // Cerebellum nodes (back-bottom)
-        for (let i = 0; i < 20; i++) {
-            const angle = Math.PI * 0.6 + Math.random() * Math.PI * 0.5;
-            const r = 0.12 + Math.random() * 0.14;
-            const x = cx - 0.28 * scaleX + Math.cos(angle) * r * scaleX;
-            const y = cy + 0.22 * scaleY + Math.sin(angle) * r * scaleY * 0.6;
-            nodes.push(createNode(x, y, 0.8 + Math.random() * 1.5, 'cerebellum'));
-        }
-    }
-
-    function createNode(x, y, radius, region) {
-        return {
-            x, y, baseX: x, baseY: y, radius,
-            phase: Math.random() * Math.PI * 2,
-            speed: 0.003 + Math.random() * 0.01,
-            drift: 3 + Math.random() * 6,
-            pulse: 0, region,
-        };
-    }
-
-    let particles = [];
-    let sulciPaths = [];
-
-    function spawnParticle() {
-        if (nodes.length < 2) return;
-        const a = Math.floor(Math.random() * nodes.length);
-        let closest = -1, closestDist = 130;
-        for (let i = 0; i < nodes.length; i++) {
-            if (i === a) continue;
-            const d = dist(nodes[a], nodes[i]);
-            if (d < closestDist && Math.random() < 0.25) {
-                closestDist = d;
-                closest = i;
-            }
-        }
-        if (closest === -1) return;
-        particles.push({
-            from: a, to: closest, t: 0,
-            speed: 0.006 + Math.random() * 0.012,
-            size: 1.5 + Math.random() * 2,
-        });
-    }
-
-    function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
-
-    canvas.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        mouse.x = e.clientX - rect.left;
-        mouse.y = e.clientY - rect.top;
-    });
-    canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
-
-    let time = 0;
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        time += 0.016;
-        const cx = width / 2, cy = height / 2 - 10;
-        const scaleX = Math.min(width, 500) * 0.42;
-        const scaleY = Math.min(height, 500) * 0.38;
-
-        // Draw brain outline (subtle glow)
-        ctx.beginPath();
-        for (let i = 0; i <= 100; i++) {
-            const t = i / 100;
-            const bp = brainOutlinePoint(t);
-            const x = cx + bp.x * scaleX;
-            const y = cy + bp.y * scaleY;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = `rgba(79, 209, 197, ${0.12 + Math.sin(time * 0.3) * 0.04})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Subtle fill
-        ctx.fillStyle = 'rgba(79, 209, 197, 0.015)';
-        ctx.fill();
-
-        // Draw cerebellum outline
-        ctx.beginPath();
-        for (let i = 0; i <= 40; i++) {
-            const t = i / 40;
-            const angle = Math.PI * 0.6 + t * Math.PI * 0.5;
-            const r = 0.18;
-            const x = cx - 0.28 * scaleX + Math.cos(angle) * r * scaleX;
-            const y = cy + 0.22 * scaleY + Math.sin(angle) * r * scaleY * 0.6;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = 'rgba(79, 209, 197, 0.1)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // Draw sulci (brain folds/grooves)
-        const sulci = generateSulci(cx, cy, scaleX, scaleY);
-        sulci.forEach(curve => {
-            ctx.beginPath();
-            ctx.moveTo(curve[0].x, curve[0].y);
-            for (let i = 1; i < curve.length; i++) {
-                const prev = curve[i - 1];
-                const curr = curve[i];
-                const cpx = (prev.x + curr.x) / 2;
-                ctx.quadraticCurveTo(prev.x, prev.y, cpx, (prev.y + curr.y) / 2);
-            }
-            ctx.strokeStyle = `rgba(79, 209, 197, ${0.08 + Math.sin(time * 0.5) * 0.02})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        });
 
         // Brain stem
-        ctx.beginPath();
-        ctx.moveTo(cx - 0.04 * scaleX, cy + 0.32 * scaleY);
-        ctx.quadraticCurveTo(cx - 0.02 * scaleX, cy + 0.5 * scaleY, cx, cy + 0.65 * scaleY);
-        ctx.strokeStyle = 'rgba(79, 209, 197, 0.12)';
-        ctx.lineWidth = 6;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'rgba(79, 209, 197, 0.06)';
-        ctx.beginPath();
-        ctx.moveTo(cx + 0.02 * scaleX, cy + 0.32 * scaleY);
-        ctx.quadraticCurveTo(cx + 0.01 * scaleX, cy + 0.5 * scaleY, cx - 0.01 * scaleX, cy + 0.65 * scaleY);
-        ctx.stroke();
-        ctx.lineCap = 'butt';
+        for (let i = 0; i < 10; i++) {
+            const t = i / 10;
+            const x = cx + (Math.random() - 0.5) * sx * 0.08;
+            const y = cy + sy * 0.85 + t * sy * 0.45;
+            addNode(x, y, 1.0 + Math.random(), 'stem');
+        }
 
-        // Update nodes
-        nodes.forEach(n => {
-            n.phase += n.speed;
-            n.x = n.baseX + Math.sin(n.phase) * n.drift * 0.4;
-            n.y = n.baseY + Math.cos(n.phase * 0.7) * n.drift * 0.3;
-            n.pulse = (Math.sin(n.phase * 2) + 1) / 2;
+        // Cerebellum
+        for (let i = 0; i < (isMob ? 12 : 18); i++) {
+            const a = Math.PI * 0.55 + Math.random() * Math.PI * 0.55;
+            const r = 0.1 + Math.random() * 0.16;
+            const x = cx - sx * 0.35 + Math.cos(a) * r * sx;
+            const y = cy + sy * 0.55 + Math.sin(a) * r * sy * 0.5;
+            addNode(x, y, 0.8 + Math.random() * 1.2, 'cere');
+        }
 
-            const mx = mouse.x - n.x;
-            const my = mouse.y - n.y;
-            const md = Math.hypot(mx, my);
-            if (md < 100) {
-                const force = (100 - md) / 100 * 12;
-                n.x -= (mx / md) * force * 0.25;
-                n.y -= (my / md) * force * 0.25;
-            }
-        });
-
-        // Draw connections (neural network style)
-        const maxDist = window.innerWidth < 768 ? 55 : 70;
+        // Build edge list (connect nearby nodes)
+        const maxEdgeDist = isMob ? 60 : 75;
         for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const d = dist(nodes[i], nodes[j]);
-                if (d < maxDist) {
-                    const alpha = (1 - d / maxDist) * 0.18;
-                    ctx.beginPath();
-                    ctx.moveTo(nodes[i].x, nodes[i].y);
-                    ctx.lineTo(nodes[j].x, nodes[j].y);
-                    ctx.strokeStyle = `rgba(79, 209, 197, ${alpha})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
+            const dists = [];
+            for (let j = 0; j < nodes.length; j++) {
+                if (i === j) continue;
+                dists.push({ j, d: Math.hypot(nodes[i].baseX - nodes[j].baseX, nodes[i].baseY - nodes[j].baseY) });
+            }
+            dists.sort((a, b) => a.d - b.d);
+            const maxConn = 3 + Math.floor(Math.random() * 3);
+            let count = 0;
+            for (const { j, d } of dists) {
+                if (d > maxEdgeDist || count >= maxConn) break;
+                if (!edges.some(e => (e.a === i && e.b === j) || (e.a === j && e.b === i))) {
+                    edges.push({ a: i, b: j, strength: 1 - d / maxEdgeDist });
+                    count++;
                 }
             }
         }
+    }
 
-        // Draw nodes (neurons)
-        nodes.forEach(n => {
-            const glow = n.pulse * 0.35 + 0.25;
+    function addNode(x, y, radius, region) {
+        nodes.push({
+            x, y, baseX: x, baseY: y, radius,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.004 + Math.random() * 0.008,
+            drift: 2 + Math.random() * 4,
+            energy: 0,        // 0 = resting, 1 = firing
+            energyDecay: 0.015 + Math.random() * 0.01,
+            region,
+        });
+    }
+
+    // --- Cascade: chain-reaction firing through the network ---
+    function triggerCascade(startIdx) {
+        if (startIdx < 0 || startIdx >= nodes.length) return;
+        cascades.push({ frontier: [{ idx: startIdx, delay: 0 }], visited: new Set(), age: 0 });
+    }
+
+    function updateCascades() {
+        cascades = cascades.filter(c => c.age < 180); // ~3 seconds max
+        cascades.forEach(c => {
+            c.age++;
+            const next = [];
+            c.frontier.forEach(f => {
+                f.delay--;
+                if (f.delay > 0) { next.push(f); return; }
+                if (c.visited.has(f.idx)) return;
+                c.visited.add(f.idx);
+                const node = nodes[f.idx];
+                node.energy = 1.0;
+                // Spawn signal particles along connected edges
+                edges.forEach(e => {
+                    let neighbor = -1;
+                    if (e.a === f.idx) neighbor = e.b;
+                    else if (e.b === f.idx) neighbor = e.a;
+                    if (neighbor >= 0 && !c.visited.has(neighbor)) {
+                        next.push({ idx: neighbor, delay: 4 + Math.floor(Math.random() * 6) });
+                        particles.push({
+                            from: f.idx, to: neighbor, t: 0,
+                            speed: 0.02 + Math.random() * 0.025,
+                            size: 1.5 + Math.random() * 2,
+                            bright: true,
+                        });
+                    }
+                });
+            });
+            c.frontier = next;
+        });
+    }
+
+    // --- Ambient signal particles (always flowing) ---
+    function spawnAmbient() {
+        if (edges.length === 0) return;
+        const e = edges[Math.floor(Math.random() * edges.length)];
+        const dir = Math.random() < 0.5;
+        particles.push({
+            from: dir ? e.a : e.b, to: dir ? e.b : e.a, t: 0,
+            speed: 0.008 + Math.random() * 0.012,
+            size: 1 + Math.random() * 1.5,
+            bright: false,
+        });
+    }
+
+    // --- Mouse ---
+    canvas.addEventListener('mousemove', e => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    });
+    canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
+    canvas.addEventListener('click', e => {
+        const r = canvas.getBoundingClientRect();
+        const mx = e.clientX - r.left, my = e.clientY - r.top;
+        let closest = -1, cd = 60;
+        nodes.forEach((n, i) => { const d = Math.hypot(n.x - mx, n.y - my); if (d < cd) { cd = d; closest = i; } });
+        if (closest >= 0) triggerCascade(closest);
+    });
+
+    // --- Render ---
+    let time = 0, lastCascade = 0;
+    function animate() {
+        ctx.clearRect(0, 0, W, H);
+        time += 0.016;
+        ambientPulse = Math.sin(time * 0.3) * 0.5 + 0.5;
+
+        const cx = W / 2, cy = H / 2 - H * 0.03;
+        const sx = Math.min(W, 520) * 0.36;
+        const sy = Math.min(H, 520) * 0.32;
+
+        // --- Brain outline (smooth glowing path) ---
+        ctx.save();
+        ctx.beginPath();
+        for (let i = 0; i <= 200; i++) {
+            const a = (i / 200) * Math.PI * 2;
+            const p = brainPoint(a, cx, cy, sx, sy);
+            i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+
+        // Glow behind outline
+        ctx.shadowColor = 'rgba(79,209,197,0.25)';
+        ctx.shadowBlur = 18 + ambientPulse * 8;
+        ctx.strokeStyle = `rgba(79,209,197,${0.18 + ambientPulse * 0.07})`;
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Very subtle interior fill
+        ctx.fillStyle = `rgba(79,209,197,${0.012 + ambientPulse * 0.006})`;
+        ctx.fill();
+        ctx.restore();
+
+        // --- Central fissure (dividing line) ---
+        ctx.save();
+        ctx.beginPath();
+        const fTop = brainPoint(1.95, cx, cy, sx, sy);
+        const fBot = brainPoint(4.5, cx, cy, sx, sy);
+        ctx.moveTo(fTop.x, fTop.y);
+        ctx.bezierCurveTo(
+            cx + sx * 0.02, cy - sy * 0.1,
+            cx - sx * 0.03, cy + sy * 0.2,
+            fBot.x, fBot.y
+        );
+        ctx.strokeStyle = `rgba(79,209,197,${0.1 + ambientPulse * 0.03})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.restore();
+
+        // --- Brain stem ---
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx - sx * 0.03, cy + sy * 0.82);
+        ctx.bezierCurveTo(cx, cy + sy * 1.0, cx + sx * 0.02, cy + sy * 1.2, cx - sx * 0.01, cy + sy * 1.35);
+        ctx.strokeStyle = `rgba(79,209,197,${0.12 + ambientPulse * 0.04})`;
+        ctx.lineWidth = 5; ctx.lineCap = 'round';
+        ctx.shadowColor = 'rgba(79,209,197,0.15)'; ctx.shadowBlur = 10;
+        ctx.stroke();
+        ctx.shadowBlur = 0; ctx.restore();
+
+        // --- Cerebellum outline ---
+        ctx.save();
+        ctx.beginPath();
+        for (let i = 0; i <= 50; i++) {
+            const t = i / 50;
+            const a = Math.PI * 0.55 + t * Math.PI * 0.55;
+            const r = 0.2;
+            const x = cx - sx * 0.35 + Math.cos(a) * r * sx;
+            const y = cy + sy * 0.55 + Math.sin(a) * r * sy * 0.5;
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = `rgba(79,209,197,${0.09 + ambientPulse * 0.03})`;
+        ctx.lineWidth = 1; ctx.stroke();
+        // Horizontal ridges inside cerebellum
+        for (let j = 0; j < 4; j++) {
             ctx.beginPath();
-            ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(79, 209, 197, ${glow})`;
-            ctx.fill();
+            const yOff = cy + sy * 0.52 + j * sy * 0.05;
+            ctx.moveTo(cx - sx * 0.48, yOff);
+            ctx.bezierCurveTo(cx - sx * 0.4, yOff - 3, cx - sx * 0.3, yOff + 3, cx - sx * 0.2, yOff);
+            ctx.strokeStyle = `rgba(79,209,197,0.06)`;
+            ctx.lineWidth = 0.8; ctx.stroke();
+        }
+        ctx.restore();
 
-            // Firing glow
-            if (n.pulse > 0.7) {
-                ctx.beginPath();
-                ctx.arc(n.x, n.y, n.radius + 5, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(79, 209, 197, ${(n.pulse - 0.7) * 0.12})`;
-                ctx.fill();
+        // --- Update nodes ---
+        nodes.forEach(n => {
+            n.phase += n.speed;
+            // Organic breathing motion
+            const breathX = Math.sin(n.phase) * n.drift + Math.sin(n.phase * 0.37 + 1.3) * n.drift * 0.4;
+            const breathY = Math.cos(n.phase * 0.8) * n.drift * 0.7 + Math.cos(n.phase * 0.23 + 2.1) * n.drift * 0.3;
+            n.x = n.baseX + breathX;
+            n.y = n.baseY + breathY;
+            // Energy decay
+            n.energy = Math.max(0, n.energy - n.energyDecay);
+            // Mouse repulsion
+            const dx = mouse.x - n.x, dy = mouse.y - n.y;
+            const md = Math.hypot(dx, dy);
+            if (md < 90 && md > 0) {
+                const f = (90 - md) / 90 * 10;
+                n.x -= (dx / md) * f; n.y -= (dy / md) * f;
+                n.energy = Math.min(1, n.energy + 0.03); // glow on hover
             }
         });
 
-        // Spawn & draw signal particles
-        if (Math.random() < 0.2) spawnParticle();
-        particles = particles.filter(p => p.t <= 1);
-        particles.forEach(p => {
-            p.t += p.speed;
-            const from = nodes[p.from];
-            const to = nodes[p.to];
-            const x = from.x + (to.x - from.x) * p.t;
-            const y = from.y + (to.y - from.y) * p.t;
-            const alpha = Math.sin(p.t * Math.PI) * 0.9;
+        // --- Draw edges (curved, glowing when active) ---
+        edges.forEach(e => {
+            const a = nodes[e.a], b = nodes[e.b];
+            const energy = Math.max(a.energy, b.energy);
+            const baseAlpha = e.strength * 0.08;
+            const alpha = baseAlpha + energy * 0.3;
+            if (alpha < 0.015) return;
+
+            // Curved connection (slight arc)
+            const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.08;
+            const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.08;
             ctx.beginPath();
-            ctx.arc(x, y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(79, 209, 197, ${alpha})`;
-            ctx.fill();
-            // Particle trail glow
+            ctx.moveTo(a.x, a.y);
+            ctx.quadraticCurveTo(mx, my, b.x, b.y);
+
+            if (energy > 0.3) {
+                ctx.shadowColor = 'rgba(79,209,197,0.3)';
+                ctx.shadowBlur = 6;
+            }
+            ctx.strokeStyle = `rgba(79,209,197,${Math.min(alpha, 0.5)})`;
+            ctx.lineWidth = 0.4 + energy * 1.2;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        });
+
+        // --- Draw nodes (neurons) ---
+        nodes.forEach(n => {
+            const restGlow = (Math.sin(n.phase * 1.5) + 1) / 2 * 0.2 + 0.15;
+            const alpha = restGlow + n.energy * 0.65;
+            const r = n.radius + n.energy * 2.5;
+
+            // Outer halo when firing
+            if (n.energy > 0.2) {
+                const haloR = r + 6 + n.energy * 8;
+                const grad = ctx.createRadialGradient(n.x, n.y, r, n.x, n.y, haloR);
+                grad.addColorStop(0, `rgba(79,209,197,${n.energy * 0.2})`);
+                grad.addColorStop(1, 'rgba(79,209,197,0)');
+                ctx.fillStyle = grad;
+                ctx.beginPath(); ctx.arc(n.x, n.y, haloR, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // Core neuron
             ctx.beginPath();
-            ctx.arc(x, y, p.size + 3, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(79, 209, 197, ${alpha * 0.15})`;
+            ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+            const coreGrad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r);
+            coreGrad.addColorStop(0, `rgba(150,240,230,${alpha})`);
+            coreGrad.addColorStop(1, `rgba(79,209,197,${alpha * 0.6})`);
+            ctx.fillStyle = coreGrad;
             ctx.fill();
         });
 
-        // Pulsing core glow at brain center
-        const glowR = 80 + Math.sin(time * 0.4) * 25;
-        const grad = ctx.createRadialGradient(cx - scaleX * 0.05, cy - scaleY * 0.05, 0, cx, cy, glowR);
-        grad.addColorStop(0, 'rgba(79, 209, 197, 0.05)');
-        grad.addColorStop(0.5, 'rgba(79, 209, 197, 0.02)');
-        grad.addColorStop(1, 'rgba(79, 209, 197, 0)');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, width, height);
+        // --- Cascade logic ---
+        updateCascades();
+        // Auto-trigger cascades periodically
+        if (time - lastCascade > 3.5) {
+            lastCascade = time;
+            const start = Math.floor(Math.random() * nodes.length);
+            triggerCascade(start);
+        }
+
+        // --- Ambient particles ---
+        if (Math.random() < 0.25) spawnAmbient();
+
+        // --- Draw particles ---
+        particles = particles.filter(p => p.t <= 1);
+        particles.forEach(p => {
+            p.t += p.speed;
+            const from = nodes[p.from], to = nodes[p.to];
+            // Curved path matching edge
+            const mx = (from.x + to.x) / 2 + (to.y - from.y) * 0.08;
+            const my = (from.y + to.y) / 2 - (to.x - from.x) * 0.08;
+            const t = p.t;
+            const it = 1 - t;
+            // Quadratic bezier interpolation
+            const px = it * it * from.x + 2 * it * t * mx + t * t * to.x;
+            const py = it * it * from.y + 2 * it * t * my + t * t * to.y;
+            const lifeAlpha = Math.sin(t * Math.PI);
+
+            if (p.bright) {
+                // Bright cascade particle with trail
+                const trailGrad = ctx.createRadialGradient(px, py, 0, px, py, p.size + 6);
+                trailGrad.addColorStop(0, `rgba(180,255,245,${lifeAlpha * 0.7})`);
+                trailGrad.addColorStop(0.4, `rgba(79,209,197,${lifeAlpha * 0.3})`);
+                trailGrad.addColorStop(1, 'rgba(79,209,197,0)');
+                ctx.fillStyle = trailGrad;
+                ctx.beginPath(); ctx.arc(px, py, p.size + 6, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // Core dot
+            ctx.beginPath();
+            ctx.arc(px, py, p.size * (p.bright ? 1.3 : 0.9), 0, Math.PI * 2);
+            ctx.fillStyle = p.bright
+                ? `rgba(200,255,250,${lifeAlpha * 0.9})`
+                : `rgba(79,209,197,${lifeAlpha * 0.45})`;
+            ctx.fill();
+        });
+
+        // --- Global atmospheric glow ---
+        const gx = cx - sx * 0.05, gy = cy;
+        const gr = sx * 0.9 + Math.sin(time * 0.25) * 15;
+        const atmo = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+        atmo.addColorStop(0, `rgba(79,209,197,${0.03 + ambientPulse * 0.015})`);
+        atmo.addColorStop(0.5, 'rgba(79,209,197,0.008)');
+        atmo.addColorStop(1, 'rgba(79,209,197,0)');
+        ctx.fillStyle = atmo;
+        ctx.fillRect(0, 0, W, H);
 
         requestAnimationFrame(animate);
     }
 
     resize();
-    generateBrainNodes();
+    buildNetwork();
     animate();
-    window.addEventListener('resize', () => { resize(); generateBrainNodes(); });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { resize(); buildNetwork(); }, 150);
+    });
 }
 
 /* ============================================
