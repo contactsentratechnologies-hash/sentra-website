@@ -43,14 +43,15 @@ function initNavbar() {
 }
 
 /* ============================================
-   NEURAL BRAIN ANIMATION — Fluid & Dynamic
+   HERO ANIMATION — 3D Intelligence Constellation
    ============================================ */
 function initBrainAnimation() {
     const canvas = document.getElementById('brainCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let W, H, nodes = [], edges = [], mouse = { x: -999, y: -999 };
-    let particles = [], cascades = [], ambientPulse = 0;
+    let W, H, nodes = [], edges = [];
+    let mouse = { x: 0.5, y: 0.5 }; // normalised
+    let signals = [];
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -61,396 +62,242 @@ function initBrainAnimation() {
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    // --- Brain shape (side profile, parametric) ---
-    function brainR(angle) {
-        const a = angle;
-        let r = 1.0;
-        // Frontal lobe (larger, front-top)
-        r += 0.18 * Math.exp(-((a - 1.8) * (a - 1.8)) * 1.5);
-        // Parietal dome
-        r += 0.10 * Math.exp(-((a - 2.5) * (a - 2.5)) * 2.5);
-        // Occipital bulge (back)
-        r += 0.12 * Math.exp(-((a - 3.8) * (a - 3.8)) * 2.0);
-        // Temporal (side-bottom)
-        r += 0.06 * Math.exp(-((a - 5.3) * (a - 5.3)) * 2.5);
-        // Flatten bottom
-        r -= 0.15 * Math.exp(-((a - 4.7) * (a - 4.7)) * 1.2);
-        // Indent at brain stem junction
-        r -= 0.20 * Math.exp(-((a - 4.4) * (a - 4.4)) * 5.0);
-        return r;
-    }
-
-    function brainPoint(angle, cx, cy, sx, sy) {
-        const r = brainR(angle);
-        return { x: cx + Math.cos(angle) * r * sx, y: cy + Math.sin(angle) * r * sy };
-    }
-
-    function isInBrain(px, py, cx, cy, sx, sy) {
-        const dx = (px - cx), dy = (py - cy);
-        const angle = (Math.atan2(dy / sy, dx / sx) + Math.PI * 2) % (Math.PI * 2);
-        const r = brainR(angle);
-        return (dx * dx) / (sx * sx * r * r) + (dy * dy) / (sy * sy * r * r) < 1;
-    }
-
-    // --- Build neural network ---
-    function buildNetwork() {
-        nodes = []; edges = []; particles = []; cascades = [];
-        const cx = W / 2, cy = H / 2 - H * 0.03;
-        const sx = Math.min(W, 520) * 0.36;
-        const sy = Math.min(H, 520) * 0.32;
+    // --- 3D point cloud forming a sphere/toroid structure ---
+    function buildConstellation() {
+        nodes = []; edges = []; signals = [];
         const isMob = W < 600;
-        const N = isMob ? 120 : 220;
+        const count = isMob ? 60 : 110;
+        const spread = Math.min(W, H) * 0.38;
 
-        // Outline nodes (for visible brain shape)
-        const outlineN = Math.floor(N * 0.2);
-        for (let i = 0; i < outlineN; i++) {
-            const a = (i / outlineN) * Math.PI * 2;
-            const p = brainPoint(a, cx, cy, sx, sy);
-            addNode(p.x, p.y, 1.0 + Math.random() * 1.2, 'edge');
+        // Core cluster — sphere distribution
+        for (let i = 0; i < count * 0.6; i++) {
+            // Fibonacci sphere
+            const phi = Math.acos(1 - 2 * (i + 0.5) / (count * 0.6));
+            const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+            const r = spread * (0.4 + Math.random() * 0.3);
+            nodes.push({
+                x3d: Math.sin(phi) * Math.cos(theta) * r,
+                y3d: Math.sin(phi) * Math.sin(theta) * r * 0.7,
+                z3d: Math.cos(phi) * r,
+                size: 1.5 + Math.random() * 2,
+                layer: 'core',
+                phase: Math.random() * Math.PI * 2,
+                orbitSpeed: (0.0003 + Math.random() * 0.0004) * (Math.random() < 0.5 ? 1 : -1),
+                pulsePhase: Math.random() * Math.PI * 2,
+            });
         }
 
-        // Interior nodes — Poisson-disc-ish fill
-        let tries = 0;
-        while (nodes.length < N && tries < N * 15) {
-            tries++;
-            const a = Math.random() * Math.PI * 2;
-            const rFrac = Math.pow(Math.random(), 0.6) * 0.88; // bias towards centre
-            const r = brainR(a) * rFrac;
-            const x = cx + Math.cos(a) * r * sx + (Math.random() - 0.5) * 6;
-            const y = cy + Math.sin(a) * r * sy + (Math.random() - 0.5) * 6;
-            if (!isInBrain(x, y, cx, cy, sx, sy)) continue;
-            // Min distance check
-            let tooClose = false;
-            for (const n of nodes) {
-                if (Math.hypot(n.baseX - x, n.baseY - y) < (isMob ? 14 : 18)) { tooClose = true; break; }
-            }
-            if (tooClose) continue;
-            addNode(x, y, 1.2 + Math.random() * 2.0, 'inner');
+        // Outer ring — orbital nodes
+        for (let i = 0; i < count * 0.25; i++) {
+            const angle = (i / (count * 0.25)) * Math.PI * 2 + Math.random() * 0.3;
+            const r = spread * (0.7 + Math.random() * 0.25);
+            const yOff = (Math.random() - 0.5) * spread * 0.3;
+            nodes.push({
+                x3d: Math.cos(angle) * r,
+                y3d: yOff,
+                z3d: Math.sin(angle) * r,
+                size: 1 + Math.random() * 1.5,
+                layer: 'orbit',
+                phase: Math.random() * Math.PI * 2,
+                orbitSpeed: 0.0006 + Math.random() * 0.0003,
+                pulsePhase: Math.random() * Math.PI * 2,
+            });
         }
 
-        // Brain stem
-        for (let i = 0; i < 10; i++) {
-            const t = i / 10;
-            const x = cx + (Math.random() - 0.5) * sx * 0.08;
-            const y = cy + sy * 0.85 + t * sy * 0.45;
-            addNode(x, y, 1.0 + Math.random(), 'stem');
+        // Satellites — distant accent nodes
+        for (let i = 0; i < count * 0.15; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const r = spread * (0.9 + Math.random() * 0.35);
+            const yOff = (Math.random() - 0.5) * spread * 0.6;
+            nodes.push({
+                x3d: Math.cos(angle) * r,
+                y3d: yOff,
+                z3d: Math.sin(angle) * r,
+                size: 0.8 + Math.random() * 1,
+                layer: 'sat',
+                phase: Math.random() * Math.PI * 2,
+                orbitSpeed: (0.0002 + Math.random() * 0.0003) * (Math.random() < 0.5 ? 1 : -1),
+                pulsePhase: Math.random() * Math.PI * 2,
+            });
         }
 
-        // Cerebellum
-        for (let i = 0; i < (isMob ? 12 : 18); i++) {
-            const a = Math.PI * 0.55 + Math.random() * Math.PI * 0.55;
-            const r = 0.1 + Math.random() * 0.16;
-            const x = cx - sx * 0.35 + Math.cos(a) * r * sx;
-            const y = cy + sy * 0.55 + Math.sin(a) * r * sy * 0.5;
-            addNode(x, y, 0.8 + Math.random() * 1.2, 'cere');
-        }
-
-        // Build edge list (connect nearby nodes)
-        const maxEdgeDist = isMob ? 60 : 75;
+        // Build edges based on 3D proximity
+        const maxDist = spread * (isMob ? 0.55 : 0.45);
         for (let i = 0; i < nodes.length; i++) {
             const dists = [];
-            for (let j = 0; j < nodes.length; j++) {
-                if (i === j) continue;
-                dists.push({ j, d: Math.hypot(nodes[i].baseX - nodes[j].baseX, nodes[i].baseY - nodes[j].baseY) });
+            for (let j = i + 1; j < nodes.length; j++) {
+                const d = Math.hypot(
+                    nodes[i].x3d - nodes[j].x3d,
+                    nodes[i].y3d - nodes[j].y3d,
+                    nodes[i].z3d - nodes[j].z3d
+                );
+                if (d < maxDist) dists.push({ j, d });
             }
             dists.sort((a, b) => a.d - b.d);
-            const maxConn = 3 + Math.floor(Math.random() * 3);
-            let count = 0;
-            for (const { j, d } of dists) {
-                if (d > maxEdgeDist || count >= maxConn) break;
-                if (!edges.some(e => (e.a === i && e.b === j) || (e.a === j && e.b === i))) {
-                    edges.push({ a: i, b: j, strength: 1 - d / maxEdgeDist });
-                    count++;
-                }
-            }
+            const maxEdges = nodes[i].layer === 'core' ? 4 : 2;
+            dists.slice(0, maxEdges).forEach(({ j, d }) => {
+                edges.push({ a: i, b: j, dist: d, maxDist });
+            });
         }
     }
 
-    function addNode(x, y, radius, region) {
-        nodes.push({
-            x, y, baseX: x, baseY: y, radius,
-            phase: Math.random() * Math.PI * 2,
-            speed: 0.004 + Math.random() * 0.008,
-            drift: 2 + Math.random() * 4,
-            energy: 0,        // 0 = resting, 1 = firing
-            energyDecay: 0.015 + Math.random() * 0.01,
-            region,
-        });
+    // --- 3D to 2D projection with perspective ---
+    function project(x3d, y3d, z3d, rotY, rotX) {
+        // Rotate around Y axis (horizontal orbit)
+        let x = x3d * Math.cos(rotY) - z3d * Math.sin(rotY);
+        let z = x3d * Math.sin(rotY) + z3d * Math.cos(rotY);
+        let y = y3d;
+        // Slight X rotation (tilt based on mouse)
+        const y2 = y * Math.cos(rotX) - z * Math.sin(rotX);
+        const z2 = y * Math.sin(rotX) + z * Math.cos(rotX);
+        y = y2; z = z2;
+
+        // Perspective
+        const fov = 600;
+        const scale = fov / (fov + z + 300);
+        return {
+            x: W / 2 + x * scale,
+            y: H / 2 + y * scale,
+            scale,
+            z,
+        };
     }
 
-    // --- Cascade: chain-reaction firing through the network ---
-    function triggerCascade(startIdx) {
-        if (startIdx < 0 || startIdx >= nodes.length) return;
-        cascades.push({ frontier: [{ idx: startIdx, delay: 0 }], visited: new Set(), age: 0 });
-    }
-
-    function updateCascades() {
-        cascades = cascades.filter(c => c.age < 180); // ~3 seconds max
-        cascades.forEach(c => {
-            c.age++;
-            const next = [];
-            c.frontier.forEach(f => {
-                f.delay--;
-                if (f.delay > 0) { next.push(f); return; }
-                if (c.visited.has(f.idx)) return;
-                c.visited.add(f.idx);
-                const node = nodes[f.idx];
-                node.energy = 1.0;
-                // Spawn signal particles along connected edges
-                edges.forEach(e => {
-                    let neighbor = -1;
-                    if (e.a === f.idx) neighbor = e.b;
-                    else if (e.b === f.idx) neighbor = e.a;
-                    if (neighbor >= 0 && !c.visited.has(neighbor)) {
-                        next.push({ idx: neighbor, delay: 4 + Math.floor(Math.random() * 6) });
-                        particles.push({
-                            from: f.idx, to: neighbor, t: 0,
-                            speed: 0.02 + Math.random() * 0.025,
-                            size: 1.5 + Math.random() * 2,
-                            bright: true,
-                        });
-                    }
-                });
-            });
-            c.frontier = next;
-        });
-    }
-
-    // --- Ambient signal particles (always flowing) ---
-    function spawnAmbient() {
+    // --- Signal pulses along edges ---
+    function spawnSignal() {
         if (edges.length === 0) return;
         const e = edges[Math.floor(Math.random() * edges.length)];
         const dir = Math.random() < 0.5;
-        particles.push({
-            from: dir ? e.a : e.b, to: dir ? e.b : e.a, t: 0,
+        signals.push({
+            a: dir ? e.a : e.b,
+            b: dir ? e.b : e.a,
+            t: 0,
             speed: 0.008 + Math.random() * 0.012,
-            size: 1 + Math.random() * 1.5,
-            bright: false,
+            size: 1.5 + Math.random() * 1.5,
         });
     }
 
-    // --- Mouse ---
+    // --- Mouse tracking ---
     canvas.addEventListener('mousemove', e => {
         const r = canvas.getBoundingClientRect();
-        mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    });
-    canvas.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
-    canvas.addEventListener('click', e => {
-        const r = canvas.getBoundingClientRect();
-        const mx = e.clientX - r.left, my = e.clientY - r.top;
-        let closest = -1, cd = 60;
-        nodes.forEach((n, i) => { const d = Math.hypot(n.x - mx, n.y - my); if (d < cd) { cd = d; closest = i; } });
-        if (closest >= 0) triggerCascade(closest);
+        mouse.x = (e.clientX - r.left) / W;
+        mouse.y = (e.clientY - r.top) / H;
     });
 
-    // --- Render ---
-    let time = 0, lastCascade = 0;
+    // --- Render loop ---
+    let time = 0;
+    const baseRotSpeed = 0.0004;
+
     function animate() {
         ctx.clearRect(0, 0, W, H);
-        time += 0.016;
-        ambientPulse = Math.sin(time * 0.3) * 0.5 + 0.5;
+        time++;
 
-        const cx = W / 2, cy = H / 2 - H * 0.03;
-        const sx = Math.min(W, 520) * 0.36;
-        const sy = Math.min(H, 520) * 0.32;
+        // Rotation influenced by mouse (parallax)
+        const rotY = time * baseRotSpeed + (mouse.x - 0.5) * 0.6;
+        const rotX = (mouse.y - 0.5) * 0.3;
 
-        // --- Brain outline (smooth glowing path) ---
-        ctx.save();
-        ctx.beginPath();
-        for (let i = 0; i <= 200; i++) {
-            const a = (i / 200) * Math.PI * 2;
-            const p = brainPoint(a, cx, cy, sx, sy);
-            i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-        }
-        ctx.closePath();
-
-        // Glow behind outline
-        ctx.shadowColor = 'rgba(79,209,197,0.25)';
-        ctx.shadowBlur = 18 + ambientPulse * 8;
-        ctx.strokeStyle = `rgba(79,209,197,${0.18 + ambientPulse * 0.07})`;
-        ctx.lineWidth = 1.8;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-
-        // Very subtle interior fill
-        ctx.fillStyle = `rgba(79,209,197,${0.012 + ambientPulse * 0.006})`;
-        ctx.fill();
-        ctx.restore();
-
-        // --- Central fissure (dividing line) ---
-        ctx.save();
-        ctx.beginPath();
-        const fTop = brainPoint(1.95, cx, cy, sx, sy);
-        const fBot = brainPoint(4.5, cx, cy, sx, sy);
-        ctx.moveTo(fTop.x, fTop.y);
-        ctx.bezierCurveTo(
-            cx + sx * 0.02, cy - sy * 0.1,
-            cx - sx * 0.03, cy + sy * 0.2,
-            fBot.x, fBot.y
-        );
-        ctx.strokeStyle = `rgba(79,209,197,${0.1 + ambientPulse * 0.03})`;
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-        ctx.restore();
-
-        // --- Brain stem ---
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(cx - sx * 0.03, cy + sy * 0.82);
-        ctx.bezierCurveTo(cx, cy + sy * 1.0, cx + sx * 0.02, cy + sy * 1.2, cx - sx * 0.01, cy + sy * 1.35);
-        ctx.strokeStyle = `rgba(79,209,197,${0.12 + ambientPulse * 0.04})`;
-        ctx.lineWidth = 5; ctx.lineCap = 'round';
-        ctx.shadowColor = 'rgba(79,209,197,0.15)'; ctx.shadowBlur = 10;
-        ctx.stroke();
-        ctx.shadowBlur = 0; ctx.restore();
-
-        // --- Cerebellum outline ---
-        ctx.save();
-        ctx.beginPath();
-        for (let i = 0; i <= 50; i++) {
-            const t = i / 50;
-            const a = Math.PI * 0.55 + t * Math.PI * 0.55;
-            const r = 0.2;
-            const x = cx - sx * 0.35 + Math.cos(a) * r * sx;
-            const y = cy + sy * 0.55 + Math.sin(a) * r * sy * 0.5;
-            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = `rgba(79,209,197,${0.09 + ambientPulse * 0.03})`;
-        ctx.lineWidth = 1; ctx.stroke();
-        // Horizontal ridges inside cerebellum
-        for (let j = 0; j < 4; j++) {
-            ctx.beginPath();
-            const yOff = cy + sy * 0.52 + j * sy * 0.05;
-            ctx.moveTo(cx - sx * 0.48, yOff);
-            ctx.bezierCurveTo(cx - sx * 0.4, yOff - 3, cx - sx * 0.3, yOff + 3, cx - sx * 0.2, yOff);
-            ctx.strokeStyle = `rgba(79,209,197,0.06)`;
-            ctx.lineWidth = 0.8; ctx.stroke();
-        }
-        ctx.restore();
-
-        // --- Update nodes ---
+        // Update 3D positions (slow orbit)
         nodes.forEach(n => {
-            n.phase += n.speed;
-            // Organic breathing motion
-            const breathX = Math.sin(n.phase) * n.drift + Math.sin(n.phase * 0.37 + 1.3) * n.drift * 0.4;
-            const breathY = Math.cos(n.phase * 0.8) * n.drift * 0.7 + Math.cos(n.phase * 0.23 + 2.1) * n.drift * 0.3;
-            n.x = n.baseX + breathX;
-            n.y = n.baseY + breathY;
-            // Energy decay
-            n.energy = Math.max(0, n.energy - n.energyDecay);
-            // Mouse repulsion
-            const dx = mouse.x - n.x, dy = mouse.y - n.y;
-            const md = Math.hypot(dx, dy);
-            if (md < 90 && md > 0) {
-                const f = (90 - md) / 90 * 10;
-                n.x -= (dx / md) * f; n.y -= (dy / md) * f;
-                n.energy = Math.min(1, n.energy + 0.03); // glow on hover
-            }
+            n.phase += n.orbitSpeed;
+            const cos = Math.cos(n.orbitSpeed);
+            const sin = Math.sin(n.orbitSpeed);
+            const x = n.x3d * cos - n.z3d * sin;
+            const z = n.x3d * sin + n.z3d * cos;
+            n.x3d = x; n.z3d = z;
         });
 
-        // --- Draw edges (curved, glowing when active) ---
+        // Project all nodes
+        const projected = nodes.map((n, i) => {
+            const p = project(n.x3d, n.y3d, n.z3d, rotY, rotX);
+            return { ...p, idx: i, node: n };
+        });
+
+        // Sort by depth (far to near)
+        projected.sort((a, b) => a.z - b.z);
+
+        // --- Draw edges ---
         edges.forEach(e => {
-            const a = nodes[e.a], b = nodes[e.b];
-            const energy = Math.max(a.energy, b.energy);
-            const baseAlpha = e.strength * 0.08;
-            const alpha = baseAlpha + energy * 0.3;
-            if (alpha < 0.015) return;
+            const pa = project(nodes[e.a].x3d, nodes[e.a].y3d, nodes[e.a].z3d, rotY, rotX);
+            const pb = project(nodes[e.b].x3d, nodes[e.b].y3d, nodes[e.b].z3d, rotY, rotX);
+            const avgScale = (pa.scale + pb.scale) / 2;
+            const depthAlpha = Math.pow(avgScale, 2);
+            const distFade = 1 - (e.dist / e.maxDist);
+            const alpha = distFade * depthAlpha * 0.15;
+            if (alpha < 0.008) return;
 
-            // Curved connection (slight arc)
-            const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.08;
-            const my = (a.y + b.y) / 2 - (b.x - a.x) * 0.08;
             ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.quadraticCurveTo(mx, my, b.x, b.y);
-
-            if (energy > 0.3) {
-                ctx.shadowColor = 'rgba(79,209,197,0.3)';
-                ctx.shadowBlur = 6;
-            }
-            ctx.strokeStyle = `rgba(79,209,197,${Math.min(alpha, 0.5)})`;
-            ctx.lineWidth = 0.4 + energy * 1.2;
+            ctx.moveTo(pa.x, pa.y);
+            ctx.lineTo(pb.x, pb.y);
+            ctx.strokeStyle = `rgba(79,209,197,${alpha})`;
+            ctx.lineWidth = avgScale * 0.8;
             ctx.stroke();
-            ctx.shadowBlur = 0;
         });
 
-        // --- Draw nodes (neurons) ---
-        nodes.forEach(n => {
-            const restGlow = (Math.sin(n.phase * 1.5) + 1) / 2 * 0.2 + 0.15;
-            const alpha = restGlow + n.energy * 0.65;
-            const r = n.radius + n.energy * 2.5;
+        // --- Draw nodes (sorted far-to-near for depth) ---
+        projected.forEach(p => {
+            const n = p.node;
+            const depthAlpha = Math.pow(p.scale, 1.5);
+            const pulse = (Math.sin(time * 0.02 + n.pulsePhase) + 1) / 2;
+            const r = n.size * p.scale * (1 + pulse * 0.3);
+            const alpha = depthAlpha * (0.3 + pulse * 0.4);
 
-            // Outer halo when firing
-            if (n.energy > 0.2) {
-                const haloR = r + 6 + n.energy * 8;
-                const grad = ctx.createRadialGradient(n.x, n.y, r, n.x, n.y, haloR);
-                grad.addColorStop(0, `rgba(79,209,197,${n.energy * 0.2})`);
+            // Outer glow
+            if (r > 1 && alpha > 0.15) {
+                const glowR = r + 4 * p.scale;
+                const grad = ctx.createRadialGradient(p.x, p.y, r * 0.3, p.x, p.y, glowR);
+                grad.addColorStop(0, `rgba(79,209,197,${alpha * 0.2})`);
                 grad.addColorStop(1, 'rgba(79,209,197,0)');
                 ctx.fillStyle = grad;
-                ctx.beginPath(); ctx.arc(n.x, n.y, haloR, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
+                ctx.fill();
             }
 
-            // Core neuron
+            // Core
             ctx.beginPath();
-            ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-            const coreGrad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r);
-            coreGrad.addColorStop(0, `rgba(150,240,230,${alpha})`);
-            coreGrad.addColorStop(1, `rgba(79,209,197,${alpha * 0.6})`);
-            ctx.fillStyle = coreGrad;
+            ctx.arc(p.x, p.y, Math.max(r, 0.5), 0, Math.PI * 2);
+            ctx.fillStyle = n.layer === 'core'
+                ? `rgba(140,240,230,${alpha})`
+                : n.layer === 'orbit'
+                    ? `rgba(79,209,197,${alpha * 0.85})`
+                    : `rgba(60,180,175,${alpha * 0.6})`;
             ctx.fill();
         });
 
-        // --- Cascade logic ---
-        updateCascades();
-        // Auto-trigger cascades periodically
-        if (time - lastCascade > 3.5) {
-            lastCascade = time;
-            const start = Math.floor(Math.random() * nodes.length);
-            triggerCascade(start);
-        }
+        // --- Signal particles ---
+        if (Math.random() < 0.12) spawnSignal();
+        signals = signals.filter(s => s.t <= 1);
+        signals.forEach(s => {
+            s.t += s.speed;
+            const na = nodes[s.a], nb = nodes[s.b];
+            const x3d = na.x3d + (nb.x3d - na.x3d) * s.t;
+            const y3d = na.y3d + (nb.y3d - na.y3d) * s.t;
+            const z3d = na.z3d + (nb.z3d - na.z3d) * s.t;
+            const p = project(x3d, y3d, z3d, rotY, rotX);
+            const life = Math.sin(s.t * Math.PI);
+            const r = s.size * p.scale;
 
-        // --- Ambient particles ---
-        if (Math.random() < 0.25) spawnAmbient();
-
-        // --- Draw particles ---
-        particles = particles.filter(p => p.t <= 1);
-        particles.forEach(p => {
-            p.t += p.speed;
-            const from = nodes[p.from], to = nodes[p.to];
-            // Curved path matching edge
-            const mx = (from.x + to.x) / 2 + (to.y - from.y) * 0.08;
-            const my = (from.y + to.y) / 2 - (to.x - from.x) * 0.08;
-            const t = p.t;
-            const it = 1 - t;
-            // Quadratic bezier interpolation
-            const px = it * it * from.x + 2 * it * t * mx + t * t * to.x;
-            const py = it * it * from.y + 2 * it * t * my + t * t * to.y;
-            const lifeAlpha = Math.sin(t * Math.PI);
-
-            if (p.bright) {
-                // Bright cascade particle with trail
-                const trailGrad = ctx.createRadialGradient(px, py, 0, px, py, p.size + 6);
-                trailGrad.addColorStop(0, `rgba(180,255,245,${lifeAlpha * 0.7})`);
-                trailGrad.addColorStop(0.4, `rgba(79,209,197,${lifeAlpha * 0.3})`);
-                trailGrad.addColorStop(1, 'rgba(79,209,197,0)');
-                ctx.fillStyle = trailGrad;
-                ctx.beginPath(); ctx.arc(px, py, p.size + 6, 0, Math.PI * 2); ctx.fill();
-            }
-
-            // Core dot
+            // Glow trail
+            const tGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r + 5 * p.scale);
+            tGrad.addColorStop(0, `rgba(180,255,248,${life * 0.6 * p.scale})`);
+            tGrad.addColorStop(0.5, `rgba(79,209,197,${life * 0.2 * p.scale})`);
+            tGrad.addColorStop(1, 'rgba(79,209,197,0)');
+            ctx.fillStyle = tGrad;
             ctx.beginPath();
-            ctx.arc(px, py, p.size * (p.bright ? 1.3 : 0.9), 0, Math.PI * 2);
-            ctx.fillStyle = p.bright
-                ? `rgba(200,255,250,${lifeAlpha * 0.9})`
-                : `rgba(79,209,197,${lifeAlpha * 0.45})`;
+            ctx.arc(p.x, p.y, r + 5 * p.scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Core
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r * 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(220,255,250,${life * 0.8 * p.scale})`;
             ctx.fill();
         });
 
-        // --- Global atmospheric glow ---
-        const gx = cx - sx * 0.05, gy = cy;
-        const gr = sx * 0.9 + Math.sin(time * 0.25) * 15;
-        const atmo = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
-        atmo.addColorStop(0, `rgba(79,209,197,${0.03 + ambientPulse * 0.015})`);
-        atmo.addColorStop(0.5, 'rgba(79,209,197,0.008)');
+        // --- Subtle central atmosphere ---
+        const gr = Math.min(W, H) * 0.35;
+        const atmo = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, gr);
+        atmo.addColorStop(0, 'rgba(79,209,197,0.025)');
         atmo.addColorStop(1, 'rgba(79,209,197,0)');
         ctx.fillStyle = atmo;
         ctx.fillRect(0, 0, W, H);
@@ -459,14 +306,11 @@ function initBrainAnimation() {
     }
 
     resize();
-    buildNetwork();
+    buildConstellation();
     animate();
 
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resize(); buildNetwork(); }, 150);
-    });
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); buildConstellation(); }, 150); });
 }
 
 /* ============================================
