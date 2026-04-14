@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDemoTabs();
     initDemoMetrics();
     initDemoChart();
-    initDemoFeed();
+    initAgentChat();
     initAutomationCanvas();
     initInsightsAnimations();
     initContactForm();
@@ -546,53 +546,185 @@ function initDemoChart() {
 /* ============================================
    DEMO LIVE FEED
    ============================================ */
-function initDemoFeed() {
-    const feedList = document.getElementById('feedList');
-    if (!feedList) return;
+function initAgentChat() {
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatPrompts = document.getElementById('chatPrompts');
+    if (!chatMessages || !chatInput) return;
 
-    const feedItems = [
-        { color: 'green', text: 'New lead qualified — MedTech Solutions', time: '2s ago' },
-        { color: 'teal', text: 'Appointment confirmed — Dr. Park, 3:30 PM', time: '14s ago' },
-        { color: 'blue', text: 'Workflow "Onboarding-v3" completed successfully', time: '28s ago' },
-        { color: 'orange', text: 'Escalation routed to Sarah M. — Priority High', time: '45s ago' },
-        { color: 'green', text: 'Client survey response received — Score: 9/10', time: '1m ago' },
-        { color: 'teal', text: 'Invoice #2847 auto-generated and sent', time: '2m ago' },
-        { color: 'blue', text: 'AI resolved support ticket #4821 autonomously', time: '3m ago' },
-        { color: 'green', text: 'New enterprise enquiry — Meridian Group', time: '4m ago' },
-        { color: 'orange', text: 'System health check passed — all nodes operational', time: '5m ago' },
-        { color: 'teal', text: 'Lead scoring model updated — accuracy 94.2%', time: '6m ago' },
-    ];
+    let isProcessing = false;
 
-    // Initial items
-    feedItems.slice(0, 5).forEach(item => addFeedItem(feedList, item));
-
-    // Add new items periodically
-    let idx = 5;
-    setInterval(() => {
-        const item = feedItems[idx % feedItems.length];
-        item.time = 'just now';
-        addFeedItem(feedList, item, true);
-        idx++;
-        // Remove old items if too many
-        while (feedList.children.length > 6) {
-            feedList.removeChild(feedList.lastChild);
+    const agentResponses = {
+        'security': {
+            steps: [
+                '> Initiating infrastructure security scan...',
+                '> Scanning 14 endpoints across 3 regions...',
+                '> Running vulnerability assessment (CVE database 2026.04)...',
+                '> Checking TLS configurations...',
+                '> Analyzing IAM policies and access controls...',
+            ],
+            result: 'Scan complete. 14/14 endpoints secured. TLS 1.3 enforced across all services. 2 minor IAM policy recommendations flagged — non-critical. No CVEs detected. Full report generated.'
+        },
+        'automation': {
+            steps: [
+                '> Pulling automation metrics for today...',
+                '> Querying workflow execution logs...',
+                '> Calculating time savings across 14 active workflows...',
+            ],
+            result: 'Today\'s automation performance: 2,847 tasks automated, 14.2 hours saved, 99.7% success rate, 0 errors. Top workflow: "Client Onboarding v3" — processed 312 tasks with 100% accuracy. Recommendation: Scale "Invoice Processing" workflow to handle 40% more volume.'
+        },
+        'report': {
+            steps: [
+                '> Aggregating data from all platform modules...',
+                '> Calculating KPIs across engagement, automation, and insights...',
+                '> Generating executive summary...',
+                '> Formatting report with visual data...',
+            ],
+            result: 'Weekly report generated. Highlights: Active conversations up 12.4%, response time improved by 34.2%, customer satisfaction at 96.8%. Revenue impact: $284K recovered through automation this quarter (78% of target). 3 AI-generated recommendations attached. Report ready for download.'
+        },
+        'compliance': {
+            steps: [
+                '> Checking compliance status across all modules...',
+                '> Validating GDPR data handling procedures...',
+                '> Verifying SOC 2 control effectiveness...',
+                '> Auditing encryption standards...',
+            ],
+            result: 'Compliance status: All green. GDPR: Fully compliant. SOC 2 Type II: All controls operational. ISO 27001: Aligned. Data encryption: AES-256 at rest, TLS 1.3 in transit across all services. Next audit scheduled in 23 days.'
+        },
+        'threat': {
+            steps: [
+                '> Scanning threat intelligence feeds...',
+                '> Analyzing network traffic patterns...',
+                '> Checking endpoint detection logs...',
+                '> Cross-referencing with known threat actors...',
+            ],
+            result: 'Threat landscape clear. No active threats detected. 847 blocked intrusion attempts this week (automated). Firewall rules up to date. Next scheduled penetration test: April 28. Recommendation: Enable enhanced logging on API gateway for deeper visibility.'
+        },
+        'default': {
+            steps: [
+                '> Processing your request...',
+                '> Analyzing available data...',
+                '> Generating response...',
+            ],
+            result: 'I can help with security scans, automation metrics, performance reports, compliance checks, and threat analysis. Try asking about any of these areas, or use the quick-action buttons above.'
         }
-    }, 4000);
-}
+    };
 
-function addFeedItem(container, item, prepend = false) {
-    const div = document.createElement('div');
-    div.className = 'feed-item';
-    div.innerHTML = `
-        <span class="feed-dot ${item.color}"></span>
-        <span class="feed-text">${item.text}</span>
-        <span class="feed-time">${item.time}</span>
-    `;
-    if (prepend) {
-        container.insertBefore(div, container.firstChild);
-    } else {
-        container.appendChild(div);
+    function getResponseKey(input) {
+        const lower = input.toLowerCase();
+        if (lower.includes('security') || lower.includes('scan') || lower.includes('vulnerab')) return 'security';
+        if (lower.includes('automation') || lower.includes('workflow') || lower.includes('performance') || lower.includes('stats')) return 'automation';
+        if (lower.includes('report') || lower.includes('weekly') || lower.includes('summary') || lower.includes('overview')) return 'report';
+        if (lower.includes('compliance') || lower.includes('gdpr') || lower.includes('soc') || lower.includes('audit')) return 'compliance';
+        if (lower.includes('threat') || lower.includes('attack') || lower.includes('intrusion') || lower.includes('firewall')) return 'threat';
+        return 'default';
     }
+
+    function addMessage(text, type) {
+        const msg = document.createElement('div');
+        msg.className = `chat-msg ${type}`;
+        msg.innerHTML = `<div class="chat-bubble">${text}</div>`;
+        chatMessages.appendChild(msg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return msg;
+    }
+
+    async function typeText(element, text, speed = 12) {
+        const bubble = element.querySelector('.chat-bubble');
+        bubble.textContent = '';
+        for (let i = 0; i < text.length; i++) {
+            bubble.textContent += text[i];
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            await new Promise(r => setTimeout(r, speed));
+        }
+    }
+
+    async function processInput(input) {
+        if (isProcessing || !input.trim()) return;
+        isProcessing = true;
+
+        // Add user message
+        addMessage(input, 'user');
+        chatInput.value = '';
+
+        // Get response data
+        const key = getResponseKey(input);
+        const data = agentResponses[key];
+
+        // Show processing steps with delays
+        for (const step of data.steps) {
+            await new Promise(r => setTimeout(r, 600));
+            const stepMsg = addMessage('', 'agent');
+            await typeText(stepMsg, step, 8);
+        }
+
+        // Show final result
+        await new Promise(r => setTimeout(r, 400));
+        const resultMsg = addMessage('', 'agent');
+        await typeText(resultMsg, data.result, 10);
+
+        // Update prompts for follow-up
+        updatePrompts(key);
+
+        isProcessing = false;
+    }
+
+    function updatePrompts(lastKey) {
+        const followUps = {
+            'security': [
+                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
+                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
+            ],
+            'automation': [
+                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
+                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
+                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
+            ],
+            'report': [
+                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
+                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
+                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+            ],
+            'compliance': [
+                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
+                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
+                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
+            ],
+            'threat': [
+                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
+                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
+            ],
+            'default': [
+                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
+                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
+                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+            ]
+        };
+
+        const prompts = followUps[lastKey] || followUps['default'];
+        chatPrompts.innerHTML = prompts.map(p =>
+            `<button class="chat-prompt-btn" data-prompt="${p.prompt}">${p.label}</button>`
+        ).join('');
+        bindPromptButtons();
+    }
+
+    function bindPromptButtons() {
+        chatPrompts.querySelectorAll('.chat-prompt-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                processInput(btn.dataset.prompt);
+            });
+        });
+    }
+
+    // Event listeners
+    chatSend.addEventListener('click', () => processInput(chatInput.value));
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') processInput(chatInput.value);
+    });
+    bindPromptButtons();
 }
 
 /* ============================================
