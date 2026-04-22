@@ -408,14 +408,14 @@ function initDemoMetrics() {
 }
 
 function animateMetrics() {
-    // Conversations
-    animateValue('metric-conversations', 0, 1247, 2000, v => v.toLocaleString());
-    // Response time
-    animateValue('response-time', 0, 1.2, 2000, v => v.toFixed(1));
-    // Satisfaction
-    animateValue('satisfaction-rate', 0, 96, 2000, v => Math.round(v));
-    // Resolved
-    animateValue('resolved-count', 0, 384, 2000, v => Math.round(v));
+    // Money saved (in $K)
+    animateValue('metric-saved', 0, 87, 2200, v => Math.round(v).toLocaleString());
+    // Team hours saved
+    animateValue('metric-hours', 0, 412, 2200, v => Math.round(v).toLocaleString());
+    // Security risks caught early
+    animateValue('metric-risks', 0, 23, 2000, v => Math.round(v));
+    // Uptime %
+    animateValue('metric-uptime', 0, 99.98, 2400, v => v.toFixed(2));
 }
 
 function animateValue(id, start, end, duration, format) {
@@ -556,68 +556,49 @@ function initAgentChat() {
     let isProcessing = false;
 
     const agentResponses = {
+        'savings': {
+            intro: 'Pulling up the numbers for this month...',
+            result: 'You\'ve saved $87,400 this month. That\'s mostly from two things: automated invoice processing ($52K in recovered billing time) and the new customer onboarding flow ($35K in reduced support hours). At this pace, you\'re on track to save $1.04M this year — roughly 4× what the platform costs.'
+        },
+        'risks': {
+            intro: 'Checking this quarter\'s security activity...',
+            result: 'Good news — nothing hit production. We caught 23 issues early this quarter. The biggest one: a misconfigured permission that would have exposed customer data had it gone live. We flagged it in staging on April 8 and it was fixed the same day. Full breakdown is in your weekly report.'
+        },
+        'team': {
+            intro: 'Looking at where your team\'s time is going...',
+            result: 'Your team reclaimed 412 hours this month — about 2.5 full-time employees worth of work. Most of that came from the sales team (no more manual CRM updates) and finance (automated reconciliations). They\'re now spending that time on client calls and closing deals instead.'
+        },
         'security': {
-            steps: [
-                '> Initiating infrastructure security scan...',
-                '> Scanning 14 endpoints across 3 regions...',
-                '> Running vulnerability assessment (CVE database 2026.04)...',
-                '> Checking TLS configurations...',
-                '> Analyzing IAM policies and access controls...',
-            ],
-            result: 'Scan complete. 14/14 endpoints secured. TLS 1.3 enforced across all services. 2 minor IAM policy recommendations flagged — non-critical. No CVEs detected. Full report generated.'
+            intro: 'Running through your security posture...',
+            result: 'Everything is healthy. Your systems are encrypted end-to-end, access is locked down to who actually needs it, and we\'re monitoring 24/7 for anything unusual. You\'re audit-ready for SOC 2 and GDPR right now — no scrambling needed when the next review comes.'
         },
         'automation': {
-            steps: [
-                '> Pulling automation metrics for today...',
-                '> Querying workflow execution logs...',
-                '> Calculating time savings across 14 active workflows...',
-            ],
-            result: 'Today\'s automation performance: 2,847 tasks automated, 14.2 hours saved, 99.7% success rate, 0 errors. Top workflow: "Client Onboarding v3" — processed 312 tasks with 100% accuracy. Recommendation: Scale "Invoice Processing" workflow to handle 40% more volume.'
+            intro: 'Looking at today\'s automated work...',
+            result: 'Today your systems handled 2,847 tasks without anyone touching them — things like invoice processing, customer follow-ups, and report generation. That saved your team roughly 14 hours of manual work, or about $4,200 in payroll. Success rate was 99.7% — only a handful of edge cases needed a human review.'
         },
         'report': {
-            steps: [
-                '> Aggregating data from all platform modules...',
-                '> Calculating KPIs across engagement, automation, and insights...',
-                '> Generating executive summary...',
-                '> Formatting report with visual data...',
-            ],
-            result: 'Weekly report generated. Highlights: Active conversations up 12.4%, response time improved by 34.2%, customer satisfaction at 96.8%. Revenue impact: $284K recovered through automation this quarter (78% of target). 3 AI-generated recommendations attached. Report ready for download.'
+            intro: 'Pulling this week\'s highlights...',
+            result: 'Here\'s the one-liner: revenue up, costs down, no security incidents. Specifically — $87K saved this month, customer satisfaction at 96%, response times down by a third, and zero breaches. I\'ve put the full PDF on your desk if leadership wants the detail.'
         },
         'compliance': {
-            steps: [
-                '> Checking compliance status across all modules...',
-                '> Validating GDPR data handling procedures...',
-                '> Verifying SOC 2 control effectiveness...',
-                '> Auditing encryption standards...',
-            ],
-            result: 'Compliance status: All green. GDPR: Fully compliant. SOC 2 Type II: All controls operational. ISO 27001: Aligned. Data encryption: AES-256 at rest, TLS 1.3 in transit across all services. Next audit scheduled in 23 days.'
-        },
-        'threat': {
-            steps: [
-                '> Scanning threat intelligence feeds...',
-                '> Analyzing network traffic patterns...',
-                '> Checking endpoint detection logs...',
-                '> Cross-referencing with known threat actors...',
-            ],
-            result: 'Threat landscape clear. No active threats detected. 847 blocked intrusion attempts this week (automated). Firewall rules up to date. Next scheduled penetration test: April 28. Recommendation: Enable enhanced logging on API gateway for deeper visibility.'
+            intro: 'Checking your compliance status...',
+            result: 'You\'re in the clear. SOC 2, GDPR, and ISO 27001 are all green. Data is encrypted at rest and in transit. Next scheduled audit is in 23 days and you\'re already ready for it — no late-night policy rewrites required.'
         },
         'default': {
-            steps: [
-                '> Processing your request...',
-                '> Analyzing available data...',
-                '> Generating response...',
-            ],
-            result: 'I can help with security scans, automation metrics, performance reports, compliance checks, and threat analysis. Try asking about any of these areas, or use the quick-action buttons above.'
+            intro: 'Let me check...',
+            result: 'I can give you straight answers on money saved, security risks, team time, compliance status, or a weekly summary. Just ask in plain English — or pick one of the suggestions above.'
         }
     };
 
     function getResponseKey(input) {
         const lower = input.toLowerCase();
-        if (lower.includes('security') || lower.includes('scan') || lower.includes('vulnerab')) return 'security';
-        if (lower.includes('automation') || lower.includes('workflow') || lower.includes('performance') || lower.includes('stats')) return 'automation';
+        if (lower.includes('save') || lower.includes('saving') || lower.includes('money') || lower.includes('cost') || lower.includes('roi') || lower.includes('revenue')) return 'savings';
+        if (lower.includes('risk') || lower.includes('threat') || lower.includes('breach') || lower.includes('attack')) return 'risks';
+        if (lower.includes('team') || lower.includes('hours') || lower.includes('time') || lower.includes('people') || lower.includes('staff')) return 'team';
+        if (lower.includes('security') || lower.includes('scan') || lower.includes('vulnerab') || lower.includes('secure')) return 'security';
+        if (lower.includes('automat') || lower.includes('workflow') || lower.includes('task')) return 'automation';
         if (lower.includes('report') || lower.includes('weekly') || lower.includes('summary') || lower.includes('overview')) return 'report';
-        if (lower.includes('compliance') || lower.includes('gdpr') || lower.includes('soc') || lower.includes('audit')) return 'compliance';
-        if (lower.includes('threat') || lower.includes('attack') || lower.includes('intrusion') || lower.includes('firewall')) return 'threat';
+        if (lower.includes('compliance') || lower.includes('gdpr') || lower.includes('soc') || lower.includes('audit') || lower.includes('iso')) return 'compliance';
         return 'default';
     }
 
@@ -652,17 +633,15 @@ function initAgentChat() {
         const key = getResponseKey(input);
         const data = agentResponses[key];
 
-        // Show processing steps with delays
-        for (const step of data.steps) {
-            await new Promise(r => setTimeout(r, 600));
-            const stepMsg = addMessage('', 'agent');
-            await typeText(stepMsg, step, 8);
-        }
+        // Brief "thinking" indicator — typing dots, not a wall of AI-prompt lines
+        await new Promise(r => setTimeout(r, 350));
+        const thinking = addMessage('<span class="typing-dots"><span></span><span></span><span></span></span>', 'agent');
+        await new Promise(r => setTimeout(r, 900));
+        thinking.remove();
 
-        // Show final result
-        await new Promise(r => setTimeout(r, 400));
+        // Single clean business-language answer
         const resultMsg = addMessage('', 'agent');
-        await typeText(resultMsg, data.result, 10);
+        await typeText(resultMsg, data.result, 8);
 
         // Update prompts for follow-up
         updatePrompts(key);
@@ -672,35 +651,45 @@ function initAgentChat() {
 
     function updatePrompts(lastKey) {
         const followUps = {
+            'savings': [
+                { label: 'Where\'s my team\'s time going?', prompt: 'Where is my team spending time?' },
+                { label: 'Any risks I should know about?', prompt: 'What security risks did we avoid?' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
+            ],
+            'risks': [
+                { label: 'Are we compliance-ready?', prompt: 'Are we compliance ready?' },
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
+            ],
+            'team': [
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'How are the automations running?', prompt: 'Show me today\'s automations' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
+            ],
             'security': [
-                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
-                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
-                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
+                { label: 'Are we compliance-ready?', prompt: 'Are we compliance ready?' },
+                { label: 'Any risks I should know about?', prompt: 'What security risks did we avoid?' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
             ],
             'automation': [
-                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
-                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
-                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'Where\'s my team\'s time going?', prompt: 'Where is my team spending time?' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
             ],
             'report': [
-                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
-                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
-                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'Any risks I should know about?', prompt: 'What security risks did we avoid?' },
+                { label: 'Where\'s my team\'s time going?', prompt: 'Where is my team spending time?' },
             ],
             'compliance': [
-                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
-                { label: 'Threat analysis', prompt: 'Show me the latest threat intelligence report' },
-                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
-            ],
-            'threat': [
-                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
-                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
-                { label: 'Weekly report', prompt: 'Generate a weekly performance report' },
+                { label: 'Any risks I should know about?', prompt: 'What security risks did we avoid?' },
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'Give me the weekly summary', prompt: 'Show me this week\'s summary' },
             ],
             'default': [
-                { label: 'Security scan', prompt: 'Run a security scan on our infrastructure' },
-                { label: 'Automation stats', prompt: 'Show me today\'s automation performance' },
-                { label: 'Compliance check', prompt: 'Run a compliance audit on our systems' },
+                { label: 'How much have we saved?', prompt: 'How much did we save this month?' },
+                { label: 'Any risks I should know about?', prompt: 'What security risks did we avoid?' },
+                { label: 'Where\'s my team\'s time going?', prompt: 'Where is my team spending time?' },
             ]
         };
 
