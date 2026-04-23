@@ -38,16 +38,19 @@
         h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; line-height: 1.2; }
 
         .page {
-            width: 210mm; min-height: 297mm;
+            width: 210mm; height: 297mm;
             margin: 20px auto; background: var(--white);
             box-shadow: 0 4px 24px rgba(0,0,0,0.15);
             position: relative; overflow: hidden;
         }
-        .page-inner { padding: 50px 56px; }
+        .page-inner { padding: 36px 44px 60px; height: 100%; }
+        @media print {
+            .page { margin: 0; box-shadow: none; }
+        }
 
         /* Page number footer */
         .page-footer {
-            position: absolute; bottom: 20px; left: 56px; right: 56px;
+            position: absolute; bottom: 18px; left: 44px; right: 44px;
             display: flex; justify-content: space-between; align-items: center;
             font-family: 'Montserrat', sans-serif; font-size: 9px;
             color: rgba(10,25,47,0.35); letter-spacing: 1.5px; text-transform: uppercase;
@@ -58,8 +61,8 @@
         .cover {
             background: var(--primary);
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: 70px 56px; position: relative; overflow: hidden;
-            min-height: 297mm;
+            padding: 56px 48px; position: relative; overflow: hidden;
+            height: 297mm;
         }
         .cover::before {
             content: ''; position: absolute; inset: 0;
@@ -94,8 +97,8 @@
             letter-spacing: 3px; text-transform: uppercase; margin-bottom: 32px;
         }
         .cover h1 {
-            color: var(--white); font-size: 52px; font-weight: 800;
-            line-height: 1.05; letter-spacing: -1px; margin-bottom: 24px;
+            color: var(--white); font-size: 46px; font-weight: 800;
+            line-height: 1.05; letter-spacing: -1px; margin-bottom: 20px;
         }
         .cover h1 span { color: var(--accent); }
         .cover-sub {
@@ -134,7 +137,7 @@
 
         /* ============ COMMON PAGE HEADER ============ */
         .page-header {
-            margin-bottom: 32px; padding-bottom: 18px;
+            margin-bottom: 20px; padding-bottom: 14px;
             border-bottom: 2px solid var(--accent);
         }
         .page-label {
@@ -143,31 +146,31 @@
             color: var(--accent); margin-bottom: 8px;
         }
         .page-title {
-            font-size: 28px; font-weight: 700; color: var(--primary); line-height: 1.15;
+            font-size: 24px; font-weight: 700; color: var(--primary); line-height: 1.15;
         }
         .page-title span { color: var(--accent); }
         .page-intro {
-            font-size: 13.5px; color: rgba(44,44,44,0.75);
-            line-height: 1.85; margin-bottom: 28px;
+            font-size: 12px; color: rgba(44,44,44,0.75);
+            line-height: 1.7; margin-bottom: 18px;
         }
 
         /* ============ PAGE 2: EXECUTIVE SUMMARY ============ */
         .exec-grid {
-            display: grid; grid-template-columns: 1fr; gap: 20px;
+            display: grid; grid-template-columns: 1fr; gap: 12px;
         }
         .exec-card {
-            padding: 24px 28px; border-radius: 12px;
+            padding: 16px 20px; border-radius: 10px;
             border: 1px solid rgba(10,25,47,0.08);
-            display: grid; grid-template-columns: 60px 1fr; gap: 24px;
+            display: grid; grid-template-columns: 48px 1fr; gap: 18px;
             align-items: center;
         }
         .exec-card.problem { background: linear-gradient(135deg, rgba(239,68,68,0.05), rgba(239,68,68,0.01)); border-color: rgba(239,68,68,0.2); }
         .exec-card.solution { background: linear-gradient(135deg, rgba(79,209,197,0.06), rgba(79,209,197,0.01)); border-color: rgba(79,209,197,0.25); }
         .exec-card.outcome { background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(16,185,129,0.01)); border-color: rgba(16,185,129,0.25); }
         .exec-icon {
-            width: 60px; height: 60px; border-radius: 14px;
+            width: 48px; height: 48px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 24px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px;
         }
         .exec-card.problem .exec-icon { background: var(--danger); color: var(--white); }
         .exec-card.solution .exec-icon { background: var(--accent); color: var(--primary); }
@@ -176,82 +179,81 @@
             font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 6px;
             letter-spacing: 0.5px;
         }
-        .exec-card p { font-size: 12.5px; color: rgba(44,44,44,0.7); line-height: 1.7; }
+        .exec-card p { font-size: 11.5px; color: rgba(44,44,44,0.7); line-height: 1.6; }
 
         .board-summary {
-            margin-top: 32px; padding: 28px 32px;
-            background: var(--primary); border-radius: 12px; color: var(--white);
+            margin-top: 20px; padding: 20px 24px;
+            background: var(--primary); border-radius: 10px; color: var(--white);
         }
         .board-summary h4 {
-            font-size: 12px; color: var(--accent); letter-spacing: 2px;
-            text-transform: uppercase; margin-bottom: 14px;
+            font-size: 11px; color: var(--accent); letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 10px;
         }
-        .board-summary p { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.75); }
+        .board-summary p { font-size: 11.5px; line-height: 1.7; color: rgba(255,255,255,0.75); }
         .board-summary p strong { color: var(--white); }
 
         /* ============ PAGE 3: WHAT WE DO (translated) ============ */
-        .product-list { display: flex; flex-direction: column; gap: 18px; }
+        .product-list { display: flex; flex-direction: column; gap: 9px; }
         .product-row {
-            display: grid; grid-template-columns: 70px 1fr;
-            gap: 20px; padding: 20px 22px;
-            border-radius: 12px; border: 1px solid rgba(10,25,47,0.08);
+            display: grid; grid-template-columns: 54px 1fr;
+            gap: 14px; padding: 12px 14px;
+            border-radius: 10px; border: 1px solid rgba(10,25,47,0.08);
             background: var(--white);
         }
-        .product-row:hover { border-color: rgba(79,209,197,0.3); }
         .product-ico {
-            width: 52px; height: 52px; border-radius: 12px;
+            width: 42px; height: 42px; border-radius: 10px;
             background: rgba(79,209,197,0.1); color: var(--accent);
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 18px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px;
         }
         .product-body h4 {
-            font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 4px;
+            font-size: 12.5px; font-weight: 700; color: var(--primary); margin-bottom: 2px;
         }
         .product-translate {
-            font-size: 11.5px; color: var(--accent);
+            font-size: 10.5px; color: var(--accent);
             font-family: 'Montserrat', sans-serif; font-weight: 600;
-            margin-bottom: 10px; letter-spacing: 0.3px;
+            margin-bottom: 6px; letter-spacing: 0.2px;
         }
         .product-rowline {
             display: grid; grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px; margin-top: 10px;
+            gap: 12px; margin-top: 4px;
         }
         .product-cell {
-            font-size: 11px; line-height: 1.6;
+            font-size: 10px; line-height: 1.5;
         }
         .product-cell .k {
             display: block; font-family: 'Montserrat', sans-serif;
             font-weight: 700; color: var(--primary);
-            font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-            margin-bottom: 4px;
+            font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 3px;
         }
         .product-cell.pain .k { color: var(--danger); }
         .product-cell.fix .k { color: var(--accent-dark); }
         .product-cell.win .k { color: var(--success); }
-        .product-cell p { color: rgba(44,44,44,0.7); font-size: 11px; }
+        .product-cell p { color: rgba(44,44,44,0.7); font-size: 10px; line-height: 1.5; }
 
         /* ============ PAGE 4-5: FLOW CHART CASE STUDY ============ */
         .case-hero {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white); padding: 28px 32px; border-radius: 12px;
-            margin-bottom: 28px;
+            color: var(--white); padding: 14px 18px; border-radius: 10px;
+            margin-bottom: 12px;
         }
         .case-hero-label {
-            display: inline-block; padding: 4px 12px;
+            display: inline-block; padding: 3px 10px;
             background: rgba(79,209,197,0.15); color: var(--accent);
             border-radius: 50px; font-family: 'Montserrat', sans-serif;
-            font-size: 9px; font-weight: 700; letter-spacing: 2px;
-            text-transform: uppercase; margin-bottom: 14px;
+            font-size: 8.5px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 6px;
         }
         .case-hero h3 {
-            font-size: 22px; font-weight: 700; margin-bottom: 10px;
+            font-size: 15px; font-weight: 700; margin-bottom: 4px;
         }
         .case-hero h3 span { color: var(--accent); }
-        .case-hero p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+        .case-hero p { font-size: 10.5px; color: rgba(255,255,255,0.7); line-height: 1.55; }
 
         .flow-title {
-            font-family: 'Montserrat', sans-serif; font-size: 12px;
-            font-weight: 700; color: var(--primary); margin-bottom: 14px;
+            font-family: 'Montserrat', sans-serif; font-size: 10.5px;
+            font-weight: 700; color: var(--primary); margin-bottom: 8px;
             letter-spacing: 1px; text-transform: uppercase;
             display: flex; align-items: center; gap: 10px;
         }
@@ -264,55 +266,55 @@
         /* BEFORE (messy) */
         .flow-before {
             background: rgba(239,68,68,0.04); border: 1px dashed rgba(239,68,68,0.3);
-            border-radius: 12px; padding: 20px; margin-bottom: 18px;
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
             position: relative;
         }
         .flow-customer {
-            display: inline-block; padding: 8px 16px;
-            background: var(--primary); color: var(--white); border-radius: 8px;
-            font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
-            margin-bottom: 16px;
+            display: inline-block; padding: 5px 12px;
+            background: var(--primary); color: var(--white); border-radius: 6px;
+            font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+            margin-bottom: 10px;
         }
         .chaos-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
         }
         .chaos-node {
-            padding: 10px 12px; border-radius: 8px;
+            padding: 7px 8px; border-radius: 6px;
             background: var(--white); border: 1px solid rgba(239,68,68,0.25);
-            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 9.5px;
             font-weight: 600; color: var(--primary); text-align: center;
             position: relative;
         }
         .chaos-node .sub {
-            display: block; font-weight: 500; font-size: 9px;
-            color: var(--danger); margin-top: 3px; letter-spacing: 0;
+            display: block; font-weight: 500; font-size: 8.5px;
+            color: var(--danger); margin-top: 2px; letter-spacing: 0;
             text-transform: none; font-family: 'Lato', sans-serif;
         }
         .chaos-problems {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-            margin-top: 16px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            margin-top: 10px;
         }
         .chaos-prob {
-            padding: 10px 12px; background: var(--white);
-            border-left: 3px solid var(--danger); font-size: 11px;
-            color: rgba(44,44,44,0.75); line-height: 1.5;
+            padding: 7px 10px; background: var(--white);
+            border-left: 3px solid var(--danger); font-size: 10px;
+            color: rgba(44,44,44,0.75); line-height: 1.45;
         }
-        .chaos-prob strong { display: block; color: var(--danger); font-size: 10px;
+        .chaos-prob strong { display: block; color: var(--danger); font-size: 9px;
             font-family: 'Montserrat', sans-serif; margin-bottom: 2px;
             letter-spacing: 0.5px; text-transform: uppercase; }
 
         /* AFTER (clean) */
         .flow-after {
             background: rgba(79,209,197,0.04); border: 1px solid rgba(79,209,197,0.3);
-            border-radius: 12px; padding: 22px; margin-bottom: 18px;
+            border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
             position: relative;
         }
         .clean-flow {
-            display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr;
-            align-items: center; gap: 8px; margin: 10px 0 18px;
+            display: grid; grid-template-columns: 1fr 24px 1fr 24px 1fr;
+            align-items: center; gap: 6px; margin: 6px 0 10px;
         }
         .clean-node {
-            padding: 14px 10px; border-radius: 10px;
+            padding: 10px 8px; border-radius: 8px;
             background: var(--white); border: 2px solid var(--accent);
             text-align: center;
         }
@@ -320,47 +322,47 @@
             background: var(--primary); border-color: var(--primary); color: var(--white);
         }
         .clean-node .n-title {
-            font-family: 'Montserrat', sans-serif; font-size: 11px;
-            font-weight: 700; color: var(--primary); margin-bottom: 4px;
+            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            font-weight: 700; color: var(--primary); margin-bottom: 3px;
         }
         .clean-node.hub .n-title { color: var(--accent); }
         .clean-node .n-sub {
-            font-size: 9.5px; color: rgba(44,44,44,0.65); line-height: 1.4;
+            font-size: 8.5px; color: rgba(44,44,44,0.65); line-height: 1.3;
         }
         .clean-node.hub .n-sub { color: rgba(255,255,255,0.65); }
         .arrow {
-            text-align: center; color: var(--accent); font-size: 18px; font-weight: 700;
+            text-align: center; color: var(--accent); font-size: 16px; font-weight: 700;
         }
         .output-row {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
         }
         .output-node {
-            padding: 10px 8px; border-radius: 8px;
+            padding: 7px 6px; border-radius: 6px;
             background: var(--white); border: 1px solid rgba(79,209,197,0.3);
-            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            font-family: 'Montserrat', sans-serif; font-size: 9.5px;
             font-weight: 600; color: var(--primary); text-align: center;
         }
         .output-node .sub {
-            display: block; font-weight: 500; font-size: 9px;
-            color: var(--success); margin-top: 3px;
+            display: block; font-weight: 500; font-size: 8.5px;
+            color: var(--success); margin-top: 2px;
             font-family: 'Lato', sans-serif; text-transform: none;
         }
 
         /* Savings table */
         .savings-table {
-            width: 100%; border-collapse: collapse; margin-top: 8px;
-            font-size: 11.5px;
+            width: 100%; border-collapse: collapse; margin-top: 6px;
+            font-size: 10.5px;
         }
         .savings-table thead th {
             background: var(--primary); color: var(--accent);
-            padding: 12px; text-align: left;
-            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            padding: 8px 10px; text-align: left;
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
             letter-spacing: 1px; text-transform: uppercase;
         }
         .savings-table thead th:first-child { border-top-left-radius: 8px; }
         .savings-table thead th:last-child { border-top-right-radius: 8px; text-align: right; }
         .savings-table tbody td {
-            padding: 12px; border-bottom: 1px solid rgba(10,25,47,0.06);
+            padding: 8px 10px; border-bottom: 1px solid rgba(10,25,47,0.06);
             color: rgba(44,44,44,0.8);
         }
         .savings-table tbody td:last-child {
@@ -373,29 +375,29 @@
             border-top: 2px solid var(--accent);
         }
         .savings-table tbody tr:last-child td:last-child {
-            color: var(--success); font-size: 14px;
+            color: var(--success); font-size: 12.5px;
         }
 
         /* ============ PAGE 6: FIGURES ============ */
         .figures-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr);
-            gap: 16px; margin-bottom: 24px;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px; margin-bottom: 18px;
         }
         .fig-card {
-            padding: 24px; border-radius: 12px;
+            padding: 16px 14px; border-radius: 10px;
             border: 1px solid rgba(10,25,47,0.08);
             background: linear-gradient(135deg, #fafafa, var(--white));
         }
         .fig-card .fig-num {
             font-family: 'Montserrat', sans-serif; font-weight: 800;
-            font-size: 36px; color: var(--accent); line-height: 1; margin-bottom: 6px;
+            font-size: 26px; color: var(--accent); line-height: 1; margin-bottom: 4px;
         }
         .fig-card .fig-label {
             font-family: 'Montserrat', sans-serif; font-weight: 700;
-            font-size: 13px; color: var(--primary); margin-bottom: 8px;
+            font-size: 11.5px; color: var(--primary); margin-bottom: 5px;
         }
         .fig-card .fig-desc {
-            font-size: 11px; color: rgba(44,44,44,0.6); line-height: 1.6;
+            font-size: 10px; color: rgba(44,44,44,0.6); line-height: 1.5;
         }
         .fig-card.primary {
             background: var(--primary); border-color: var(--primary);
@@ -404,9 +406,9 @@
         .fig-card.primary .fig-label { color: var(--white); }
         .fig-card.primary .fig-desc { color: rgba(255,255,255,0.6); }
 
-        .impact-bars { margin-top: 8px; }
+        .impact-bars { margin-top: 6px; }
         .impact-bar {
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
         .impact-bar-label {
             display: flex; justify-content: space-between; align-items: center;
@@ -438,7 +440,7 @@
             width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(79,209,197,0.2));
         }
         .engage-step {
-            position: relative; margin-bottom: 22px;
+            position: relative; margin-bottom: 14px;
         }
         .engage-step::before {
             content: ''; position: absolute; left: -24px; top: 4px;
@@ -451,7 +453,7 @@
             margin-bottom: 6px;
         }
         .engage-step h4 {
-            font-size: 14px; font-weight: 700; color: var(--primary);
+            font-size: 13px; font-weight: 700; color: var(--primary);
         }
         .engage-step .week {
             font-family: 'Montserrat', sans-serif; font-size: 9.5px;
@@ -459,10 +461,10 @@
             padding: 3px 10px; background: rgba(79,209,197,0.1);
             border-radius: 50px; letter-spacing: 1px; text-transform: uppercase;
         }
-        .engage-step p { font-size: 12px; color: rgba(44,44,44,0.65); line-height: 1.7; }
+        .engage-step p { font-size: 11px; color: rgba(44,44,44,0.65); line-height: 1.6; }
 
         .guarantee-bar {
-            margin-top: 24px; padding: 20px 24px;
+            margin-top: 16px; padding: 14px 18px;
             background: linear-gradient(135deg, rgba(79,209,197,0.12), rgba(79,209,197,0.04));
             border: 1px solid rgba(79,209,197,0.3); border-radius: 10px;
             display: flex; align-items: center; gap: 16px;
@@ -480,17 +482,16 @@
 
         /* ============ PAGE 8: PAYMENT ============ */
         .tier-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-            margin-bottom: 24px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-bottom: 18px;
         }
         .tier-card {
-            padding: 22px 20px; border-radius: 12px;
+            padding: 16px 16px; border-radius: 10px;
             border: 1px solid rgba(10,25,47,0.1);
             background: var(--white); position: relative;
         }
         .tier-card.featured {
             background: var(--primary); border-color: var(--primary);
-            transform: scale(1.03);
         }
         .tier-card.featured .tier-feat-tag {
             position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
@@ -512,7 +513,7 @@
         .tier-card.featured .tier-for { color: rgba(255,255,255,0.5); }
         .tier-price {
             font-family: 'Montserrat', sans-serif; font-weight: 800;
-            font-size: 24px; color: var(--primary); line-height: 1; margin-bottom: 4px;
+            font-size: 20px; color: var(--primary); line-height: 1; margin-bottom: 4px;
         }
         .tier-card.featured .tier-price { color: var(--white); }
         .tier-price .per {
@@ -535,8 +536,8 @@
         }
 
         .pay-schedule {
-            margin-top: 12px;
-            background: var(--light); border-radius: 12px; padding: 20px 24px;
+            margin-top: 8px;
+            background: var(--light); border-radius: 10px; padding: 14px 18px;
         }
         .pay-schedule h4 {
             font-size: 13px; font-weight: 700; color: var(--primary);
@@ -570,11 +571,11 @@
 
         /* ============ PAGE 9: WHY + FAQ ============ */
         .why-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-            margin-bottom: 24px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-bottom: 16px;
         }
         .why-card {
-            padding: 18px 20px; border-radius: 10px;
+            padding: 12px 14px; border-radius: 8px;
             background: var(--light);
         }
         .why-card h5 {
@@ -585,12 +586,12 @@
             content: ''; width: 14px; height: 14px; border-radius: 4px;
             background: var(--accent); flex-shrink: 0;
         }
-        .why-card p { font-size: 11px; color: rgba(44,44,44,0.65); line-height: 1.6; }
+        .why-card p { font-size: 10.5px; color: rgba(44,44,44,0.65); line-height: 1.5; }
 
-        .faq-list { margin-top: 10px; }
+        .faq-list { margin-top: 6px; }
         .faq-item {
-            padding: 14px 18px; margin-bottom: 10px;
-            border-radius: 10px; background: var(--white);
+            padding: 10px 14px; margin-bottom: 7px;
+            border-radius: 8px; background: var(--white);
             border: 1px solid rgba(10,25,47,0.06);
         }
         .faq-q {
@@ -602,9 +603,9 @@
 
         /* ============ PAGE 10: CTA ============ */
         .cta-page {
-            background: var(--primary); min-height: 297mm;
+            background: var(--primary); height: 297mm;
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: 70px 56px; position: relative; overflow: hidden;
+            padding: 56px 48px; position: relative; overflow: hidden;
         }
         .cta-page::before {
             content: ''; position: absolute; inset: 0;
@@ -615,46 +616,46 @@
         }
         .cta-page::after {
             content: ''; position: absolute;
-            bottom: -30%; left: -20%; width: 700px; height: 700px;
-            background: radial-gradient(circle, rgba(79, 209, 197, 0.12), transparent 70%);
-            border-radius: 50%;
+            bottom: 0; left: -20%; width: 700px; height: 500px;
+            background: radial-gradient(circle at 40% 70%, rgba(79, 209, 197, 0.12), transparent 70%);
+            pointer-events: none;
         }
         .cta-top, .cta-mid, .cta-bot { position: relative; z-index: 1; }
         .cta-top .cover-badge { margin-bottom: 24px; }
         .cta-mid h2 {
-            color: var(--white); font-size: 42px; font-weight: 800;
-            line-height: 1.1; margin-bottom: 18px; letter-spacing: -0.5px;
+            color: var(--white); font-size: 32px; font-weight: 800;
+            line-height: 1.1; margin-bottom: 12px; letter-spacing: -0.5px;
         }
         .cta-mid h2 span { color: var(--accent); }
         .cta-mid .lead {
-            color: rgba(255,255,255,0.6); font-size: 15px;
-            max-width: 540px; line-height: 1.75; margin-bottom: 40px;
+            color: rgba(255,255,255,0.6); font-size: 13px;
+            max-width: 540px; line-height: 1.65; margin-bottom: 24px;
         }
 
         .cta-steps {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-            margin-bottom: 40px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-bottom: 24px;
         }
         .cta-step {
-            padding: 20px; background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+            padding: 14px 16px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
         }
         .cta-step-num {
             font-family: 'Montserrat', sans-serif; font-weight: 800;
-            font-size: 14px; color: var(--accent); margin-bottom: 8px;
+            font-size: 12px; color: var(--accent); margin-bottom: 6px;
             letter-spacing: 3px;
         }
         .cta-step h5 {
-            font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 6px;
+            font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 4px;
         }
-        .cta-step p { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+        .cta-step p { font-size: 10.5px; color: rgba(255,255,255,0.55); line-height: 1.5; }
 
         .cta-contact {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
         }
         .cta-contact-card {
-            padding: 22px; background: rgba(79,209,197,0.08);
-            border: 1px solid rgba(79,209,197,0.25); border-radius: 12px;
+            padding: 14px 16px; background: rgba(79,209,197,0.08);
+            border: 1px solid rgba(79,209,197,0.25); border-radius: 10px;
         }
         .cta-contact-card .cc-label {
             font-family: 'Montserrat', sans-serif; font-size: 9px;
@@ -662,15 +663,15 @@
             text-transform: uppercase; margin-bottom: 8px;
         }
         .cta-contact-card .cc-value {
-            font-family: 'Montserrat', sans-serif; font-size: 14px;
-            font-weight: 700; color: var(--accent);
+            font-family: 'Montserrat', sans-serif; font-size: 12px;
+            font-weight: 700; color: var(--accent); word-break: break-word;
         }
         .cta-contact-card .cc-sub {
-            font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px;
+            font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 4px;
         }
 
         .cta-bot {
-            padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);
             display: flex; justify-content: space-between; align-items: center;
         }
         .cta-bot .sl {
@@ -862,6 +863,25 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>03</strong></span>
+    </div>
+</div>
+
+<!-- PAGE 3b: Services continued -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">What Sentra Does For You &middot; Continued</div>
+            <h2 class="page-title">The Security &amp; <span>Compliance Stack.</span></h2>
+        </div>
+        <p class="page-intro">
+            The second half of our capability set: the security, testing, and governance services that keep everything we build &mdash; and everything you already have &mdash; defensible under real-world attack and audit.
+        </p>
+        <div class="product-list">
             <div class="product-row">
                 <div class="product-ico">&#9888;</div>
                 <div class="product-body">
@@ -905,12 +925,12 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>03</strong></span>
+        <span>PAGE <strong>04</strong></span>
     </div>
 </div>
 
 <!-- ====================================================== -->
-<!-- PAGE 4: FLOW CHART CASE STUDY                          -->
+<!-- PAGE 5: FLOW CHART CASE STUDY                          -->
 <!-- ====================================================== -->
 <div class="page">
     <div class="page-inner">
@@ -940,11 +960,6 @@
                 <div class="chaos-node">Facebook<span class="sub">Ops team misses</span></div>
                 <div class="chaos-node">SMS<span class="sub">Personal phone!</span></div>
                 <div class="chaos-node">CRM Notes<span class="sub">Out of date</span></div>
-            </div>
-            <div class="chaos-problems">
-                <div class="chaos-prob"><strong>Cost of chaos</strong>Staff spend 4.2 hrs/day checking inboxes that should check themselves.</div>
-                <div class="chaos-prob"><strong>Missed revenue</strong>18% of customer enquiries went unanswered &gt;24h. Many never bought.</div>
-                <div class="chaos-prob"><strong>Blind leadership</strong>Zero visibility. No reports. No idea which channel drives sales.</div>
             </div>
         </div>
 
@@ -1022,7 +1037,7 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>04</strong></span>
+        <span>PAGE <strong>05</strong></span>
     </div>
 </div>
 
@@ -1095,7 +1110,7 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>05</strong></span>
+        <span>PAGE <strong>06</strong></span>
     </div>
 </div>
 
@@ -1158,7 +1173,7 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>06</strong></span>
+        <span>PAGE <strong>07</strong></span>
     </div>
 </div>
 
@@ -1255,7 +1270,7 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>07</strong></span>
+        <span>PAGE <strong>08</strong></span>
     </div>
 </div>
 
@@ -1318,7 +1333,7 @@
     </div>
     <div class="page-footer">
         <span>SENTRA &middot; CLIENT BROCHURE</span>
-        <span>PAGE <strong>08</strong></span>
+        <span>PAGE <strong>09</strong></span>
     </div>
 </div>
 
