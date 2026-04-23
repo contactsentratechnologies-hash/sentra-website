@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentra Technologies — Client Brochure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4; margin: 0; }
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { page-break-after: always; break-after: page; }
+            .page:last-child { page-break-after: avoid; }
+            .print-bar { display: none !important; }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0A192F;
+            --secondary: #1F4068;
+            --accent: #4FD1C5;
+            --accent-dark: #2C9E95;
+            --light: #F5F2E7;
+            --dark: #2C2C2C;
+            --muted: #6b7280;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--dark);
+            background: #e8e8e8;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; line-height: 1.2; }
+
+        .page {
+            width: 210mm; min-height: 297mm;
+            margin: 20px auto; background: var(--white);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
+        }
+        .page-inner { padding: 50px 56px; }
+
+        /* Page number footer */
+        .page-footer {
+            position: absolute; bottom: 20px; left: 56px; right: 56px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            color: rgba(10,25,47,0.35); letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .page-footer strong { color: var(--accent); font-weight: 700; }
+
+        /* ============ PAGE 1: COVER ============ */
+        .cover {
+            background: var(--primary);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 70px 56px; position: relative; overflow: hidden;
+            min-height: 297mm;
+        }
+        .cover::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(79, 209, 197, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 209, 197, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .cover::after {
+            content: ''; position: absolute;
+            top: -20%; right: -20%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79, 209, 197, 0.15), transparent 70%);
+            border-radius: 50%;
+        }
+        .cover-top, .cover-mid, .cover-bot { position: relative; z-index: 1; }
+        .cover-top {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .cover-logo {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            color: var(--accent); font-size: 22px; letter-spacing: 2px;
+        }
+        .cover-year {
+            color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif;
+            font-size: 11px; letter-spacing: 3px;
+        }
+        .cover-badge {
+            display: inline-block; padding: 8px 22px;
+            background: rgba(79, 209, 197, 0.1); border: 1px solid rgba(79, 209, 197, 0.3);
+            border-radius: 50px; color: var(--accent);
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 32px;
+        }
+        .cover h1 {
+            color: var(--white); font-size: 52px; font-weight: 800;
+            line-height: 1.05; letter-spacing: -1px; margin-bottom: 24px;
+        }
+        .cover h1 span { color: var(--accent); }
+        .cover-sub {
+            color: rgba(255,255,255,0.55); font-size: 17px;
+            max-width: 560px; line-height: 1.7; margin-bottom: 48px;
+        }
+        .cover-stats-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+            max-width: 600px;
+        }
+        .cover-stat {
+            padding: 18px 20px; border-left: 3px solid var(--accent);
+            background: rgba(255,255,255,0.03);
+        }
+        .cover-stat .num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 26px; color: var(--accent); margin-bottom: 2px;
+        }
+        .cover-stat .lbl {
+            font-size: 10px; color: rgba(255,255,255,0.55);
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .cover-bot {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .cover-tagline {
+            color: var(--accent); font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 14px; letter-spacing: 4px;
+        }
+        .cover-doc {
+            color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif;
+            font-size: 10px; letter-spacing: 2px; text-align: right;
+        }
+        .cover-doc strong { color: rgba(255,255,255,0.7); display: block; font-size: 11px; margin-bottom: 4px; }
+
+        /* ============ COMMON PAGE HEADER ============ */
+        .page-header {
+            margin-bottom: 32px; padding-bottom: 18px;
+            border-bottom: 2px solid var(--accent);
+        }
+        .page-label {
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 8px;
+        }
+        .page-title {
+            font-size: 28px; font-weight: 700; color: var(--primary); line-height: 1.15;
+        }
+        .page-title span { color: var(--accent); }
+        .page-intro {
+            font-size: 13.5px; color: rgba(44,44,44,0.75);
+            line-height: 1.85; margin-bottom: 28px;
+        }
+
+        /* ============ PAGE 2: EXECUTIVE SUMMARY ============ */
+        .exec-grid {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+        }
+        .exec-card {
+            padding: 24px 28px; border-radius: 12px;
+            border: 1px solid rgba(10,25,47,0.08);
+            display: grid; grid-template-columns: 60px 1fr; gap: 24px;
+            align-items: center;
+        }
+        .exec-card.problem { background: linear-gradient(135deg, rgba(239,68,68,0.05), rgba(239,68,68,0.01)); border-color: rgba(239,68,68,0.2); }
+        .exec-card.solution { background: linear-gradient(135deg, rgba(79,209,197,0.06), rgba(79,209,197,0.01)); border-color: rgba(79,209,197,0.25); }
+        .exec-card.outcome { background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(16,185,129,0.01)); border-color: rgba(16,185,129,0.25); }
+        .exec-icon {
+            width: 60px; height: 60px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 24px;
+        }
+        .exec-card.problem .exec-icon { background: var(--danger); color: var(--white); }
+        .exec-card.solution .exec-icon { background: var(--accent); color: var(--primary); }
+        .exec-card.outcome .exec-icon { background: var(--success); color: var(--white); }
+        .exec-card h4 {
+            font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .exec-card p { font-size: 12.5px; color: rgba(44,44,44,0.7); line-height: 1.7; }
+
+        .board-summary {
+            margin-top: 32px; padding: 28px 32px;
+            background: var(--primary); border-radius: 12px; color: var(--white);
+        }
+        .board-summary h4 {
+            font-size: 12px; color: var(--accent); letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 14px;
+        }
+        .board-summary p { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.75); }
+        .board-summary p strong { color: var(--white); }
+
+        /* ============ PAGE 3: WHAT WE DO (translated) ============ */
+        .product-list { display: flex; flex-direction: column; gap: 18px; }
+        .product-row {
+            display: grid; grid-template-columns: 70px 1fr;
+            gap: 20px; padding: 20px 22px;
+            border-radius: 12px; border: 1px solid rgba(10,25,47,0.08);
+            background: var(--white);
+        }
+        .product-row:hover { border-color: rgba(79,209,197,0.3); }
+        .product-ico {
+            width: 52px; height: 52px; border-radius: 12px;
+            background: rgba(79,209,197,0.1); color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 18px;
+        }
+        .product-body h4 {
+            font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 4px;
+        }
+        .product-translate {
+            font-size: 11.5px; color: var(--accent);
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            margin-bottom: 10px; letter-spacing: 0.3px;
+        }
+        .product-rowline {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px; margin-top: 10px;
+        }
+        .product-cell {
+            font-size: 11px; line-height: 1.6;
+        }
+        .product-cell .k {
+            display: block; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; color: var(--primary);
+            font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .product-cell.pain .k { color: var(--danger); }
+        .product-cell.fix .k { color: var(--accent-dark); }
+        .product-cell.win .k { color: var(--success); }
+        .product-cell p { color: rgba(44,44,44,0.7); font-size: 11px; }
+
+        /* ============ PAGE 4-5: FLOW CHART CASE STUDY ============ */
+        .case-hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white); padding: 28px 32px; border-radius: 12px;
+            margin-bottom: 28px;
+        }
+        .case-hero-label {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(79,209,197,0.15); color: var(--accent);
+            border-radius: 50px; font-family: 'Montserrat', sans-serif;
+            font-size: 9px; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 14px;
+        }
+        .case-hero h3 {
+            font-size: 22px; font-weight: 700; margin-bottom: 10px;
+        }
+        .case-hero h3 span { color: var(--accent); }
+        .case-hero p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+
+        .flow-title {
+            font-family: 'Montserrat', sans-serif; font-size: 12px;
+            font-weight: 700; color: var(--primary); margin-bottom: 14px;
+            letter-spacing: 1px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .flow-title::before {
+            content: ''; width: 20px; height: 2px; background: var(--accent);
+        }
+        .flow-title.bad::before { background: var(--danger); }
+        .flow-title.good::before { background: var(--success); }
+
+        /* BEFORE (messy) */
+        .flow-before {
+            background: rgba(239,68,68,0.04); border: 1px dashed rgba(239,68,68,0.3);
+            border-radius: 12px; padding: 20px; margin-bottom: 18px;
+            position: relative;
+        }
+        .flow-customer {
+            display: inline-block; padding: 8px 16px;
+            background: var(--primary); color: var(--white); border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .chaos-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .chaos-node {
+            padding: 10px 12px; border-radius: 8px;
+            background: var(--white); border: 1px solid rgba(239,68,68,0.25);
+            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            font-weight: 600; color: var(--primary); text-align: center;
+            position: relative;
+        }
+        .chaos-node .sub {
+            display: block; font-weight: 500; font-size: 9px;
+            color: var(--danger); margin-top: 3px; letter-spacing: 0;
+            text-transform: none; font-family: 'Lato', sans-serif;
+        }
+        .chaos-problems {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-top: 16px;
+        }
+        .chaos-prob {
+            padding: 10px 12px; background: var(--white);
+            border-left: 3px solid var(--danger); font-size: 11px;
+            color: rgba(44,44,44,0.75); line-height: 1.5;
+        }
+        .chaos-prob strong { display: block; color: var(--danger); font-size: 10px;
+            font-family: 'Montserrat', sans-serif; margin-bottom: 2px;
+            letter-spacing: 0.5px; text-transform: uppercase; }
+
+        /* AFTER (clean) */
+        .flow-after {
+            background: rgba(79,209,197,0.04); border: 1px solid rgba(79,209,197,0.3);
+            border-radius: 12px; padding: 22px; margin-bottom: 18px;
+            position: relative;
+        }
+        .clean-flow {
+            display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr;
+            align-items: center; gap: 8px; margin: 10px 0 18px;
+        }
+        .clean-node {
+            padding: 14px 10px; border-radius: 10px;
+            background: var(--white); border: 2px solid var(--accent);
+            text-align: center;
+        }
+        .clean-node.hub {
+            background: var(--primary); border-color: var(--primary); color: var(--white);
+        }
+        .clean-node .n-title {
+            font-family: 'Montserrat', sans-serif; font-size: 11px;
+            font-weight: 700; color: var(--primary); margin-bottom: 4px;
+        }
+        .clean-node.hub .n-title { color: var(--accent); }
+        .clean-node .n-sub {
+            font-size: 9.5px; color: rgba(44,44,44,0.65); line-height: 1.4;
+        }
+        .clean-node.hub .n-sub { color: rgba(255,255,255,0.65); }
+        .arrow {
+            text-align: center; color: var(--accent); font-size: 18px; font-weight: 700;
+        }
+        .output-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .output-node {
+            padding: 10px 8px; border-radius: 8px;
+            background: var(--white); border: 1px solid rgba(79,209,197,0.3);
+            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            font-weight: 600; color: var(--primary); text-align: center;
+        }
+        .output-node .sub {
+            display: block; font-weight: 500; font-size: 9px;
+            color: var(--success); margin-top: 3px;
+            font-family: 'Lato', sans-serif; text-transform: none;
+        }
+
+        /* Savings table */
+        .savings-table {
+            width: 100%; border-collapse: collapse; margin-top: 8px;
+            font-size: 11.5px;
+        }
+        .savings-table thead th {
+            background: var(--primary); color: var(--accent);
+            padding: 12px; text-align: left;
+            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .savings-table thead th:first-child { border-top-left-radius: 8px; }
+        .savings-table thead th:last-child { border-top-right-radius: 8px; text-align: right; }
+        .savings-table tbody td {
+            padding: 12px; border-bottom: 1px solid rgba(10,25,47,0.06);
+            color: rgba(44,44,44,0.8);
+        }
+        .savings-table tbody td:last-child {
+            text-align: right; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; color: var(--success);
+        }
+        .savings-table tbody tr:last-child td {
+            border-bottom: none; background: rgba(79,209,197,0.06);
+            font-weight: 700; color: var(--primary);
+            border-top: 2px solid var(--accent);
+        }
+        .savings-table tbody tr:last-child td:last-child {
+            color: var(--success); font-size: 14px;
+        }
+
+        /* ============ PAGE 6: FIGURES ============ */
+        .figures-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 16px; margin-bottom: 24px;
+        }
+        .fig-card {
+            padding: 24px; border-radius: 12px;
+            border: 1px solid rgba(10,25,47,0.08);
+            background: linear-gradient(135deg, #fafafa, var(--white));
+        }
+        .fig-card .fig-num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 36px; color: var(--accent); line-height: 1; margin-bottom: 6px;
+        }
+        .fig-card .fig-label {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 13px; color: var(--primary); margin-bottom: 8px;
+        }
+        .fig-card .fig-desc {
+            font-size: 11px; color: rgba(44,44,44,0.6); line-height: 1.6;
+        }
+        .fig-card.primary {
+            background: var(--primary); border-color: var(--primary);
+        }
+        .fig-card.primary .fig-num { color: var(--accent); }
+        .fig-card.primary .fig-label { color: var(--white); }
+        .fig-card.primary .fig-desc { color: rgba(255,255,255,0.6); }
+
+        .impact-bars { margin-top: 8px; }
+        .impact-bar {
+            margin-bottom: 16px;
+        }
+        .impact-bar-label {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 6px;
+        }
+        .impact-bar-label .metric {
+            font-family: 'Montserrat', sans-serif; font-size: 12px;
+            font-weight: 600; color: var(--primary);
+        }
+        .impact-bar-label .val {
+            font-family: 'Montserrat', sans-serif; font-size: 13px;
+            font-weight: 700; color: var(--accent);
+        }
+        .impact-bar-track {
+            height: 10px; background: rgba(10,25,47,0.06);
+            border-radius: 6px; overflow: hidden;
+        }
+        .impact-bar-fill {
+            height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            border-radius: 6px;
+        }
+
+        /* ============ PAGE 7: ENGAGEMENT ============ */
+        .engage-timeline {
+            position: relative; padding-left: 30px; margin-top: 10px;
+        }
+        .engage-timeline::before {
+            content: ''; position: absolute; top: 10px; bottom: 10px; left: 11px;
+            width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(79,209,197,0.2));
+        }
+        .engage-step {
+            position: relative; margin-bottom: 22px;
+        }
+        .engage-step::before {
+            content: ''; position: absolute; left: -24px; top: 4px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .engage-step-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .engage-step h4 {
+            font-size: 14px; font-weight: 700; color: var(--primary);
+        }
+        .engage-step .week {
+            font-family: 'Montserrat', sans-serif; font-size: 9.5px;
+            font-weight: 700; color: var(--accent);
+            padding: 3px 10px; background: rgba(79,209,197,0.1);
+            border-radius: 50px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .engage-step p { font-size: 12px; color: rgba(44,44,44,0.65); line-height: 1.7; }
+
+        .guarantee-bar {
+            margin-top: 24px; padding: 20px 24px;
+            background: linear-gradient(135deg, rgba(79,209,197,0.12), rgba(79,209,197,0.04));
+            border: 1px solid rgba(79,209,197,0.3); border-radius: 10px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .guarantee-badge {
+            flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+            background: var(--accent); color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 20px; font-family: 'Montserrat', sans-serif;
+        }
+        .guarantee-bar p {
+            font-size: 12px; color: rgba(44,44,44,0.75); line-height: 1.7;
+        }
+        .guarantee-bar strong { color: var(--primary); }
+
+        /* ============ PAGE 8: PAYMENT ============ */
+        .tier-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+            margin-bottom: 24px;
+        }
+        .tier-card {
+            padding: 22px 20px; border-radius: 12px;
+            border: 1px solid rgba(10,25,47,0.1);
+            background: var(--white); position: relative;
+        }
+        .tier-card.featured {
+            background: var(--primary); border-color: var(--primary);
+            transform: scale(1.03);
+        }
+        .tier-card.featured .tier-feat-tag {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            padding: 4px 14px; background: var(--accent); color: var(--primary);
+            border-radius: 50px; font-family: 'Montserrat', sans-serif;
+            font-size: 9px; font-weight: 800; letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .tier-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 13px; color: var(--primary); margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .tier-card.featured .tier-name { color: var(--accent); }
+        .tier-for {
+            font-size: 10px; color: var(--muted); margin-bottom: 16px;
+            font-style: italic;
+        }
+        .tier-card.featured .tier-for { color: rgba(255,255,255,0.5); }
+        .tier-price {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 24px; color: var(--primary); line-height: 1; margin-bottom: 4px;
+        }
+        .tier-card.featured .tier-price { color: var(--white); }
+        .tier-price .per {
+            font-size: 10px; color: var(--muted); font-weight: 500;
+        }
+        .tier-card.featured .tier-price .per { color: rgba(255,255,255,0.5); }
+        .tier-divider {
+            height: 1px; background: rgba(10,25,47,0.08); margin: 14px 0;
+        }
+        .tier-card.featured .tier-divider { background: rgba(255,255,255,0.1); }
+        .tier-features { list-style: none; }
+        .tier-features li {
+            font-size: 10.5px; color: rgba(44,44,44,0.75); padding: 4px 0 4px 16px;
+            position: relative; line-height: 1.5;
+        }
+        .tier-card.featured .tier-features li { color: rgba(255,255,255,0.75); }
+        .tier-features li::before {
+            content: '\2713'; position: absolute; left: 0; top: 4px;
+            color: var(--accent); font-weight: 700; font-size: 10px;
+        }
+
+        .pay-schedule {
+            margin-top: 12px;
+            background: var(--light); border-radius: 12px; padding: 20px 24px;
+        }
+        .pay-schedule h4 {
+            font-size: 13px; font-weight: 700; color: var(--primary);
+            margin-bottom: 12px; letter-spacing: 0.5px;
+        }
+        .pay-schedule-row {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+        }
+        .pay-step {
+            padding: 14px; background: var(--white); border-radius: 8px;
+            border-top: 3px solid var(--accent);
+        }
+        .pay-step .pct {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 20px; color: var(--primary); line-height: 1;
+        }
+        .pay-step .stage {
+            font-family: 'Montserrat', sans-serif; font-size: 10px;
+            color: var(--accent); font-weight: 700; margin-top: 4px;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .pay-step .when {
+            font-size: 10px; color: rgba(44,44,44,0.6); margin-top: 6px; line-height: 1.5;
+        }
+
+        .pay-note {
+            font-size: 10.5px; color: rgba(44,44,44,0.55);
+            line-height: 1.6; margin-top: 14px; font-style: italic;
+        }
+        .pay-note strong { color: var(--primary); font-style: normal; }
+
+        /* ============ PAGE 9: WHY + FAQ ============ */
+        .why-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+            margin-bottom: 24px;
+        }
+        .why-card {
+            padding: 18px 20px; border-radius: 10px;
+            background: var(--light);
+        }
+        .why-card h5 {
+            font-size: 12px; font-weight: 700; color: var(--primary);
+            margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+        }
+        .why-card h5::before {
+            content: ''; width: 14px; height: 14px; border-radius: 4px;
+            background: var(--accent); flex-shrink: 0;
+        }
+        .why-card p { font-size: 11px; color: rgba(44,44,44,0.65); line-height: 1.6; }
+
+        .faq-list { margin-top: 10px; }
+        .faq-item {
+            padding: 14px 18px; margin-bottom: 10px;
+            border-radius: 10px; background: var(--white);
+            border: 1px solid rgba(10,25,47,0.06);
+        }
+        .faq-q {
+            font-family: 'Montserrat', sans-serif; font-size: 12px;
+            font-weight: 700; color: var(--primary); margin-bottom: 5px;
+        }
+        .faq-q::before { content: 'Q. '; color: var(--accent); }
+        .faq-a { font-size: 11.5px; color: rgba(44,44,44,0.7); line-height: 1.65; }
+
+        /* ============ PAGE 10: CTA ============ */
+        .cta-page {
+            background: var(--primary); min-height: 297mm;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 70px 56px; position: relative; overflow: hidden;
+        }
+        .cta-page::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(79, 209, 197, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 209, 197, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .cta-page::after {
+            content: ''; position: absolute;
+            bottom: -30%; left: -20%; width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(79, 209, 197, 0.12), transparent 70%);
+            border-radius: 50%;
+        }
+        .cta-top, .cta-mid, .cta-bot { position: relative; z-index: 1; }
+        .cta-top .cover-badge { margin-bottom: 24px; }
+        .cta-mid h2 {
+            color: var(--white); font-size: 42px; font-weight: 800;
+            line-height: 1.1; margin-bottom: 18px; letter-spacing: -0.5px;
+        }
+        .cta-mid h2 span { color: var(--accent); }
+        .cta-mid .lead {
+            color: rgba(255,255,255,0.6); font-size: 15px;
+            max-width: 540px; line-height: 1.75; margin-bottom: 40px;
+        }
+
+        .cta-steps {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+            margin-bottom: 40px;
+        }
+        .cta-step {
+            padding: 20px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+        }
+        .cta-step-num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 14px; color: var(--accent); margin-bottom: 8px;
+            letter-spacing: 3px;
+        }
+        .cta-step h5 {
+            font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 6px;
+        }
+        .cta-step p { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+        .cta-contact {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+        .cta-contact-card {
+            padding: 22px; background: rgba(79,209,197,0.08);
+            border: 1px solid rgba(79,209,197,0.25); border-radius: 12px;
+        }
+        .cta-contact-card .cc-label {
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            color: rgba(255,255,255,0.45); letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .cta-contact-card .cc-value {
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+            font-weight: 700; color: var(--accent);
+        }
+        .cta-contact-card .cc-sub {
+            font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px;
+        }
+
+        .cta-bot {
+            padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cta-bot .sl {
+            color: var(--accent); font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 13px; letter-spacing: 4px;
+        }
+        .cta-bot .cp {
+            color: rgba(255,255,255,0.35); font-family: 'Montserrat', sans-serif;
+            font-size: 9px; letter-spacing: 1px;
+        }
+
+        /* ============ PRINT BUTTON (screen only) ============ */
+        .print-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--primary); padding: 12px 24px;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+            z-index: 9999;
+        }
+        .print-bar span { color: rgba(255,255,255,0.6); font-size: 13px; font-family: 'Montserrat', sans-serif; }
+        .print-btn {
+            padding: 8px 24px; border-radius: 6px; border: none;
+            background: var(--accent); color: var(--primary);
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar">
+    <span>Sentra Technologies — Client Brochure (Board Edition)</span>
+    <button class="print-btn" onclick="window.print()">Save as PDF</button>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 1: COVER                                          -->
+<!-- ====================================================== -->
+<div class="page cover">
+    <div class="cover-top">
+        <div class="cover-logo">SENTRA</div>
+        <div class="cover-year">2026 &middot; CLIENT EDITION</div>
+    </div>
+    <div class="cover-mid">
+        <div class="cover-badge">For the Board &middot; For the Decision Makers</div>
+        <h1>The Business Case<br>for <span>Sentra.</span></h1>
+        <p class="cover-sub">
+            How we help enterprises across the USA, EU, and UK save millions in operational waste, eliminate security exposure, and unlock growth &mdash; without another disappointing vendor engagement.
+        </p>
+        <div class="cover-stats-row">
+            <div class="cover-stat">
+                <div class="num">$2.1M+</div>
+                <div class="lbl">Avg. client saving</div>
+            </div>
+            <div class="cover-stat">
+                <div class="num">40%</div>
+                <div class="lbl">Fewer incidents</div>
+            </div>
+            <div class="cover-stat">
+                <div class="num">12 wks</div>
+                <div class="lbl">Typical go-live</div>
+            </div>
+        </div>
+    </div>
+    <div class="cover-bot">
+        <div class="cover-tagline">SMART. SECURE. SENTRA.</div>
+        <div class="cover-doc">
+            <strong>CONFIDENTIAL</strong>
+            PREPARED FOR EXECUTIVE REVIEW
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 2: EXECUTIVE SUMMARY                              -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Executive Summary</div>
+            <h2 class="page-title">The Business Problem, <span>In Plain Terms.</span></h2>
+        </div>
+
+        <p class="page-intro">
+            Most enterprises are losing money they can't see. Manual work that should be automated. Security gaps that should be closed. Systems that should talk to each other but don't. Sentra fixes all three &mdash; with one accountable team instead of three competing vendors.
+        </p>
+
+        <div class="exec-grid">
+            <div class="exec-card problem">
+                <div class="exec-icon">!</div>
+                <div>
+                    <h4>THE PROBLEM</h4>
+                    <p>Your teams are drowning in repetitive work, your systems don't talk to each other, and every quarter brings a new security scare. Meanwhile, competitors who solved this are shipping faster and costing less to operate.</p>
+                </div>
+            </div>
+            <div class="exec-card solution">
+                <div class="exec-icon">&#10142;</div>
+                <div>
+                    <h4>THE SOLUTION</h4>
+                    <p>Sentra delivers software, automation, and cybersecurity as one integrated engagement. We centralise your operations, automate what shouldn't be manual, and close the security gaps before they become headlines.</p>
+                </div>
+            </div>
+            <div class="exec-card outcome">
+                <div class="exec-icon">&#10003;</div>
+                <div>
+                    <h4>THE OUTCOME</h4>
+                    <p>Clients typically see $2.1M+ in annual savings, 40% fewer security incidents, and 3&times; faster product releases within the first 12 months. Payback on our engagement: usually under 6 months.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-summary">
+            <h4>One-Minute Summary for the Board</h4>
+            <p>
+                <strong>What it is:</strong> A fixed-scope engagement that replaces manual operations with automated, secure, integrated systems. <strong>What it costs:</strong> Starting from $18K for a scoped assessment; typical full transformations $80K&ndash;$280K depending on scope. <strong>What it returns:</strong> Average 6&times; ROI in year one &mdash; measurable in reduced headcount cost, avoided breach liability, and revenue unlocked by faster operations. <strong>The risk:</strong> Minimal &mdash; first milestone is guaranteed or you don't pay.
+            </p>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>02</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 3: WHAT WE DO (translated to business outcomes)   -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">What Sentra Does For You</div>
+            <h2 class="page-title">Seven Services. <span>One Business Outcome.</span></h2>
+        </div>
+
+        <p class="page-intro">
+            Each of our services is built to solve a specific, expensive problem your business is already paying for &mdash; often without realising it. Here's the plain-English translation.
+        </p>
+
+        <div class="product-list">
+
+            <div class="product-row">
+                <div class="product-ico">AI</div>
+                <div class="product-body">
+                    <h4>AI Systems</h4>
+                    <div class="product-translate">In plain English: computers that read, write, decide, and answer for you.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>Staff spending hours on email, data entry, and routine decisions a smart assistant could handle in seconds.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Deploy custom AI assistants that handle customer enquiries, internal requests, and document processing 24/7.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Teams reclaim 15&ndash;25 hrs/week each. AI handles 80% of repetitive queries at ~$0.02 each.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#8644;</div>
+                <div class="product-body">
+                    <h4>Automation</h4>
+                    <div class="product-translate">In plain English: stop paying people to copy data between systems.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>Invoicing, onboarding, reporting, CRM updates &mdash; all eating your team's week with manual copy-paste work.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Connect your tools so they talk to each other. Work happens automatically, 24/7, with no human bottleneck.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Equivalent of 2&ndash;3 full-time employees' work done by software. Typically $150K&ndash;$400K/yr payroll freed up.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#9632;</div>
+                <div class="product-body">
+                    <h4>Custom Platforms</h4>
+                    <div class="product-translate">In plain English: software built around how your business actually works.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>You're paying for six off-the-shelf tools that almost do what you need &mdash; and staff work around all of them.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Build one platform purpose-designed for your workflow. Internal tools, client portals, full SaaS products.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Fewer subscriptions, zero workarounds, faster team. Typical SaaS bill reduced by 35&ndash;60%.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#128737;</div>
+                <div class="product-body">
+                    <h4>Security Assessment &amp; Auditing</h4>
+                    <div class="product-translate">In plain English: find the open doors before someone walks through them.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>You don't know what you don't know. One undiscovered vulnerability can cost $4M+ in breach response.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Map every exposure point, rank them by real business risk, and hand you a clear fix-it list.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Board-ready risk register. Insurance premiums drop 10&ndash;20%. Breach liability reduced by an order of magnitude.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#9888;</div>
+                <div class="product-body">
+                    <h4>Penetration Testing</h4>
+                    <div class="product-translate">In plain English: we hack you first, so the bad guys can't.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>Audits and checkbox scans miss the attacks that actually work. You won't know until it's too late.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Certified ethical hackers run real-world attacks against your systems &mdash; and tell you exactly how they got in.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Fix exploitable gaps before attackers find them. Pass SOC 2 and client security reviews without scrambling.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#9729;</div>
+                <div class="product-body">
+                    <h4>Cloud Security</h4>
+                    <div class="product-translate">In plain English: make sure your AWS / Azure / Google Cloud isn't a liability.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>One misconfigured cloud storage bucket has cost companies $100M+. Most teams don't audit their own cloud.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Harden your cloud, lock down access, monitor continuously. Turn your cloud into a defensible asset.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Breach risk drops ~60%. Cloud bill usually drops 15&ndash;25% once we remove wasted resources.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-row">
+                <div class="product-ico">&#128196;</div>
+                <div class="product-body">
+                    <h4>Governance, Risk &amp; Compliance</h4>
+                    <div class="product-translate">In plain English: pass audits without your engineers hating their lives.</div>
+                    <div class="product-rowline">
+                        <div class="product-cell pain"><span class="k">The Pain</span><p>SOC 2, GDPR, ISO 27001, HIPAA &mdash; every audit derails your team for weeks. Clients demand proof.</p></div>
+                        <div class="product-cell fix"><span class="k">What We Do</span><p>Build the compliance framework once, embed it in your systems, keep you audit-ready continuously.</p></div>
+                        <div class="product-cell win"><span class="k">The Win</span><p>Close enterprise deals that require compliance. Audit prep time drops from weeks to days.</p></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>03</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 4: FLOW CHART CASE STUDY                          -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">A Real-World Example</div>
+            <h2 class="page-title">From Scattered Chaos<br>to <span>One Centralised System.</span></h2>
+        </div>
+
+        <div class="case-hero">
+            <div class="case-hero-label">Typical Client Scenario</div>
+            <h3>A 200-person services firm with customer communication <span>everywhere</span>.</h3>
+            <p>
+                Customers were reaching the company through 7 different channels. Nothing connected. Staff manually checked 5 inboxes per day. Leadership had no single view. Response times were slow, conversations slipped through cracks, and no one could answer "how are we doing?" without a spreadsheet war. This is a pattern we fix every month.
+            </p>
+        </div>
+
+        <!-- BEFORE -->
+        <div class="flow-title bad">BEFORE SENTRA &mdash; Everything Lives in Its Own Silo</div>
+        <div class="flow-before">
+            <div class="flow-customer">&#128100; CUSTOMER</div>
+            <div class="chaos-grid">
+                <div class="chaos-node">WhatsApp<span class="sub">Checked by 3 people</span></div>
+                <div class="chaos-node">Email Inbox<span class="sub">Ignored 60% of day</span></div>
+                <div class="chaos-node">Web Chat<span class="sub">Only during office hrs</span></div>
+                <div class="chaos-node">Phone Calls<span class="sub">No call log kept</span></div>
+                <div class="chaos-node">Instagram DMs<span class="sub">Marketing only sees</span></div>
+                <div class="chaos-node">Facebook<span class="sub">Ops team misses</span></div>
+                <div class="chaos-node">SMS<span class="sub">Personal phone!</span></div>
+                <div class="chaos-node">CRM Notes<span class="sub">Out of date</span></div>
+            </div>
+            <div class="chaos-problems">
+                <div class="chaos-prob"><strong>Cost of chaos</strong>Staff spend 4.2 hrs/day checking inboxes that should check themselves.</div>
+                <div class="chaos-prob"><strong>Missed revenue</strong>18% of customer enquiries went unanswered &gt;24h. Many never bought.</div>
+                <div class="chaos-prob"><strong>Blind leadership</strong>Zero visibility. No reports. No idea which channel drives sales.</div>
+            </div>
+        </div>
+
+        <!-- AFTER -->
+        <div class="flow-title good">AFTER SENTRA &mdash; One Hub, One View, Automated</div>
+        <div class="flow-after">
+            <div class="clean-flow">
+                <div class="clean-node">
+                    <div class="n-title">&#128100; Customer</div>
+                    <div class="n-sub">Any channel, any time</div>
+                </div>
+                <div class="arrow">&rarr;</div>
+                <div class="clean-node hub">
+                    <div class="n-title">SENTRA HUB</div>
+                    <div class="n-sub">AI routing &middot; auto-reply &middot; single view</div>
+                </div>
+                <div class="arrow">&rarr;</div>
+                <div class="clean-node">
+                    <div class="n-title">Right Person</div>
+                    <div class="n-sub">In seconds, not days</div>
+                </div>
+            </div>
+            <div class="output-row">
+                <div class="output-node">Unified Inbox<span class="sub">Every channel, one screen</span></div>
+                <div class="output-node">Auto-CRM Update<span class="sub">Customer record always live</span></div>
+                <div class="output-node">Live Dashboard<span class="sub">Leadership sees everything</span></div>
+                <div class="output-node">AI Draft Replies<span class="sub">Staff click send, done</span></div>
+            </div>
+        </div>
+
+        <!-- SAVINGS TABLE -->
+        <div class="flow-title">THE NUMBERS &mdash; Year One Impact</div>
+        <table class="savings-table">
+            <thead>
+                <tr>
+                    <th>Where Money Was Leaking</th>
+                    <th>Before Sentra</th>
+                    <th>After Sentra</th>
+                    <th>Annual Saving</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Staff time checking inboxes</td>
+                    <td>4.2 hrs / person / day</td>
+                    <td>20 min / person / day</td>
+                    <td>$387,000</td>
+                </tr>
+                <tr>
+                    <td>Missed enquiries (unresponded)</td>
+                    <td>18% lost</td>
+                    <td>&lt;2% lost</td>
+                    <td>$540,000 in recovered revenue</td>
+                </tr>
+                <tr>
+                    <td>Overtime &amp; weekend coverage</td>
+                    <td>$8K / month</td>
+                    <td>$0</td>
+                    <td>$96,000</td>
+                </tr>
+                <tr>
+                    <td>Redundant software subscriptions</td>
+                    <td>$3.1K / month across 6 tools</td>
+                    <td>$900 / month, one tool</td>
+                    <td>$26,400</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTAL IMPACT (YEAR 1)</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>$1,049,400</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>04</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 5: THE FIGURES                                    -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">By the Numbers</div>
+            <h2 class="page-title">What Clients Typically Gain <span>in Year One.</span></h2>
+        </div>
+
+        <p class="page-intro">
+            These are realistic ranges drawn from typical engagements in the 50&ndash;500 employee band. Your numbers may be higher or lower depending on current operational waste and existing security exposure &mdash; we quantify this precisely during the discovery phase.
+        </p>
+
+        <div class="figures-grid">
+            <div class="fig-card primary">
+                <div class="fig-num">$2.1M</div>
+                <div class="fig-label">Average Annual Saving</div>
+                <div class="fig-desc">Across headcount efficiency, recovered revenue, insurance reduction, and software consolidation.</div>
+            </div>
+            <div class="fig-card">
+                <div class="fig-num">6&times;</div>
+                <div class="fig-label">Return on Investment</div>
+                <div class="fig-desc">Typical year-one ROI after a full engagement. Payback usually within 5&ndash;6 months.</div>
+            </div>
+            <div class="fig-card">
+                <div class="fig-num">2,400 hrs</div>
+                <div class="fig-label">Team Time Returned</div>
+                <div class="fig-desc">Per year, per 50-person operation &mdash; equivalent to 1.2 full-time employees redirected to growth.</div>
+            </div>
+            <div class="fig-card">
+                <div class="fig-num">40%</div>
+                <div class="fig-label">Fewer Security Incidents</div>
+                <div class="fig-desc">Average reduction in reportable incidents after our security assessment and hardening engagement.</div>
+            </div>
+            <div class="fig-card">
+                <div class="fig-num">3&times;</div>
+                <div class="fig-label">Faster Product Releases</div>
+                <div class="fig-desc">For engineering teams after we automate deployment pipelines and untangle legacy systems.</div>
+            </div>
+            <div class="fig-card">
+                <div class="fig-num">15&ndash;25%</div>
+                <div class="fig-label">Cloud Bill Reduction</div>
+                <div class="fig-desc">Typical drop after our cloud audit removes wasted resources and right-sizes infrastructure.</div>
+            </div>
+        </div>
+
+        <div class="flow-title">WHERE THE VALUE COMES FROM</div>
+        <div class="impact-bars">
+            <div class="impact-bar">
+                <div class="impact-bar-label"><span class="metric">Reduced manual operations (staff time)</span><span class="val">~45% of total saving</span></div>
+                <div class="impact-bar-track"><div class="impact-bar-fill" style="width: 45%;"></div></div>
+            </div>
+            <div class="impact-bar">
+                <div class="impact-bar-label"><span class="metric">Recovered revenue (lost customers, missed deals)</span><span class="val">~25%</span></div>
+                <div class="impact-bar-track"><div class="impact-bar-fill" style="width: 25%;"></div></div>
+            </div>
+            <div class="impact-bar">
+                <div class="impact-bar-label"><span class="metric">Avoided breach &amp; compliance liability</span><span class="val">~18%</span></div>
+                <div class="impact-bar-track"><div class="impact-bar-fill" style="width: 18%;"></div></div>
+            </div>
+            <div class="impact-bar">
+                <div class="impact-bar-label"><span class="metric">Software &amp; cloud consolidation</span><span class="val">~12%</span></div>
+                <div class="impact-bar-track"><div class="impact-bar-fill" style="width: 12%;"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>05</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 6: HOW WE ENGAGE                                  -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">How We Work With You</div>
+            <h2 class="page-title">From First Call <span>to Production. In Weeks.</span></h2>
+        </div>
+
+        <p class="page-intro">
+            No mystery, no endless discovery phases, no surprise invoices. Every engagement follows the same proven path &mdash; so you always know what's happening, what's next, and what it costs.
+        </p>
+
+        <div class="engage-timeline">
+            <div class="engage-step">
+                <div class="engage-step-head">
+                    <h4>1. Discovery Call</h4>
+                    <span class="week">Week 1 &middot; Free</span>
+                </div>
+                <p>A free 30-minute conversation with a senior engineer. You describe the problem, we tell you honestly whether we're the right fit and roughly what a solution looks like. No slide decks. No junior rep reading off a script.</p>
+            </div>
+            <div class="engage-step">
+                <div class="engage-step-head">
+                    <h4>2. Scoped Proposal &amp; Business Case</h4>
+                    <span class="week">Week 1&ndash;2</span>
+                </div>
+                <p>Fixed deliverables, fixed timeline, transparent pricing, and a written ROI projection for your board. You see exactly what you're paying for and what you're getting before anything starts.</p>
+            </div>
+            <div class="engage-step">
+                <div class="engage-step-head">
+                    <h4>3. Build, Secure &amp; Integrate</h4>
+                    <span class="week">Weeks 2&ndash;12</span>
+                </div>
+                <p>Weekly demos of working software. Continuous communication with a named lead. Security is baked in from day one, never bolted on. You see real progress every Friday &mdash; never a surprise at the end.</p>
+            </div>
+            <div class="engage-step">
+                <div class="engage-step-head">
+                    <h4>4. Launch &amp; Handover</h4>
+                    <span class="week">Week 12&ndash;14</span>
+                </div>
+                <p>We ship to production with a clean handover, full documentation, and team training. Your people know how to operate it from day one. No black boxes.</p>
+            </div>
+            <div class="engage-step">
+                <div class="engage-step-head">
+                    <h4>5. Ongoing Support &amp; Optimisation</h4>
+                    <span class="week">Ongoing &middot; Optional</span>
+                </div>
+                <p>Monitoring, patching, iteration, and continuous improvement. We stay on at a predictable monthly rate &mdash; because delivery isn't finished when the code ships, it's finished when it's still working a year later.</p>
+            </div>
+        </div>
+
+        <div class="guarantee-bar">
+            <div class="guarantee-badge">&#10003;</div>
+            <p><strong>Our commitment:</strong> If the first milestone doesn't meet the specification we agreed on in writing, you don't pay for it. That's how confident we are in our process &mdash; and how much we respect your time and budget.</p>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>06</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 7: PAYMENT STRUCTURE                              -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Investment &amp; Payment Structure</div>
+            <h2 class="page-title">Transparent Pricing. <span>No Surprises.</span></h2>
+        </div>
+
+        <p class="page-intro">
+            Every engagement is quoted with a fixed scope, fixed price, and a milestone-based payment schedule. You only pay when we deliver. Here are our three standard engagement tiers &mdash; custom scopes are always available.
+        </p>
+
+        <div class="tier-grid">
+            <div class="tier-card">
+                <div class="tier-name">ASSESS</div>
+                <div class="tier-for">For: audits, diagnostics, discovery</div>
+                <div class="tier-price">$18K<span class="per"> &mdash; $45K</span></div>
+                <div class="tier-divider"></div>
+                <ul class="tier-features">
+                    <li>Security or operations audit</li>
+                    <li>Full risk &amp; waste register</li>
+                    <li>Prioritised roadmap to fix</li>
+                    <li>Executive report for board</li>
+                    <li>2 follow-up strategy calls</li>
+                    <li>Delivered in 3&ndash;5 weeks</li>
+                </ul>
+            </div>
+            <div class="tier-card featured">
+                <div class="tier-feat-tag">Most Popular</div>
+                <div class="tier-name">TRANSFORM</div>
+                <div class="tier-for">For: automation, platforms, full builds</div>
+                <div class="tier-price">$80K<span class="per"> &mdash; $280K</span></div>
+                <div class="tier-divider"></div>
+                <ul class="tier-features">
+                    <li>End-to-end design + build</li>
+                    <li>Custom software / automation</li>
+                    <li>Security hardening included</li>
+                    <li>Team training &amp; handover</li>
+                    <li>90 days post-launch support</li>
+                    <li>Typical ROI: 6&times; year one</li>
+                </ul>
+            </div>
+            <div class="tier-card">
+                <div class="tier-name">PARTNER</div>
+                <div class="tier-for">For: ongoing optimisation &amp; managed ops</div>
+                <div class="tier-price">$6K<span class="per"> / month +</span></div>
+                <div class="tier-divider"></div>
+                <ul class="tier-features">
+                    <li>Dedicated senior engineer</li>
+                    <li>Continuous monitoring</li>
+                    <li>Monthly optimisation cycles</li>
+                    <li>Priority incident response</li>
+                    <li>Quarterly business reviews</li>
+                    <li>Cancel any time, 30 days notice</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pay-schedule">
+            <h4>MILESTONE-BASED PAYMENT SCHEDULE &mdash; TRANSFORM engagements</h4>
+            <div class="pay-schedule-row">
+                <div class="pay-step">
+                    <div class="pct">20%</div>
+                    <div class="stage">Kick-off</div>
+                    <div class="when">On proposal sign-off &amp; team assignment.</div>
+                </div>
+                <div class="pay-step">
+                    <div class="pct">30%</div>
+                    <div class="stage">Milestone 1</div>
+                    <div class="when">First working system, demonstrated live.</div>
+                </div>
+                <div class="pay-step">
+                    <div class="pct">30%</div>
+                    <div class="stage">Milestone 2</div>
+                    <div class="when">Full build complete, user acceptance.</div>
+                </div>
+                <div class="pay-step">
+                    <div class="pct">20%</div>
+                    <div class="stage">Go-Live</div>
+                    <div class="when">Production deployment &amp; handover complete.</div>
+                </div>
+            </div>
+            <p class="pay-note">
+                <strong>First-milestone guarantee:</strong> If Milestone 1 doesn't meet the written specification, the 30% milestone payment is waived and the 20% kick-off is refunded. You walk away whole.
+                <br><br>
+                <strong>Payment terms:</strong> Invoices are net 15 days. Wire transfer, ACH, or SEPA accepted. We can also contract through your preferred procurement framework. Enterprise agreements available with extended payment terms on request.
+            </p>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>07</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 8: WHY SENTRA + FAQ                               -->
+<!-- ====================================================== -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Why Sentra</div>
+            <h2 class="page-title">Why Companies Choose Us <span>Over the Alternatives.</span></h2>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <h5>One Team, Not Three Vendors</h5>
+                <p>Software, AI, and cybersecurity under one contract. No finger-pointing between suppliers when something breaks &mdash; we own the outcome end to end.</p>
+            </div>
+            <div class="why-card">
+                <h5>Senior Engineers, Not Juniors in Badges</h5>
+                <p>Your engagement is run by a senior technical lead with 8+ years of experience. You never get handed to a rotation of junior consultants.</p>
+            </div>
+            <div class="why-card">
+                <h5>Fixed Scope, Fixed Price</h5>
+                <p>No hourly billing surprises. You know exactly what you're paying for before we start &mdash; and exactly what you'll get when we're done.</p>
+            </div>
+            <div class="why-card">
+                <h5>First Milestone Guaranteed</h5>
+                <p>If we don't deliver what we said we would at Milestone 1, you don't pay for it. The commercial risk is on us, not on you.</p>
+            </div>
+            <div class="why-card">
+                <h5>Board-Ready Reporting</h5>
+                <p>Every engagement comes with an executive-level business case, risk register, and ROI projection &mdash; suitable for board and investor review.</p>
+            </div>
+            <div class="why-card">
+                <h5>We Stay After Launch</h5>
+                <p>Most vendors walk away at go-live. Our PARTNER tier provides ongoing optimisation so the system keeps delivering value year after year.</p>
+            </div>
+        </div>
+
+        <h3 style="font-size: 15px; font-weight: 700; color: var(--primary); margin: 10px 0 14px; letter-spacing: 0.5px;">Frequently Asked Questions</h3>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">How long until we see actual results?</div>
+                <div class="faq-a">Typical clients see measurable operational improvement within 30 days of Milestone 1. Full financial payback usually arrives between month 4 and month 7.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Do we own the software you build?</div>
+                <div class="faq-a">Yes. All custom code, documentation, and infrastructure is delivered to you with full IP ownership. No vendor lock-in, no licensing games.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What about security &amp; data handling during the engagement?</div>
+                <div class="faq-a">We operate under a signed NDA from day one, work in your cloud environment where possible, and follow SOC 2 / ISO 27001 aligned processes. Your data never leaves approved systems.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Can we pilot a small project before committing to a large one?</div>
+                <div class="faq-a">Absolutely recommended. Most clients begin with an ASSESS engagement ($18K&ndash;$45K) before committing to a full TRANSFORM build. It de-risks the bigger decision.</div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>08</strong></span>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PAGE 9: CTA / CONTACT                                  -->
+<!-- ====================================================== -->
+<div class="page cta-page">
+    <div class="cta-top">
+        <div class="cover-badge">Your Next Step</div>
+    </div>
+    <div class="cta-mid">
+        <h2>Tell Us The Problem.<br><span>We'll Tell You How to Solve It.</span></h2>
+        <p class="lead">
+            A free 30-minute call with a senior engineer. No slide decks, no sales pitch &mdash; just a straight conversation about what's slowing your business down and whether we're the right team to fix it. You decide if it's worth a second call.
+        </p>
+
+        <div class="cta-steps">
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 01</div>
+                <h5>Reach out</h5>
+                <p>Email or WhatsApp us with a one-line description of your challenge. That's all we need to start.</p>
+            </div>
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 02</div>
+                <h5>30-min call</h5>
+                <p>We'll ask smart questions, give you a rough direction, and tell you honestly if we're not the right fit.</p>
+            </div>
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 03</div>
+                <h5>Written proposal</h5>
+                <p>If there's a fit, you'll have a scoped proposal with timeline, price, and ROI projection within a week.</p>
+            </div>
+        </div>
+
+        <div class="cta-contact">
+            <div class="cta-contact-card">
+                <div class="cc-label">Email</div>
+                <div class="cc-value">contact.sentra.technologies@gmail.com</div>
+                <div class="cc-sub">Replies within 24 hours, always from a senior engineer</div>
+            </div>
+            <div class="cta-contact-card">
+                <div class="cc-label">WhatsApp &middot; Direct</div>
+                <div class="cc-value">+94 70 466 9834</div>
+                <div class="cc-sub">For faster conversations &mdash; we prefer WhatsApp for enterprise clients</div>
+            </div>
+        </div>
+    </div>
+    <div class="cta-bot">
+        <div class="sl">SMART. SECURE. SENTRA.</div>
+        <div class="cp">&copy; 2026 SENTRA TECHNOLOGIES &middot; CONFIDENTIAL</div>
+    </div>
+</div>
+
+</body>
+</html>
