@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentra Suite — The Pain Heals Here</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4; margin: 0; }
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { page-break-after: always; break-after: page; margin: 0 !important; box-shadow: none !important; }
+            .page:last-child { page-break-after: avoid; }
+            .print-bar { display: none !important; }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0A192F;
+            --secondary: #1F4068;
+            --accent: #4FD1C5;
+            --accent-dark: #2C9E95;
+            --light: #F5F2E7;
+            --dark: #2C2C2C;
+            --muted: #6b7280;
+            --white: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        body {
+            font-family: 'Lato', sans-serif; color: var(--dark);
+            background: #e8e8e8; line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; line-height: 1.2; }
+
+        .page {
+            width: 210mm; height: 297mm;
+            margin: 20px auto; background: var(--white);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
+        }
+        .page-inner { padding: 36px 44px 60px; height: 100%; }
+
+        .page-footer {
+            position: absolute; bottom: 18px; left: 44px; right: 44px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            color: rgba(10,25,47,0.35); letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .page-footer strong { color: var(--accent); font-weight: 700; }
+
+        /* COMMON HEADER */
+        .page-header {
+            margin-bottom: 18px; padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+        }
+        .page-label {
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 6px;
+        }
+        .page-title {
+            font-size: 24px; font-weight: 700; color: var(--primary); line-height: 1.15;
+        }
+        .page-title span { color: var(--accent); }
+
+        /* ============ PAGE 1: COVER ============ */
+        .cover {
+            background: var(--primary);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 52px 44px; position: relative; overflow: hidden;
+            height: 297mm;
+        }
+        .cover::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(79, 209, 197, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 209, 197, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .cover::after {
+            content: ''; position: absolute;
+            top: -20%; right: -20%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(79, 209, 197, 0.15), transparent 70%);
+            border-radius: 50%;
+        }
+        .cover-top, .cover-mid, .cover-bot { position: relative; z-index: 1; }
+        .cover-top { display: flex; align-items: center; justify-content: space-between; }
+        .cover-logo {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            color: var(--accent); font-size: 22px; letter-spacing: 2px;
+        }
+        .cover-year {
+            color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif;
+            font-size: 11px; letter-spacing: 3px;
+        }
+        .cover-badge {
+            display: inline-block; padding: 6px 18px;
+            background: rgba(79, 209, 197, 0.1); border: 1px solid rgba(79, 209, 197, 0.3);
+            border-radius: 50px; color: var(--accent);
+            font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 10px;
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 22px;
+        }
+        .cover h1 {
+            color: var(--white); font-size: 44px; font-weight: 800;
+            line-height: 1.05; letter-spacing: -1px; margin-bottom: 18px;
+        }
+        .cover h1 span { color: var(--accent); }
+        .cover-sub {
+            color: rgba(255,255,255,0.55); font-size: 15px;
+            max-width: 540px; line-height: 1.7; margin-bottom: 36px;
+        }
+        .cover-stats-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+            max-width: 600px;
+        }
+        .cover-stat {
+            padding: 14px 16px; border-left: 3px solid var(--accent);
+            background: rgba(255,255,255,0.03);
+        }
+        .cover-stat .num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 22px; color: var(--accent); margin-bottom: 2px;
+        }
+        .cover-stat .lbl {
+            font-size: 9.5px; color: rgba(255,255,255,0.55);
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .cover-bot {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .cover-tagline {
+            color: var(--accent); font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 13px; letter-spacing: 4px;
+        }
+        .cover-doc {
+            color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif;
+            font-size: 10px; letter-spacing: 2px; text-align: right;
+        }
+        .cover-doc strong { color: rgba(255,255,255,0.7); display: block; font-size: 11px; margin-bottom: 4px; }
+
+        /* ============ PAGE 2: PAINS INDEX ============ */
+        .pain-intro {
+            font-size: 12.5px; color: rgba(44,44,44,0.75);
+            line-height: 1.7; margin-bottom: 18px;
+        }
+        .pain-list { display: flex; flex-direction: column; gap: 10px; }
+        .pain-row {
+            display: grid; grid-template-columns: 60px 1fr 90px;
+            gap: 18px; padding: 16px 18px; align-items: center;
+            border-radius: 10px; border: 1px solid rgba(239,68,68,0.12);
+            background: linear-gradient(90deg, rgba(239,68,68,0.04), rgba(255,255,255,0));
+        }
+        .pain-num {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: var(--danger); color: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px;
+        }
+        .pain-row h4 {
+            font-size: 13.5px; font-weight: 700; color: var(--primary); margin-bottom: 3px;
+        }
+        .pain-row p { font-size: 11px; color: rgba(44,44,44,0.7); line-height: 1.5; }
+        .pain-page {
+            font-family: 'Montserrat', sans-serif; font-size: 9.5px;
+            color: var(--accent); letter-spacing: 1px; text-align: right;
+            font-weight: 700;
+        }
+        .pain-page strong { display: block; font-size: 16px; color: var(--primary); margin-top: 2px; }
+
+        .index-promise {
+            margin-top: 18px; padding: 18px 22px;
+            background: var(--primary); border-radius: 10px;
+        }
+        .index-promise h5 {
+            color: var(--accent); font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .index-promise p {
+            color: rgba(255,255,255,0.78); font-size: 12px; line-height: 1.7;
+        }
+        .index-promise strong { color: var(--white); }
+
+        /* ============ PAIN PAGES ============ */
+        .pain-block {
+            background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(239,68,68,0.01));
+            border-left: 4px solid var(--danger);
+            padding: 18px 22px; border-radius: 8px;
+            margin-bottom: 14px;
+        }
+        .pain-block .pain-tag {
+            display: inline-block; padding: 3px 10px;
+            background: var(--danger); color: var(--white);
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 9px; letter-spacing: 2px;
+            border-radius: 50px; margin-bottom: 8px;
+        }
+        .pain-block h2 {
+            font-size: 22px; color: var(--primary); margin-bottom: 8px;
+            line-height: 1.2; font-weight: 800;
+        }
+        .pain-block .pain-quote {
+            font-size: 12.5px; color: rgba(44,44,44,0.78);
+            line-height: 1.7; font-style: italic;
+        }
+
+        .pain-symptoms {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin: 14px 0;
+        }
+        .symptom {
+            padding: 10px 12px; background: var(--white);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 8px;
+        }
+        .symptom .s-num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 18px; color: var(--danger); line-height: 1;
+        }
+        .symptom .s-lbl {
+            font-size: 10px; color: rgba(44,44,44,0.7);
+            margin-top: 4px; line-height: 1.4;
+        }
+
+        .heal-block {
+            background: linear-gradient(135deg, rgba(79,209,197,0.07), rgba(79,209,197,0.01));
+            border-left: 4px solid var(--accent);
+            padding: 18px 22px; border-radius: 8px;
+        }
+        .heal-block .heal-tag {
+            display: inline-block; padding: 3px 10px;
+            background: var(--accent); color: var(--primary);
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 9px; letter-spacing: 2px;
+            border-radius: 50px; margin-bottom: 8px;
+        }
+        .heal-block h2 {
+            font-size: 20px; color: var(--primary); margin-bottom: 6px;
+            line-height: 1.2; font-weight: 800;
+        }
+        .heal-block h2 .brand {
+            color: var(--accent-dark); font-weight: 800;
+        }
+        .heal-block .heal-promise {
+            font-size: 12.5px; color: rgba(44,44,44,0.78);
+            line-height: 1.7; margin-bottom: 12px;
+        }
+
+        .outcome-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 10px; margin-top: 10px;
+        }
+        .outcome {
+            padding: 10px 14px; background: var(--white);
+            border: 1px solid rgba(79,209,197,0.25); border-radius: 8px;
+            display: grid; grid-template-columns: 22px 1fr; gap: 10px;
+            align-items: start;
+        }
+        .outcome::before {
+            content: '\2713'; color: var(--accent-dark); font-weight: 800;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+        }
+        .outcome-body strong {
+            display: block; font-size: 11.5px; color: var(--primary);
+            font-family: 'Montserrat', sans-serif; font-weight: 700; margin-bottom: 2px;
+        }
+        .outcome-body span {
+            font-size: 10.5px; color: rgba(44,44,44,0.7); line-height: 1.5;
+        }
+
+        .impact-strip {
+            margin-top: 12px; padding: 12px 18px;
+            background: var(--primary); border-radius: 8px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+        }
+        .impact-strip .imp-num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 18px; color: var(--accent);
+        }
+        .impact-strip .imp-lbl {
+            font-size: 9.5px; color: rgba(255,255,255,0.6);
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
+            text-transform: uppercase; margin-top: 2px;
+        }
+
+        /* ============ PAGE 7: COMPOUND PAIN / SUITE ============ */
+        .suite-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+            margin-top: 12px;
+        }
+        .suite-card {
+            padding: 14px 16px; border-radius: 10px;
+            background: var(--white); border: 1px solid rgba(79,209,197,0.25);
+        }
+        .suite-card .sc-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 16px; color: var(--accent-dark); margin-bottom: 4px;
+        }
+        .suite-card .sc-tag {
+            font-size: 10px; color: var(--muted);
+            font-family: 'Montserrat', sans-serif; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 8px;
+        }
+        .suite-card .sc-body {
+            font-size: 11px; color: rgba(44,44,44,0.7); line-height: 1.55;
+        }
+
+        .suite-flow {
+            margin-top: 14px; padding: 16px;
+            background: var(--primary); border-radius: 10px;
+            color: var(--white);
+        }
+        .suite-flow h5 {
+            color: var(--accent); font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+        .suite-flow-row {
+            display: grid; grid-template-columns: 1fr 18px 1fr 18px 1fr 18px 1fr;
+            align-items: center; gap: 4px;
+        }
+        .sf-node {
+            padding: 10px 8px; border-radius: 8px;
+            background: rgba(79,209,197,0.1);
+            border: 1px solid rgba(79,209,197,0.3);
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px; font-weight: 700; color: var(--accent);
+        }
+        .sf-node .sf-sub {
+            display: block; font-family: 'Lato', sans-serif;
+            font-weight: 400; font-size: 9px;
+            color: rgba(255,255,255,0.55); margin-top: 2px;
+        }
+        .sf-arrow { text-align: center; color: var(--accent); font-size: 14px; }
+
+        /* ============ PAGE 8: HOW WE BUILD ============ */
+        .timeline {
+            position: relative; padding-left: 28px; margin-top: 8px;
+        }
+        .timeline::before {
+            content: ''; position: absolute; top: 8px; bottom: 8px; left: 11px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), rgba(79,209,197,0.2));
+        }
+        .tl-step { position: relative; margin-bottom: 18px; }
+        .tl-step::before {
+            content: ''; position: absolute; left: -22px; top: 4px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .tl-step-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .tl-step h4 {
+            font-size: 13.5px; font-weight: 700; color: var(--primary);
+        }
+        .tl-step .week {
+            font-family: 'Montserrat', sans-serif; font-size: 9.5px;
+            font-weight: 700; color: var(--accent);
+            padding: 3px 10px; background: rgba(79,209,197,0.1);
+            border-radius: 50px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .tl-step p { font-size: 11.5px; color: rgba(44,44,44,0.7); line-height: 1.65; }
+
+        .promise-bar {
+            margin-top: 16px; padding: 16px 20px;
+            background: linear-gradient(135deg, rgba(79,209,197,0.12), rgba(79,209,197,0.04));
+            border: 1px solid rgba(79,209,197,0.3); border-radius: 10px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .promise-badge {
+            flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px;
+            background: var(--accent); color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 18px; font-family: 'Montserrat', sans-serif;
+        }
+        .promise-bar p {
+            font-size: 12px; color: rgba(44,44,44,0.78); line-height: 1.65;
+        }
+        .promise-bar strong { color: var(--primary); }
+
+        /* ============ PAGE 9: INVESTMENT ============ */
+        .invest-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+            margin-bottom: 16px;
+        }
+        .invest-card {
+            padding: 18px 20px; border-radius: 10px;
+            background: var(--white); border: 1px solid rgba(10,25,47,0.1);
+            position: relative;
+        }
+        .invest-card.featured {
+            background: var(--primary); border-color: var(--primary);
+        }
+        .invest-card .ic-name {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 13px; color: var(--accent-dark);
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
+        }
+        .invest-card.featured .ic-name { color: var(--accent); }
+        .invest-card .ic-tag {
+            font-size: 10.5px; color: var(--muted); margin-bottom: 12px;
+            font-style: italic;
+        }
+        .invest-card.featured .ic-tag { color: rgba(255,255,255,0.5); }
+        .invest-card .ic-price {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 22px; color: var(--primary); line-height: 1; margin-bottom: 10px;
+        }
+        .invest-card.featured .ic-price { color: var(--white); }
+        .invest-card .ic-price .per {
+            font-size: 10px; color: var(--muted); font-weight: 500;
+        }
+        .invest-card.featured .ic-price .per { color: rgba(255,255,255,0.5); }
+        .invest-card ul {
+            list-style: none; margin-top: 6px;
+        }
+        .invest-card ul li {
+            font-size: 10.5px; color: rgba(44,44,44,0.78); padding: 3px 0 3px 16px;
+            position: relative; line-height: 1.5;
+        }
+        .invest-card.featured ul li { color: rgba(255,255,255,0.78); }
+        .invest-card ul li::before {
+            content: '\2713'; position: absolute; left: 0; top: 3px;
+            color: var(--accent); font-weight: 700; font-size: 10px;
+        }
+        .invest-card .feat-tag {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            padding: 3px 12px; background: var(--accent); color: var(--primary);
+            border-radius: 50px; font-family: 'Montserrat', sans-serif;
+            font-size: 8.5px; font-weight: 800; letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .invest-note {
+            padding: 14px 18px; background: var(--light); border-radius: 8px;
+            font-size: 11px; color: rgba(44,44,44,0.7); line-height: 1.6;
+        }
+        .invest-note strong { color: var(--primary); }
+
+        /* ============ PAGE 10: CTA ============ */
+        .cta-page {
+            background: var(--primary); height: 297mm;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 56px 48px; position: relative; overflow: hidden;
+        }
+        .cta-page::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(79, 209, 197, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 209, 197, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .cta-page::after {
+            content: ''; position: absolute;
+            bottom: 0; left: -20%; width: 700px; height: 500px;
+            background: radial-gradient(circle at 40% 70%, rgba(79, 209, 197, 0.12), transparent 70%);
+        }
+        .cta-top, .cta-mid, .cta-bot { position: relative; z-index: 1; }
+        .cta-mid h2 {
+            color: var(--white); font-size: 32px; font-weight: 800;
+            line-height: 1.1; margin-bottom: 14px; letter-spacing: -0.5px;
+        }
+        .cta-mid h2 span { color: var(--accent); }
+        .cta-mid .lead {
+            color: rgba(255,255,255,0.6); font-size: 13px;
+            max-width: 540px; line-height: 1.65; margin-bottom: 24px;
+        }
+        .cta-steps {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            margin-bottom: 24px;
+        }
+        .cta-step {
+            padding: 14px 16px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+        }
+        .cta-step-num {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 12px; color: var(--accent); margin-bottom: 6px;
+            letter-spacing: 3px;
+        }
+        .cta-step h5 {
+            font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 4px;
+        }
+        .cta-step p { font-size: 10.5px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+        .cta-contact {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .cta-contact-card {
+            padding: 14px 16px; background: rgba(79,209,197,0.08);
+            border: 1px solid rgba(79,209,197,0.25); border-radius: 10px;
+        }
+        .cta-contact-card .cc-label {
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            color: rgba(255,255,255,0.45); letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 6px;
+        }
+        .cta-contact-card .cc-value {
+            font-family: 'Montserrat', sans-serif; font-size: 12px;
+            font-weight: 700; color: var(--accent); word-break: break-word;
+        }
+        .cta-contact-card .cc-sub {
+            font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 4px;
+        }
+        .cta-bot {
+            padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cta-bot .sl {
+            color: var(--accent); font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 13px; letter-spacing: 4px;
+        }
+        .cta-bot .cp {
+            color: rgba(255,255,255,0.35); font-family: 'Montserrat', sans-serif;
+            font-size: 9px; letter-spacing: 1px;
+        }
+
+        /* PRINT BUTTON */
+        .print-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--primary); padding: 12px 24px;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+            z-index: 9999;
+        }
+        .print-bar span { color: rgba(255,255,255,0.6); font-size: 13px; font-family: 'Montserrat', sans-serif; }
+        .print-btn {
+            padding: 8px 24px; border-radius: 6px; border: none;
+            background: var(--accent); color: var(--primary);
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar">
+    <span>Sentra Suite — Client Brochure</span>
+    <button class="print-btn" onclick="window.print()">Save as PDF</button>
+</div>
+
+<!-- ============ PAGE 1: COVER ============ -->
+<div class="page cover">
+    <div class="cover-top">
+        <div class="cover-logo">SENTRA</div>
+        <div class="cover-year">2026 &middot; THE SENTRA SUITE</div>
+    </div>
+    <div class="cover-mid">
+        <div class="cover-badge">Designed Around How Your Business Actually Works</div>
+        <h1>Software That<br><span>Heals Your Operations.</span></h1>
+        <p class="cover-sub">
+            Most businesses don't need more tools. They need fewer wounds. Sentra builds the platform your team actually wishes they had &mdash; purpose-built around your workflow, branded as your own, and live in weeks, not years.
+        </p>
+        <div class="cover-stats-row">
+            <div class="cover-stat">
+                <div class="num">$2.1M+</div>
+                <div class="lbl">Avg. yearly saving</div>
+            </div>
+            <div class="cover-stat">
+                <div class="num">4&ndash;6 wks</div>
+                <div class="lbl">From signed to live</div>
+            </div>
+            <div class="cover-stat">
+                <div class="num">100%</div>
+                <div class="lbl">Your brand. Your IP.</div>
+            </div>
+        </div>
+    </div>
+    <div class="cover-bot">
+        <div class="cover-tagline">SMART. SECURE. SENTRA.</div>
+        <div class="cover-doc">
+            <strong>FOR YOUR REVIEW</strong>
+            ENTERPRISE PROSPECTUS
+        </div>
+    </div>
+</div>
+
+<!-- ============ PAGE 2: PAINS INDEX ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Where It Hurts</div>
+            <h2 class="page-title">Five Pains <span>Bleeding Your Business Dry.</span></h2>
+        </div>
+        <p class="pain-intro">
+            Every growing business reaches a point where the systems that got it here become the things slowing it down. Below are the five wounds we see in nearly every operation we walk into. If two or more sound familiar, this brochure is for you &mdash; each pain has a page that shows exactly how we heal it.
+        </p>
+        <div class="pain-list">
+            <div class="pain-row">
+                <div class="pain-num">1</div>
+                <div>
+                    <h4>Your business runs on spreadsheets and email.</h4>
+                    <p>Nothing connects. Numbers never agree. Every report is a fresh argument.</p>
+                </div>
+                <div class="pain-page">Heal on<strong>Page 03</strong></div>
+            </div>
+            <div class="pain-row">
+                <div class="pain-num">2</div>
+                <div>
+                    <h4>Customer messages slip through the cracks.</h4>
+                    <p>WhatsApp, email, web chat, calls &mdash; nothing in one place. Customers wait. Some never come back.</p>
+                </div>
+                <div class="pain-page">Heal on<strong>Page 04</strong></div>
+            </div>
+            <div class="pain-row">
+                <div class="pain-num">3</div>
+                <div>
+                    <h4>Your team's knowledge walks out the door every quarter.</h4>
+                    <p>The answer to every question lives inside one busy person's head. Nobody else can find it.</p>
+                </div>
+                <div class="pain-page">Heal on<strong>Page 05</strong></div>
+            </div>
+            <div class="pain-row">
+                <div class="pain-num">4</div>
+                <div>
+                    <h4>You can't see what's actually happening in your own business.</h4>
+                    <p>Reports arrive late. Numbers disagree. By the time you spot a problem, it's already cost you.</p>
+                </div>
+                <div class="pain-page">Heal on<strong>Page 06</strong></div>
+            </div>
+            <div class="pain-row">
+                <div class="pain-num">5</div>
+                <div>
+                    <h4>All of the above. Every single day.</h4>
+                    <p>Each problem feeds the next. Your team is exhausted, your customers are slipping, your margin is shrinking.</p>
+                </div>
+                <div class="pain-page">Heal on<strong>Page 07</strong></div>
+            </div>
+        </div>
+        <div class="index-promise">
+            <h5>Our Promise</h5>
+            <p>We don't sell software you have to learn. <strong>We build the platform around how your business already works</strong> &mdash; your terminology, your processes, your brand. Your team feels at home from day one. Your customers see software that looks like you built it yourself.</p>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>02</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 3: PAIN 1 - ATLAS ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Pain &middot; 01</div>
+            <h2 class="page-title">Your Business Runs on <span>Spreadsheets and Email.</span></h2>
+        </div>
+
+        <div class="pain-block">
+            <span class="pain-tag">THE WOUND</span>
+            <h2>Twelve Tools. Zero Truth.</h2>
+            <p class="pain-quote">
+                Sales lives in one app. Inventory in another. Accounting in a third. HR somewhere on a shared drive. Every Monday someone is rebuilding the same report from scratch &mdash; and getting different numbers each time. Decisions are guesses dressed in spreadsheets.
+            </p>
+        </div>
+
+        <div class="pain-symptoms">
+            <div class="symptom"><div class="s-num">14 hrs</div><div class="s-lbl">Per week your team loses just moving data between tools</div></div>
+            <div class="symptom"><div class="s-num">$3.2K</div><div class="s-lbl">Per month wasted on tools that almost-but-don't connect</div></div>
+            <div class="symptom"><div class="s-num">2&ndash;3 wks</div><div class="s-lbl">Behind on your real numbers at any given moment</div></div>
+        </div>
+
+        <div class="heal-block">
+            <span class="heal-tag">HOW WE HEAL IT</span>
+            <h2>Meet <span class="brand">ATLAS</span> &mdash; Your Business, Unified.</h2>
+            <p class="heal-promise">
+                One platform that holds your entire operation: sales, inventory, invoicing, accounting, projects, HR, fleet &mdash; all in one place, all branded as yours, all talking to each other in real time. Your team logs in once and sees the whole business at a glance.
+            </p>
+            <div class="outcome-grid">
+                <div class="outcome"><div class="outcome-body"><strong>One source of truth</strong><span>Sales, stock, money &mdash; the same numbers everywhere, always.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Time back to your team</strong><span>The data-shuffling work simply disappears. Hours per person, every week.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Reports without arguments</strong><span>Every report comes from the same live data. Decisions get faster.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Built around your business</strong><span>Your products, your prices, your terminology, your branding. Nothing generic about it.</span></div></div>
+            </div>
+        </div>
+
+        <div class="impact-strip">
+            <div><div class="imp-num">14 &rarr; 2 hrs</div><div class="imp-lbl">Weekly admin per person</div></div>
+            <div><div class="imp-num">$38K+</div><div class="imp-lbl">Annual saving on tool sprawl</div></div>
+            <div><div class="imp-num">Real-time</div><div class="imp-lbl">Visibility for leadership</div></div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>03</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 4: PAIN 2 - ECHO ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Pain &middot; 02</div>
+            <h2 class="page-title">Customer Messages <span>Slip Through the Cracks.</span></h2>
+        </div>
+
+        <div class="pain-block">
+            <span class="pain-tag">THE WOUND</span>
+            <h2>Seven Inboxes. One Frustrated Customer.</h2>
+            <p class="pain-quote">
+                A customer messages on WhatsApp. Then emails. Then calls. Three different people on your team see three different parts of the conversation &mdash; and none of them know the customer just bought from you last week. By the time someone responds, the customer has already messaged your competitor.
+            </p>
+        </div>
+
+        <div class="pain-symptoms">
+            <div class="symptom"><div class="s-num">18%</div><div class="s-lbl">Of customer messages go unanswered for over 24 hours</div></div>
+            <div class="symptom"><div class="s-num">4.2 hrs</div><div class="s-lbl">Per person per day spent checking inboxes that should check themselves</div></div>
+            <div class="symptom"><div class="s-num">~30%</div><div class="s-lbl">Of unanswered enquiries quietly become lost revenue</div></div>
+        </div>
+
+        <div class="heal-block">
+            <span class="heal-tag">HOW WE HEAL IT</span>
+            <h2>Meet <span class="brand">ECHO</span> &mdash; Your Always-On Customer Command Centre.</h2>
+            <p class="heal-promise">
+                One screen where every customer message lands &mdash; WhatsApp, email, web chat, social, phone. Your AI assistant drafts replies in your voice, hands the tricky ones to your team, and never forgets a customer's history. Your customers feel heard. Your team finally catches its breath.
+            </p>
+            <div class="outcome-grid">
+                <div class="outcome"><div class="outcome-body"><strong>Every message in one place</strong><span>WhatsApp, email, chat, social &mdash; one screen, full conversation history, full customer record.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Replies in seconds, not hours</strong><span>Your AI drafts the answer in your tone. Your team approves and sends in one click.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Nothing falls through</strong><span>Auto-routing, escalations, SLA alerts. Every message is owned by someone, every time.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Customers feel the difference</strong><span>Faster, smarter, more personal &mdash; even at 2am when your team is asleep.</span></div></div>
+            </div>
+        </div>
+
+        <div class="impact-strip">
+            <div><div class="imp-num">&lt;2 min</div><div class="imp-lbl">Average first response</div></div>
+            <div><div class="imp-num">+$540K</div><div class="imp-lbl">Annual recovered revenue</div></div>
+            <div><div class="imp-num">24/7</div><div class="imp-lbl">Never closed, never asleep</div></div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>04</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 5: PAIN 3 - CORTEX ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Pain &middot; 03</div>
+            <h2 class="page-title">Your Team's Knowledge <span>Walks Out the Door.</span></h2>
+        </div>
+
+        <div class="pain-block">
+            <span class="pain-tag">THE WOUND</span>
+            <h2>The Answer to Every Question Lives in One Person's Head.</h2>
+            <p class="pain-quote">
+                When your senior person is on holiday, work stops. New hires take six months to become useful. Half your meetings are people asking each other questions that already have answers somewhere in the company &mdash; in someone's email, on a forgotten document, in a Slack thread from 2023. The knowledge is there. Nobody can find it.
+            </p>
+        </div>
+
+        <div class="pain-symptoms">
+            <div class="symptom"><div class="s-num">~6 mo</div><div class="s-lbl">For a new hire to become genuinely productive</div></div>
+            <div class="symptom"><div class="s-num">2 hrs/day</div><div class="s-lbl">Each person loses re-asking what's already known</div></div>
+            <div class="symptom"><div class="s-num">100%</div><div class="s-lbl">Risk that critical knowledge leaves with one resignation</div></div>
+        </div>
+
+        <div class="heal-block">
+            <span class="heal-tag">HOW WE HEAL IT</span>
+            <h2>Meet <span class="brand">CORTEX</span> &mdash; Your Company's Mind, On Demand.</h2>
+            <p class="heal-promise">
+                A private AI assistant trained on your documents, your processes, your way of doing things. Anyone in your team can ask anything &mdash; "how do we handle a refund?", "what's the policy for X?", "what did we agree with this client?" &mdash; and get the right answer instantly, with the source. Your knowledge stops walking out the door.
+            </p>
+            <div class="outcome-grid">
+                <div class="outcome"><div class="outcome-body"><strong>Every answer, in seconds</strong><span>Ask anything in plain English (or WhatsApp). Get the answer with a citation to the source.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Onboarding cut in half</strong><span>New hires have a senior teammate available 24/7. They become useful in weeks, not months.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Your knowledge, your data</strong><span>Lives entirely on your private platform. Never shared. Never used to train anyone else.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Always up to date</strong><span>Connects to your live documents. Edit a policy &mdash; the answers update automatically.</span></div></div>
+            </div>
+        </div>
+
+        <div class="impact-strip">
+            <div><div class="imp-num">~2,400 hrs</div><div class="imp-lbl">Per year reclaimed across the team</div></div>
+            <div><div class="imp-num">3&times; faster</div><div class="imp-lbl">New-hire onboarding</div></div>
+            <div><div class="imp-num">Private</div><div class="imp-lbl">Your data, never leaves you</div></div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>05</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 6: PAIN 4 - LENS ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Pain &middot; 04</div>
+            <h2 class="page-title">You Can't See What's Happening <span>In Your Own Business.</span></h2>
+        </div>
+
+        <div class="pain-block">
+            <span class="pain-tag">THE WOUND</span>
+            <h2>By the Time the Report Lands, the Damage Is Done.</h2>
+            <p class="pain-quote">
+                You ask a simple question on Monday &mdash; "how are sales tracking?" &mdash; and the answer comes Friday, in a slide deck, with caveats. The number that mattered most this week was a number you didn't even know to look for. Problems aren't caught early. They're discovered in hindsight, after they've already cost you.
+            </p>
+        </div>
+
+        <div class="pain-symptoms">
+            <div class="symptom"><div class="s-num">3&ndash;5 days</div><div class="s-lbl">Lag between something happening and you knowing about it</div></div>
+            <div class="symptom"><div class="s-num">~12 hrs</div><div class="s-lbl">Per week your finance/ops team spends building reports</div></div>
+            <div class="symptom"><div class="s-num">Reactive</div><div class="s-lbl">Decisions made after the fact, never ahead of it</div></div>
+        </div>
+
+        <div class="heal-block">
+            <span class="heal-tag">HOW WE HEAL IT</span>
+            <h2>Meet <span class="brand">LENS</span> &mdash; The Business, Live.</h2>
+            <p class="heal-promise">
+                A live dashboard built around the numbers you actually care about &mdash; updated the moment they change. Your AI watches them around the clock. The instant something looks off, it sends you a WhatsApp message explaining what happened and what to look at. You stop chasing yesterday's numbers and start steering today's business.
+            </p>
+            <div class="outcome-grid">
+                <div class="outcome"><div class="outcome-body"><strong>Live, every metric that matters</strong><span>Sales, cash, fulfilment, satisfaction &mdash; updated in real time, on every screen.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>The AI watches when you can't</strong><span>Anomalies, drops, surges &mdash; explained in plain English, sent to your WhatsApp.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Less reporting, more deciding</strong><span>Reports run themselves. Your team gets back the day they used to lose to slides.</span></div></div>
+                <div class="outcome"><div class="outcome-body"><strong>Daily executive briefings</strong><span>A 60-second AI summary of what changed, every morning, on your phone.</span></div></div>
+            </div>
+        </div>
+
+        <div class="impact-strip">
+            <div><div class="imp-num">Real-time</div><div class="imp-lbl">No more end-of-month surprises</div></div>
+            <div><div class="imp-num">12 &rarr; 0 hrs</div><div class="imp-lbl">Weekly report-building</div></div>
+            <div><div class="imp-num">Proactive</div><div class="imp-lbl">Catch problems before they cost</div></div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>06</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 7: PAIN 5 - SUITE ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Pain &middot; 05</div>
+            <h2 class="page-title">All Of The Above. <span>Every Single Day.</span></h2>
+        </div>
+
+        <div class="pain-block">
+            <span class="pain-tag">THE COMPOUND WOUND</span>
+            <h2>One Pain Feeds the Next.</h2>
+            <p class="pain-quote">
+                The chaos in your tools makes customer responses slow. Slow responses lose deals. Lost deals make your numbers worse. Bad numbers hide the real problem. The real problem stays hidden because nobody can find the answer. Your team works harder and harder &mdash; on the wrong things. This is the real wound.
+            </p>
+        </div>
+
+        <div class="heal-block">
+            <span class="heal-tag">HOW WE HEAL IT</span>
+            <h2>The Full <span class="brand">Sentra Suite</span> &mdash; Working as One.</h2>
+            <p class="heal-promise">
+                When all four products work together, each one makes the others stronger. Your operations system feeds your customer command centre. Your customer conversations train your AI brain. Your AI brain explains what's happening in your live dashboard. Your dashboard tells your team what to fix next. The cycle becomes virtuous instead of vicious.
+            </p>
+            <div class="suite-grid">
+                <div class="suite-card">
+                    <div class="sc-name">ATLAS</div>
+                    <div class="sc-tag">The Operating System</div>
+                    <div class="sc-body">Your sales, inventory, accounting, HR, projects &mdash; one connected platform.</div>
+                </div>
+                <div class="suite-card">
+                    <div class="sc-name">ECHO</div>
+                    <div class="sc-tag">The Customer Centre</div>
+                    <div class="sc-body">Every customer conversation in one place, with AI on hand to help reply.</div>
+                </div>
+                <div class="suite-card">
+                    <div class="sc-name">CORTEX</div>
+                    <div class="sc-tag">The Company Brain</div>
+                    <div class="sc-body">Your private AI assistant, trained on your documents and your way of working.</div>
+                </div>
+                <div class="suite-card">
+                    <div class="sc-name">LENS</div>
+                    <div class="sc-tag">The Live Dashboard</div>
+                    <div class="sc-body">Real-time visibility, AI alerts, executive briefings on your phone.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="suite-flow">
+            <h5>How It All Connects</h5>
+            <div class="suite-flow-row">
+                <div class="sf-node">ATLAS<span class="sf-sub">runs the business</span></div>
+                <div class="sf-arrow">&rarr;</div>
+                <div class="sf-node">ECHO<span class="sf-sub">talks to customers</span></div>
+                <div class="sf-arrow">&rarr;</div>
+                <div class="sf-node">CORTEX<span class="sf-sub">answers questions</span></div>
+                <div class="sf-arrow">&rarr;</div>
+                <div class="sf-node">LENS<span class="sf-sub">shows you everything</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>07</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 8: HOW WE BUILD ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">How We Build It</div>
+            <h2 class="page-title">From Signed To Live <span>In Weeks. Not Years.</span></h2>
+        </div>
+        <p class="pain-intro">
+            We don't disappear into a six-month black box. Every Friday, you see real progress. Every milestone, you decide whether to move forward. There are no surprises, no scope creep, no junior consultants reading from a script &mdash; just one senior team building your platform alongside you.
+        </p>
+
+        <div class="timeline">
+            <div class="tl-step">
+                <div class="tl-step-head"><h4>1. Discovery &amp; Design</h4><span class="week">Week 1</span></div>
+                <p>A senior engineer sits with you and your team. We learn how your business actually works &mdash; the language, the workflow, the quirks. You leave the week with a clear written plan and a fixed price.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-step-head"><h4>2. Built Around Your Business</h4><span class="week">Weeks 2&ndash;3</span></div>
+                <p>Your platform takes shape with your branding, your terminology, your workflows. You see live progress on Friday demos &mdash; never a surprise at the end. We adjust as you watch, not after.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-step-head"><h4>3. AI &amp; Integrations</h4><span class="week">Weeks 3&ndash;5</span></div>
+                <p>Your AI assistants learn your data, your tone, your processes. We connect everything that needs to talk to your existing tools, your bank, your suppliers, your channels. Your team starts test-driving real workflows.</p>
+            </div>
+            <div class="tl-step">
+                <div class="tl-step-head"><h4>4. Launch &amp; Aftercare</h4><span class="week">Week 5&ndash;6</span></div>
+                <p>We move you to live, with hand-holding training, a written runbook, and a senior engineer on call. The platform is yours &mdash; full IP, full ownership, no lock-in. We stay on as your support team for as long as you want us.</p>
+            </div>
+        </div>
+
+        <div class="promise-bar">
+            <div class="promise-badge">&#10003;</div>
+            <p><strong>Our risk-reversal:</strong> If the first milestone doesn't meet the specification we agreed in writing, you don't pay for it. That's how confident we are in this delivery model &mdash; and how much we respect your time and money.</p>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>08</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 9: INVESTMENT ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-label">Investment</div>
+            <h2 class="page-title">Transparent Pricing. <span>No Surprises.</span></h2>
+        </div>
+        <p class="pain-intro">
+            Every engagement is quoted with a fixed scope and a fixed price &mdash; you know exactly what you're paying before we begin. Below are typical starting ranges. Final pricing is set during discovery, based on the size of your team and how deeply we tailor the platform to your workflow.
+        </p>
+
+        <div class="invest-grid">
+            <div class="invest-card">
+                <div class="ic-name">SINGLE PRODUCT</div>
+                <div class="ic-tag">One product, fully built and branded for you</div>
+                <div class="ic-price">From $9K<span class="per"> &middot; one-time setup</span></div>
+                <ul>
+                    <li>Choose Atlas, Echo, Cortex, or Lens</li>
+                    <li>Branded as your platform</li>
+                    <li>Built around your workflow</li>
+                    <li>Live in 4 weeks</li>
+                    <li>30 days post-launch support included</li>
+                </ul>
+            </div>
+            <div class="invest-card featured">
+                <span class="feat-tag">Most Popular</span>
+                <div class="ic-name">THE FULL SUITE</div>
+                <div class="ic-tag">All four products, built to work as one platform</div>
+                <div class="ic-price">From $42K<span class="per"> &middot; one-time setup</span></div>
+                <ul>
+                    <li>Atlas + Echo + Cortex + Lens</li>
+                    <li>25% suite discount applied</li>
+                    <li>Deep integration between all four</li>
+                    <li>AI assistants across the platform</li>
+                    <li>Live in 6 weeks</li>
+                    <li>60 days post-launch support included</li>
+                </ul>
+            </div>
+            <div class="invest-card">
+                <div class="ic-name">ONGOING SUPPORT</div>
+                <div class="ic-tag">Hosting, monitoring, optimisation</div>
+                <div class="ic-price">From $400<span class="per"> / month</span></div>
+                <ul>
+                    <li>Hosting + uptime monitoring</li>
+                    <li>Security patches and upgrades</li>
+                    <li>Priority support &amp; on-call response</li>
+                    <li>Quarterly improvement cycles</li>
+                    <li>Cancel any time, 30 days notice</li>
+                </ul>
+            </div>
+            <div class="invest-card">
+                <div class="ic-name">CUSTOM ENGAGEMENTS</div>
+                <div class="ic-tag">Multi-entity, complex integrations, large teams</div>
+                <div class="ic-price">Quoted<span class="per"> &middot; on enquiry</span></div>
+                <ul>
+                    <li>500+ user deployments</li>
+                    <li>Multi-country / multi-entity</li>
+                    <li>Bespoke modules &amp; integrations</li>
+                    <li>Dedicated senior engineering team</li>
+                    <li>Enterprise SLAs &amp; compliance</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="invest-note">
+            <strong>Payment schedule:</strong> 50% on kickoff, 50% on go-live. Monthly support billed in advance. <strong>Risk-reversal:</strong> If the first milestone doesn't match the written specification, the milestone is waived and the kickoff payment is refunded &mdash; you walk away whole.
+        </div>
+    </div>
+    <div class="page-footer">
+        <span>SENTRA SUITE &middot; CLIENT BROCHURE</span>
+        <span>PAGE <strong>09</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 10: CTA ============ -->
+<div class="page cta-page">
+    <div class="cta-top">
+        <div class="cover-badge">Your Next Step</div>
+    </div>
+    <div class="cta-mid">
+        <h2>Let's Heal These Pains.<br><span>Tell Us Where It Hurts.</span></h2>
+        <p class="lead">
+            A free 30-minute call with a senior engineer. No slide decks, no sales pitch &mdash; just a straight conversation about what's slowing your business down and whether the Sentra Suite is the right cure. You decide whether it's worth a second call.
+        </p>
+        <div class="cta-steps">
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 01</div>
+                <h5>Tell us the pain</h5>
+                <p>Email or WhatsApp a one-line description of what hurts most. That's all we need to start.</p>
+            </div>
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 02</div>
+                <h5>30-minute call</h5>
+                <p>We'll ask smart questions and tell you honestly whether we can help &mdash; or whether you need someone else.</p>
+            </div>
+            <div class="cta-step">
+                <div class="cta-step-num">STEP 03</div>
+                <h5>Written plan</h5>
+                <p>If there's a fit, you get a fixed-scope, fixed-price proposal and timeline within a week.</p>
+            </div>
+        </div>
+        <div class="cta-contact">
+            <div class="cta-contact-card">
+                <div class="cc-label">Email</div>
+                <div class="cc-value">contact.sentra.technologies@gmail.com</div>
+                <div class="cc-sub">Answered within 24 hours by a senior engineer</div>
+            </div>
+            <div class="cta-contact-card">
+                <div class="cc-label">WhatsApp &middot; Direct</div>
+                <div class="cc-value">+94 70 466 9834</div>
+                <div class="cc-sub">For faster conversations &mdash; we prefer WhatsApp for enterprise clients</div>
+            </div>
+        </div>
+    </div>
+    <div class="cta-bot">
+        <div class="sl">SMART. SECURE. SENTRA.</div>
+        <div class="cp">&copy; 2026 SENTRA TECHNOLOGIES &middot; CONFIDENTIAL</div>
+    </div>
+</div>
+
+</body>
+</html>

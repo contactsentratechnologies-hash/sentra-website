@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentra Suite — Internal Technical Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4; margin: 0; }
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page { page-break-after: always; break-after: page; margin: 0 !important; box-shadow: none !important; }
+            .page:last-child { page-break-after: avoid; }
+            .print-bar { display: none !important; }
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0A192F;
+            --secondary: #1F4068;
+            --accent: #4FD1C5;
+            --accent-dark: #2C9E95;
+            --light: #F5F2E7;
+            --dark: #2C2C2C;
+            --muted: #6b7280;
+            --white: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --code-bg: #0f1f3a;
+            --code-fg: #b8e6df;
+        }
+        body {
+            font-family: 'Lato', sans-serif; color: var(--dark);
+            background: #e8e8e8; line-height: 1.55;
+        }
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; line-height: 1.2; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .page {
+            width: 210mm; height: 297mm;
+            margin: 16px auto; background: var(--white);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            position: relative; overflow: hidden;
+        }
+        .page-inner { padding: 24px 32px 44px; height: 100%; }
+
+        .page-footer {
+            position: absolute; bottom: 14px; left: 36px; right: 36px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Montserrat', sans-serif; font-size: 8.5px;
+            color: rgba(10,25,47,0.4); letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .page-footer strong { color: var(--accent); font-weight: 700; }
+        .page-footer .conf { color: var(--danger); font-weight: 700; }
+
+        /* COMMON HEADER */
+        .page-header {
+            margin-bottom: 14px; padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: end;
+        }
+        .page-header-l .page-label {
+            font-family: 'Montserrat', sans-serif; font-weight: 600;
+            font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 4px;
+        }
+        .page-header-l .page-title {
+            font-size: 20px; font-weight: 700; color: var(--primary); line-height: 1.15;
+        }
+        .page-header-l .page-title span { color: var(--accent); }
+        .page-header-r {
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+            text-align: right;
+        }
+        .page-header-r strong { display: block; color: var(--primary); font-size: 11px; letter-spacing: 1.5px; }
+
+        /* COVER */
+        .cover {
+            background: var(--primary);
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 48px 40px; position: relative; overflow: hidden;
+            height: 297mm;
+        }
+        .cover::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(79, 209, 197, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(79, 209, 197, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .cover::after {
+            content: ''; position: absolute;
+            top: -10%; right: -15%; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(79, 209, 197, 0.18), transparent 70%);
+            border-radius: 50%;
+        }
+        .c-top, .c-mid, .c-bot { position: relative; z-index: 1; }
+        .c-top { display: flex; align-items: center; justify-content: space-between; }
+        .c-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--accent); font-size: 20px; letter-spacing: 2px; }
+        .c-meta { color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 2px; text-align: right; }
+        .c-conf {
+            display: inline-block; padding: 6px 14px;
+            background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4);
+            color: var(--danger); border-radius: 50px;
+            font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700;
+            letter-spacing: 3px; margin-bottom: 22px;
+        }
+        .cover h1 { color: var(--white); font-size: 38px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+        .cover h1 span { color: var(--accent); }
+        .cover-tagline { color: rgba(255,255,255,0.55); font-size: 14px; max-width: 540px; line-height: 1.7; margin-bottom: 32px; }
+        .cover-meta-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+            max-width: 600px;
+        }
+        .cmg-cell {
+            padding: 12px 16px; border-left: 3px solid var(--accent);
+            background: rgba(255,255,255,0.04);
+        }
+        .cmg-cell .k { font-size: 9px; color: rgba(255,255,255,0.5); font-family: 'Montserrat', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+        .cmg-cell .v { font-size: 13px; color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 700; margin-top: 2px; }
+        .cmg-cell .v.accent { color: var(--accent); }
+        .c-bot { padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
+        .c-bot .lo { color: var(--accent); font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 4px; }
+        .c-bot .ri { color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif; font-size: 9px; letter-spacing: 1px; text-align: right; }
+
+        /* BODY ELEMENTS */
+        .intro {
+            font-size: 10.5px; color: rgba(44,44,44,0.78);
+            line-height: 1.55; margin-bottom: 8px;
+        }
+        h3.section {
+            font-size: 12px; font-weight: 700; color: var(--primary);
+            margin: 8px 0 5px; padding-left: 8px;
+            border-left: 3px solid var(--accent);
+            letter-spacing: 0.3px;
+        }
+        h4.subsection {
+            font-size: 10.5px; font-weight: 700; color: var(--primary);
+            margin: 8px 0 4px;
+            font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        p { font-size: 10.5px; line-height: 1.5; color: rgba(44,44,44,0.78); }
+        ul.bul, ol.bul {
+            list-style: none; margin: 4px 0 6px;
+        }
+        ul.bul li, ol.bul li {
+            font-size: 10px; color: rgba(44,44,44,0.8);
+            padding: 2px 0 2px 16px; position: relative; line-height: 1.45;
+        }
+        ul.bul li::before {
+            content: ''; position: absolute; left: 4px; top: 10px;
+            width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+        }
+        ol.bul { counter-reset: ol; }
+        ol.bul li::before {
+            counter-increment: ol; content: counter(ol) '.';
+            position: absolute; left: 0; top: 3px;
+            color: var(--accent); font-weight: 700; font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+        }
+        ul.bul li strong, ol.bul li strong { color: var(--primary); }
+
+        /* TABLES */
+        table.spec {
+            width: 100%; border-collapse: collapse; margin: 5px 0 7px;
+            font-size: 9.5px;
+        }
+        table.spec thead th {
+            background: var(--primary); color: var(--accent);
+            padding: 5px 8px; text-align: left;
+            font-family: 'Montserrat', sans-serif; font-size: 8.5px;
+            letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+        }
+        table.spec thead th:first-child { border-top-left-radius: 6px; }
+        table.spec thead th:last-child { border-top-right-radius: 6px; }
+        table.spec tbody td {
+            padding: 4px 8px; border-bottom: 1px solid rgba(10,25,47,0.07);
+            color: rgba(44,44,44,0.85); vertical-align: top; line-height: 1.4;
+        }
+        table.spec tbody tr:nth-child(odd) td { background: rgba(245,242,231,0.4); }
+        table.spec tbody td.mono { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--accent-dark); }
+        table.spec tbody td strong { color: var(--primary); }
+        table.spec tbody td .pill {
+            display: inline-block; padding: 1px 7px; border-radius: 50px;
+            font-family: 'Montserrat', sans-serif; font-size: 8px; font-weight: 700;
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .pill.ok { background: rgba(16,185,129,0.15); color: var(--success); }
+        .pill.warn { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .pill.bad { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .pill.info { background: rgba(79,209,197,0.15); color: var(--accent-dark); }
+
+        /* CODE BLOCK */
+        pre.code {
+            background: var(--code-bg); color: var(--code-fg);
+            padding: 7px 12px; border-radius: 5px; margin: 5px 0;
+            font-size: 9px; line-height: 1.5;
+            font-family: 'JetBrains Mono', monospace;
+            border-left: 3px solid var(--accent);
+            overflow: hidden;
+        }
+        pre.code .cmt { color: rgba(184,230,223,0.45); }
+        pre.code .key { color: #ffd479; }
+        code.inline {
+            background: rgba(10,25,47,0.06); padding: 1px 6px;
+            border-radius: 3px; font-size: 9.5px; color: var(--accent-dark);
+        }
+
+        /* CALLOUTS */
+        .callout {
+            padding: 7px 12px; border-radius: 5px; margin: 6px 0;
+            border-left: 3px solid; font-size: 10px; line-height: 1.5;
+        }
+        .callout.note { background: rgba(79,209,197,0.06); border-color: var(--accent); color: rgba(44,44,44,0.85); }
+        .callout.warn { background: rgba(245,158,11,0.06); border-color: var(--warning); color: rgba(44,44,44,0.85); }
+        .callout.danger { background: rgba(239,68,68,0.06); border-color: var(--danger); color: rgba(44,44,44,0.85); }
+        .callout strong { color: var(--primary); }
+        .callout .lbl {
+            font-family: 'Montserrat', sans-serif; font-size: 8.5px;
+            font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            margin-right: 8px;
+        }
+        .callout.note .lbl { color: var(--accent-dark); }
+        .callout.warn .lbl { color: var(--warning); }
+        .callout.danger .lbl { color: var(--danger); }
+
+        /* TWO-COL */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+        /* ARCHITECTURE DIAGRAM */
+        .arch {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 16px; border-radius: 8px; color: var(--white);
+            margin: 8px 0;
+        }
+        .arch h5 {
+            color: var(--accent); font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+        .arch-layer {
+            display: grid; gap: 6px; margin-bottom: 6px;
+        }
+        .al-row {
+            display: flex; align-items: center; gap: 4px;
+            justify-content: center;
+        }
+        .al-box {
+            flex: 1; padding: 8px 6px; border-radius: 6px;
+            background: rgba(79,209,197,0.1); border: 1px solid rgba(79,209,197,0.3);
+            text-align: center;
+            font-family: 'Montserrat', sans-serif; font-size: 9px;
+            font-weight: 700; color: var(--accent);
+        }
+        .al-box .sub {
+            display: block; font-family: 'Lato', sans-serif; font-weight: 400;
+            font-size: 8px; color: rgba(255,255,255,0.55); margin-top: 1px;
+        }
+        .al-box.primary { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); color: var(--white); }
+        .al-arrow { color: var(--accent); font-size: 14px; padding: 0 2px; }
+        .al-label {
+            font-family: 'Montserrat', sans-serif; font-size: 8.5px;
+            color: rgba(255,255,255,0.5); letter-spacing: 1.5px;
+            text-transform: uppercase; text-align: left;
+            padding: 4px 0; margin-top: 2px;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        /* MASTER-DUPLICATE FLOW */
+        .md-flow {
+            margin: 8px 0;
+            display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr;
+            gap: 8px; align-items: center;
+        }
+        .md-node {
+            padding: 12px 10px; background: var(--white);
+            border: 2px solid var(--accent); border-radius: 8px;
+            text-align: center;
+        }
+        .md-node.master { background: var(--primary); border-color: var(--primary); color: var(--white); }
+        .md-node h6 {
+            font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+            color: var(--primary); margin-bottom: 3px;
+        }
+        .md-node.master h6 { color: var(--accent); }
+        .md-node p { font-size: 9.5px; line-height: 1.4; color: rgba(44,44,44,0.7); }
+        .md-node.master p { color: rgba(255,255,255,0.6); }
+        .md-arrow { text-align: center; color: var(--accent); font-size: 18px; }
+
+        /* PRINT BAR */
+        .print-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: var(--primary); padding: 12px 24px;
+            display: flex; align-items: center; justify-content: center; gap: 16px;
+            z-index: 9999;
+        }
+        .print-bar span { color: rgba(255,255,255,0.6); font-size: 13px; font-family: 'Montserrat', sans-serif; }
+        .print-btn {
+            padding: 8px 24px; border-radius: 6px; border: none;
+            background: var(--accent); color: var(--primary);
+            font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar">
+    <span>Sentra Suite — Internal Technical Reference v1.0 — CONFIDENTIAL</span>
+    <button class="print-btn" onclick="window.print()">Save as PDF</button>
+</div>
+
+<!-- ============ PAGE 1: COVER ============ -->
+<div class="page cover">
+    <div class="c-top">
+        <div class="c-logo">SENTRA</div>
+        <div class="c-meta">v1.0 &middot; 2026<br>FOR INTERNAL USE</div>
+    </div>
+    <div class="c-mid">
+        <div class="c-conf">CONFIDENTIAL &middot; SENTRA STAFF ONLY</div>
+        <h1>Sentra Suite<br><span>Internal Technical Reference.</span></h1>
+        <p class="cover-tagline">
+            The single source of truth for what we sell, what's inside it, how we deploy it, and what it costs. Read by every engineer, salesperson, and director before their first client conversation.
+        </p>
+        <div class="cover-meta-grid">
+            <div class="cmg-cell"><div class="k">Doc owner</div><div class="v">Engineering &middot; Sentra HQ</div></div>
+            <div class="cmg-cell"><div class="k">Last updated</div><div class="v">May 2026</div></div>
+            <div class="cmg-cell"><div class="k">Audience</div><div class="v accent">Staff &middot; Directors &middot; New hires</div></div>
+            <div class="cmg-cell"><div class="k">Classification</div><div class="v" style="color:#ef4444">CONFIDENTIAL</div></div>
+        </div>
+    </div>
+    <div class="c-bot">
+        <div class="lo">SMART. SECURE. SENTRA.</div>
+        <div class="ri">DO NOT REDISTRIBUTE OUTSIDE SENTRA<br>&copy; 2026 SENTRA TECHNOLOGIES</div>
+    </div>
+</div>
+
+<!-- ============ PAGE 2: POSITION & SALES MOTION ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">01 &middot; Foundations</div>
+                <h2 class="page-title">Position &amp; <span>Sales Motion.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>v1.0</strong>SECTION 01</div>
+        </div>
+
+        <h3 class="section">Company thesis</h3>
+        <p class="intro">
+            <strong>Sentra is an Enterprise Software Builder.</strong> We do not write enterprise software from scratch. We don't sell SaaS subscriptions. We take Odoo Community as the universal business platform, layer Sentra's AI + automation stack on top, brand it as the customer's own system, and deploy it on AWS &mdash; turning what used to be a 6&ndash;12 month custom build into a 4&ndash;6 week branded delivery.
+        </p>
+
+        <h3 class="section">The four flagship products</h3>
+        <table class="spec">
+            <thead><tr><th style="width:14%">Brand</th><th style="width:40%">What It Is</th><th>Default OSS Base</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Atlas</strong></td><td>Full business operating system &mdash; sales, inventory, accounting, HR, projects, fleet.</td><td class="mono">Odoo Community 17 (full module suite)</td></tr>
+                <tr><td><strong>Echo</strong></td><td>Customer support &amp; omnichannel helpdesk with WhatsApp + AI bot.</td><td class="mono">Chatwoot (default) + Zammad (IT desk variant)</td></tr>
+                <tr><td><strong>Cortex</strong></td><td>Private AI Brain &mdash; LLM trained on customer data, callable from anywhere.</td><td class="mono">Ollama + OpenWebUI (white-label) + Outline + Qdrant + LangChain</td></tr>
+                <tr><td><strong>Lens</strong></td><td>Executive analytics, KPI dashboards, AI alerts, WhatsApp briefings.</td><td class="mono">Metabase (default) &middot; Superset (analyst variant)</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">The master-duplicate model (operational core)</h3>
+        <div class="md-flow">
+            <div class="md-node master">
+                <h6>SENTRA HQ MASTER</h6>
+                <p>One git repo per product. Clean Odoo + Sentra AI layer + n8n flows + standard modules + branding placeholders.</p>
+            </div>
+            <div class="md-arrow">&rarr;</div>
+            <div class="md-node">
+                <h6>FORK PER CLIENT</h6>
+                <p>Duplicate the master. Swap brand placeholders (logo, colors, domain). Add per-client custom modules. Provision AWS infra via CDK.</p>
+            </div>
+            <div class="md-arrow">&rarr;</div>
+            <div class="md-node">
+                <h6>LIVE IN 4&ndash;6 WEEKS</h6>
+                <p>Deploy to client AWS account. Ingest initial data. Train Cortex. Smoke test. Handover. Ongoing support pulls fixes from master.</p>
+            </div>
+        </div>
+
+        <h3 class="section">Sales motion in one paragraph (memorise this)</h3>
+        <div class="callout note"><span class="lbl">PITCH</span>
+            "We don't write your software from scratch &mdash; that's why we're 10&times; faster and 5&times; cheaper than a custom build. We take the most battle-tested business platform in the world (Odoo, used by 12 million people) and layer our private AI brain on top. Then we make it look and feel like software your team built itself. Live in weeks. You own the IP. No lock-in." <strong>(Never say this verbatim to a client; it's the internal frame. Client-facing wording is in the Client Brochure.)</strong>
+        </div>
+
+        <h3 class="section">Where we sell &middot; ICP</h3>
+        <ul class="bul">
+            <li><strong>Sweet spot:</strong> 50&ndash;500 employee operations companies in services, trading, manufacturing, healthcare, logistics, professional services. USA / EU / UK / Middle East / South Asia.</li>
+            <li><strong>Avoid (red flags):</strong> &lt;20 employees (too price sensitive), heavily regulated finance/insurance unless SOC 2 budget is real, anyone demanding on-prem-only without sponsoring the infra cost.</li>
+            <li><strong>Strongest fit:</strong> companies actively bleeding from one of the five pains in the Client Brochure &mdash; especially "tool sprawl" and "drowning customer service".</li>
+        </ul>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>02</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 3: REFERENCE ARCHITECTURE ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">02 &middot; Architecture</div>
+                <h2 class="page-title">Reference <span>Stack &amp; Architecture.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>v1.0</strong>SECTION 02</div>
+        </div>
+
+        <p class="intro">
+            Every Sentra deployment is a variation on the same reference architecture below. Every engineer should be able to reproduce this from memory before they're cleared to lead a deploy.
+        </p>
+
+        <div class="arch">
+            <h5>Sentra Reference Stack &mdash; AWS Production Topology</h5>
+            <div class="al-label">EDGE</div>
+            <div class="al-row"><div class="al-box primary">CloudFront CDN<span class="sub">TLS termination, WAF rules</span></div></div>
+            <div class="al-label">LOAD BALANCER</div>
+            <div class="al-row"><div class="al-box primary">Application Load Balancer<span class="sub">Routes by hostname &mdash; atlas.client.com / echo / cortex / lens</span></div></div>
+            <div class="al-label">COMPUTE (EC2 / Docker)</div>
+            <div class="al-row">
+                <div class="al-box">Nginx<span class="sub">reverse proxy + SSL</span></div>
+                <div class="al-box">Odoo 17<span class="sub">Atlas core</span></div>
+                <div class="al-box">Chatwoot<span class="sub">Echo core</span></div>
+                <div class="al-box">OpenWebUI<span class="sub">Cortex chat (white-label)</span></div>
+                <div class="al-box">Metabase<span class="sub">Lens dashboards</span></div>
+            </div>
+            <div class="al-row" style="margin-top:6px">
+                <div class="al-box">n8n<span class="sub">automation engine</span></div>
+                <div class="al-box">Ollama<span class="sub">LLM runtime (g5.xlarge)</span></div>
+                <div class="al-box">Qdrant<span class="sub">vector DB</span></div>
+                <div class="al-box">Outline<span class="sub">docs / wiki</span></div>
+                <div class="al-box">Authentik<span class="sub">SSO</span></div>
+            </div>
+            <div class="al-label">DATA</div>
+            <div class="al-row">
+                <div class="al-box primary">PostgreSQL 16<span class="sub">RDS (prod) / docker (dev)</span></div>
+                <div class="al-box primary">Redis 7<span class="sub">cache + queues</span></div>
+                <div class="al-box primary">S3<span class="sub">files + nightly backups</span></div>
+                <div class="al-box primary">Secrets Manager<span class="sub">all credentials</span></div>
+            </div>
+            <div class="al-label">OBSERVABILITY &amp; OPS</div>
+            <div class="al-row">
+                <div class="al-box primary">CloudWatch<span class="sub">logs + metrics</span></div>
+                <div class="al-box primary">Grafana + Prometheus<span class="sub">app metrics</span></div>
+                <div class="al-box primary">Uptime Kuma<span class="sub">external uptime</span></div>
+                <div class="al-box primary">Sentry<span class="sub">error tracking</span></div>
+            </div>
+        </div>
+
+        <h3 class="section">Standard ports (internal)</h3>
+        <table class="spec">
+            <thead><tr><th style="width:30%">Service</th><th style="width:15%" class="mono">Port</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>Nginx (HTTPS)</td><td class="mono">443</td><td>Public. Issues Let's Encrypt cert via Certbot.</td></tr>
+                <tr><td>Odoo (Atlas)</td><td class="mono">8069</td><td>Bound to localhost. Reverse-proxied by Nginx.</td></tr>
+                <tr><td>Chatwoot (Echo)</td><td class="mono">3000</td><td>Bound to localhost. Reverse-proxied by Nginx.</td></tr>
+                <tr><td>OpenWebUI (Cortex)</td><td class="mono">8080</td><td>White-labeled build. Localhost only.</td></tr>
+                <tr><td>Ollama API</td><td class="mono">11434</td><td>Localhost only. Never exposed.</td></tr>
+                <tr><td>Qdrant</td><td class="mono">6333</td><td>Localhost only. Auth via API key from Secrets Manager.</td></tr>
+                <tr><td>Outline</td><td class="mono">3001</td><td>Localhost only. Reverse-proxied at <code class="inline">/wiki</code>.</td></tr>
+                <tr><td>Metabase (Lens)</td><td class="mono">3030</td><td>Localhost only. Reverse-proxied at <code class="inline">/lens</code>.</td></tr>
+                <tr><td>n8n</td><td class="mono">5678</td><td>Localhost only. Reverse-proxied at <code class="inline">/n8n</code>.</td></tr>
+                <tr><td>PostgreSQL</td><td class="mono">5432</td><td>RDS in prod (private subnet). Docker in dev.</td></tr>
+                <tr><td>Redis</td><td class="mono">6379</td><td>Localhost only. Auth via password from Secrets Manager.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="callout warn"><span class="lbl">RULE</span>
+            Nothing except Nginx / ALB is ever exposed to the public internet. All inter-service traffic is on the localhost loopback or the VPC private subnet. <strong>If you find yourself opening a security group to 0.0.0.0/0 for any service other than 80/443, stop and ask the lead engineer.</strong>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>03</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 4: AWS INFRASTRUCTURE DEFAULTS ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">03 &middot; Infrastructure</div>
+                <h2 class="page-title">AWS <span>Infrastructure Defaults.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>v1.0</strong>SECTION 03</div>
+        </div>
+
+        <h3 class="section">Environment matrix</h3>
+        <table class="spec">
+            <thead><tr><th>Environment</th><th>Where</th><th>Purpose</th><th>Who provisions</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Local dev</strong></td><td class="mono">Engineer laptop &middot; Docker Compose</td><td>All product development &amp; per-client customisation work happens here first.</td><td>Engineer</td></tr>
+                <tr><td><strong>Sentra staging</strong></td><td class="mono">Sentra AWS account &middot; eu-west-1</td><td>Internal QA, demos, integration tests against master branches.</td><td>DevOps lead</td></tr>
+                <tr><td><strong>Client production</strong></td><td class="mono">Client AWS account (preferred) or Sentra-managed</td><td>Live client deployments. Always isolated per client.</td><td>DevOps + project lead</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">EC2 sizing tiers (per product, prod)</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Atlas / Echo / Lens</th><th>Cortex (GPU)</th><th>Users</th><th>Monthly cost target</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Small</strong></td><td class="mono">t3.medium (2vCPU/4GB)</td><td class="mono">g5.xlarge (1xA10G)</td><td>&lt;25</td><td>$120 + $480 (Cortex)</td></tr>
+                <tr><td><strong>Medium</strong></td><td class="mono">m5.large (2vCPU/8GB)</td><td class="mono">g5.2xlarge (1xA10G/32GB)</td><td>25&ndash;100</td><td>$220 + $920 (Cortex)</td></tr>
+                <tr><td><strong>Enterprise</strong></td><td class="mono">m5.xlarge or c5.2xlarge</td><td class="mono">g5.4xlarge or g6.2xlarge</td><td>100&ndash;500</td><td>$420+ &middot; $1,800+ (Cortex)</td></tr>
+            </tbody>
+        </table>
+        <p class="intro">Costs above are reserved-instance estimates. We pass all infra cost through to the client at AWS list + 10% management fee, billed monthly via SEPA / wire / ACH.</p>
+
+        <h3 class="section">VPC layout (every client deploy)</h3>
+        <ul class="bul">
+            <li><strong>1 VPC per client</strong>, CIDR <code class="inline">10.X.0.0/16</code> where X is allocated from the IPAM doc.</li>
+            <li><strong>Public subnets:</strong> ALB only.</li>
+            <li><strong>Private subnets (compute):</strong> all EC2 instances, NAT-gateway egress only.</li>
+            <li><strong>Private subnets (data):</strong> RDS, ElastiCache. No internet route.</li>
+            <li><strong>Security groups:</strong> ALB-SG (80/443 from world) &rarr; APP-SG (80/443 from ALB-SG only) &rarr; DATA-SG (5432/6379 from APP-SG only).</li>
+        </ul>
+
+        <h3 class="section">RDS vs self-hosted Postgres &mdash; decision matrix</h3>
+        <table class="spec">
+            <thead><tr><th>Use RDS when</th><th>Use self-hosted PG (Docker on EC2) when</th></tr></thead>
+            <tbody>
+                <tr><td>Client production. Any PII / financial data. &gt;10 users. Compliance mentioned (HIPAA/SOC2/GDPR).</td><td>Local dev. Sentra staging. Single-engineer prototypes. Demos that get torn down within 30 days.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Backup &amp; recovery defaults</h3>
+        <table class="spec">
+            <thead><tr><th>Asset</th><th>Backup method</th><th>Frequency</th><th>Retention</th><th>RPO / RTO</th></tr></thead>
+            <tbody>
+                <tr><td>RDS Postgres</td><td>Automated snapshot</td><td>Daily 02:00 UTC</td><td>30 days</td><td>RPO 24h / RTO 1h</td></tr>
+                <tr><td>S3 file storage</td><td>Versioning + cross-region replication</td><td>Continuous</td><td>90 days</td><td>RPO &lt;5min / RTO 15min</td></tr>
+                <tr><td>EC2 root volumes</td><td>EBS snapshot via Data Lifecycle Manager</td><td>Daily</td><td>7 days</td><td>RPO 24h / RTO 30min</td></tr>
+                <tr><td>Qdrant vector store</td><td>Snapshot to S3 via cron + n8n verifier</td><td>Daily 03:00 UTC</td><td>14 days</td><td>RPO 24h / RTO 2h (re-ingest)</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Standard naming conventions</h3>
+        <ul class="bul">
+            <li><strong>S3 buckets:</strong> <code class="inline">sentra-{client-slug}-{env}-{purpose}</code> e.g. <code class="inline">sentra-acmeco-prod-backups</code></li>
+            <li><strong>Hostnames:</strong> <code class="inline">atlas.{client-domain}</code>, <code class="inline">echo.{client-domain}</code>, <code class="inline">brain.{client-domain}</code> (Cortex), <code class="inline">insights.{client-domain}</code> (Lens)</li>
+            <li><strong>Git repos:</strong> <code class="inline">sentra/client-{slug}-{product}</code> (private; forked from <code class="inline">sentra/master-{product}</code>)</li>
+            <li><strong>Secrets:</strong> AWS Secrets Manager path <code class="inline">/sentra/{client-slug}/{product}/{secret-name}</code></li>
+        </ul>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>04</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 5: ATLAS SPEC ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">04 &middot; Atlas</div>
+                <h2 class="page-title">Atlas &mdash; <span>Product Specification.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>ATLAS</strong>BUSINESS OS</div>
+        </div>
+
+        <p class="intro">
+            <strong>Atlas</strong> is the Sentra business operating system &mdash; the full Odoo Community 17 module suite, plus Sentra custom modules, plus standard n8n flows, plus the WhatsApp + AI hooks shared with Echo and Cortex. This is our highest-revenue product and the most common starting point for a client engagement.
+        </p>
+
+        <h3 class="section">Default Odoo Community 17 modules deployed</h3>
+        <table class="spec">
+            <thead><tr><th>Module</th><th>Default ON/OFF</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>CRM</td><td><span class="pill ok">ON</span></td><td>Always. Linked to Echo for inbound conversation &rarr; lead conversion.</td></tr>
+                <tr><td>Sales</td><td><span class="pill ok">ON</span></td><td>Quotes, orders, sales teams.</td></tr>
+                <tr><td>Invoicing &amp; Accounting</td><td><span class="pill ok">ON</span></td><td>Use Community Accounting unless client needs Studio &rarr; quote upgrade.</td></tr>
+                <tr><td>Inventory / Purchase</td><td><span class="pill info">PER CLIENT</span></td><td>ON for trading/manufacturing; OFF for pure services.</td></tr>
+                <tr><td>Project</td><td><span class="pill ok">ON</span></td><td>Tasks, timesheets, milestones.</td></tr>
+                <tr><td>HR / Employees / Time-off</td><td><span class="pill ok">ON</span></td><td>Includes Recruitment for clients hiring 5+ /yr.</td></tr>
+                <tr><td>Fleet</td><td><span class="pill info">PER CLIENT</span></td><td>ON for logistics / delivery / field-services clients.</td></tr>
+                <tr><td>Manufacturing (MRP)</td><td><span class="pill info">PER CLIENT</span></td><td>ON for actual manufacturers only. Adds complexity &mdash; quote uplift.</td></tr>
+                <tr><td>E-commerce + Website</td><td><span class="pill info">PER CLIENT</span></td><td>ON for D2C/B2B web sales clients.</td></tr>
+                <tr><td>Marketing (Email/SMS)</td><td><span class="pill ok">ON</span></td><td>Always. Email goes through Amazon SES.</td></tr>
+                <tr><td>Helpdesk (base)</td><td><span class="pill warn">OPT-OUT</span></td><td>Disable when shipping with Echo (Chatwoot replaces it).</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Sentra custom modules (always installed)</h3>
+        <ul class="bul">
+            <li><strong>sentra_brand_kit</strong> &mdash; replaces Odoo's logo, color theme, login screen, email templates, PDF report header/footer with the client's branding via a single config record.</li>
+            <li><strong>sentra_n8n_bridge</strong> &mdash; webhook endpoints + Odoo automated actions to trigger n8n workflows from any model event (create/write/unlink). Used for everything from auto-invoicing to WhatsApp notifications.</li>
+            <li><strong>sentra_whatsapp_messaging</strong> &mdash; sends/receives WhatsApp messages from any res.partner record. Talks to the WhatsApp Business API via n8n.</li>
+            <li><strong>sentra_cortex_assistant</strong> &mdash; sidebar widget across Odoo: ask the Cortex brain about any record. Uses the customer's private LLM (no data leaves the VPC).</li>
+            <li><strong>sentra_lens_embed</strong> &mdash; iframes the relevant Metabase dashboard inside any Odoo screen (Sales pipeline page &rarr; sales dashboard, etc.).</li>
+        </ul>
+
+        <h3 class="section">Default n8n flows shipped with Atlas</h3>
+        <ul class="bul">
+            <li><strong>invoice-on-payment</strong> &mdash; payment received in Stripe / bank webhook &rarr; auto-confirm Odoo invoice + send WhatsApp receipt.</li>
+            <li><strong>so-to-whatsapp</strong> &mdash; new sales order &rarr; WhatsApp confirmation to customer with PDF + tracking link.</li>
+            <li><strong>low-stock-alert</strong> &mdash; product below reorder point &rarr; WhatsApp + email to purchasing manager with one-click PO.</li>
+            <li><strong>weekly-board-report</strong> &mdash; every Monday 07:00 &rarr; Cortex generates a 1-page weekly summary &rarr; sent to leadership WhatsApp.</li>
+        </ul>
+
+        <h3 class="section">Pricing &mdash; Atlas standalone</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Setup (one-time)</th><th>Hosting + support / month</th><th>Typical client</th></tr></thead>
+            <tbody>
+                <tr><td>Small (&lt;25 users)</td><td>$9,000 &ndash; $15,000</td><td>$400 &ndash; $700</td><td>Trading SME, single-location services firm</td></tr>
+                <tr><td>Medium (25&ndash;100)</td><td>$18,000 &ndash; $32,000</td><td>$800 &ndash; $1,400</td><td>Multi-team services co, growing trader</td></tr>
+                <tr><td>Enterprise (100&ndash;500)</td><td>$45,000 &ndash; $90,000</td><td>$1,500 &ndash; $2,500</td><td>Multi-entity / multi-location enterprise</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>05</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 6: ATLAS RUNBOOK ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">04 &middot; Atlas</div>
+                <h2 class="page-title">Atlas &mdash; <span>Deployment Runbook.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>ATLAS</strong>RUNBOOK v1.0</div>
+        </div>
+
+        <p class="intro">Standard sequence for deploying Atlas to a new client AWS account. Estimated time end-to-end (excluding data migration): <strong>2 working days</strong> for Small/Medium tier.</p>
+
+        <h3 class="section">Step 1 &mdash; Fork the master</h3>
+        <pre class="code"><span class="cmt"># Clone Sentra master, push as new client repo</span>
+gh repo clone sentra/master-atlas
+gh repo create sentra/client-{slug}-atlas --private --push --source=master-atlas
+cd client-{slug}-atlas
+cp .env.example .env  <span class="cmt"># fill in client-specific values</span></pre>
+
+        <h3 class="section">Step 2 &mdash; Provision AWS infra (CDK)</h3>
+        <ol class="bul">
+            <li>Switch CDK profile to client account: <code class="inline">aws sso login --profile client-{slug}</code></li>
+            <li>Edit <code class="inline">cdk/config.ts</code> &mdash; client slug, region, tier (small/medium/enterprise), domain.</li>
+            <li><code class="inline">cdk deploy SentraAtlasStack-{slug}</code> &mdash; provisions VPC, subnets, RDS, EC2, ALB, S3, security groups, Route53.</li>
+            <li>Verify outputs: ALB DNS, RDS endpoint, S3 bucket names &mdash; record in client onboarding doc.</li>
+        </ol>
+
+        <h3 class="section">Step 3 &mdash; Deploy Docker stack</h3>
+        <pre class="code">ssh ec2-user@{atlas-ec2-ip}
+git clone git@github.com:sentra/client-{slug}-atlas.git
+cd client-{slug}-atlas
+sudo docker compose up -d
+sudo docker compose logs -f odoo  <span class="cmt"># wait for "Modules loaded"</span></pre>
+
+        <h3 class="section">Step 4 &mdash; SSL + DNS</h3>
+        <ol class="bul">
+            <li>Point client DNS: <code class="inline">atlas.{client-domain}</code> &rarr; ALB DNS (CNAME).</li>
+            <li>Issue Let's Encrypt cert: <code class="inline">sudo certbot --nginx -d atlas.{client-domain}</code></li>
+            <li>Verify HTTPS: <code class="inline">curl -I https://atlas.{client-domain}</code> returns <code class="inline">200 OK</code>.</li>
+        </ol>
+
+        <h3 class="section">Step 5 &mdash; Brand kit + initial config</h3>
+        <ol class="bul">
+            <li>In Odoo as admin: Settings &rarr; Sentra Brand Kit &rarr; upload logo (SVG + PNG fallback), set primary/accent colors, set company info.</li>
+            <li>Verify: login screen, email templates, invoice PDF, dashboard top-bar all show client branding.</li>
+            <li>Configure SES sender + DKIM in <code class="inline">Settings &rarr; Email Servers</code>. Verify with test send.</li>
+            <li>Configure WhatsApp Business API credentials in <code class="inline">Settings &rarr; Sentra WhatsApp</code>. Send test message to internal number.</li>
+        </ol>
+
+        <h3 class="section">Step 6 &mdash; Data migration</h3>
+        <ul class="bul">
+            <li><strong>Customers / suppliers:</strong> CSV import via standard Odoo import wizard.</li>
+            <li><strong>Products:</strong> CSV with columns <code class="inline">name, default_code, list_price, qty_available, categ_id</code>.</li>
+            <li><strong>Open invoices:</strong> manual import or one-shot script in <code class="inline">scripts/import-open-invoices.py</code>.</li>
+            <li><strong>Historical accounting:</strong> opening balance journal entry only (don't re-import old transactions).</li>
+        </ul>
+
+        <h3 class="section">Step 7 &mdash; Smoke tests (must pass before handover)</h3>
+        <ol class="bul">
+            <li>Create a test customer + sales order + invoice. Confirm WhatsApp confirmation sent.</li>
+            <li>Mark invoice paid via Stripe test mode. Confirm n8n flow updates Odoo + sends receipt.</li>
+            <li>Reduce a product stock to below reorder point. Confirm low-stock-alert fires.</li>
+            <li>Run <code class="inline">/health</code> endpoint &mdash; all services green.</li>
+            <li>Trigger nightly backup manually (<code class="inline">aws rds create-db-snapshot</code>). Confirm S3 backup arrives.</li>
+        </ol>
+
+        <h3 class="section">Step 8 &mdash; Handover checklist</h3>
+        <ul class="bul">
+            <li>Admin credentials transferred via 1Password vault share.</li>
+            <li>2&times; training sessions for client admin + power users (recorded).</li>
+            <li>Runbook URL + on-call rotation shared.</li>
+            <li>Monthly support contract signed and Stripe subscription active.</li>
+            <li>30-day post-launch check-in scheduled.</li>
+        </ul>
+
+        <div class="callout danger"><span class="lbl">NEVER</span>
+            Hard-code credentials in the repo. Always read from AWS Secrets Manager via the <code class="inline">sentra_brand_kit/utils/secrets.py</code> helper. <strong>One leak ends the company.</strong>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>06</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 7: ECHO SPEC ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">05 &middot; Echo</div>
+                <h2 class="page-title">Echo &mdash; <span>Product Specification.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>ECHO</strong>SUPPORT OS</div>
+        </div>
+
+        <p class="intro">
+            <strong>Echo</strong> is the Sentra customer support &amp; omnichannel helpdesk product. Default base is <strong>Chatwoot</strong> (best-in-class for WhatsApp-first customer messaging). For pure internal IT helpdesk deployments we substitute <strong>Zammad</strong>. Both share the same Sentra AI + WhatsApp integration layer.
+        </p>
+
+        <h3 class="section">When to use which base</h3>
+        <table class="spec">
+            <thead><tr><th>Base</th><th>Choose when</th><th>Skip when</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Chatwoot</strong> (default)</td><td>Customer-facing support. WhatsApp / IG / FB / web chat / email all in one. SMEs, retail, services, e-commerce.</td><td>Pure internal IT desk. Heavy ITIL workflow needs (asset CMDB, change management).</td></tr>
+                <tr><td><strong>Zammad</strong></td><td>Internal IT desk. Asset tracking, incident management, ITIL-style workflows. Multi-tier support orgs.</td><td>WhatsApp is the primary channel (Zammad's WA support is weaker).</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Channel matrix</h3>
+        <table class="spec">
+            <thead><tr><th>Channel</th><th>Gateway</th><th>Default tier</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td>WhatsApp Business</td><td class="mono">Meta WhatsApp Business API (direct)</td><td>All clients</td><td>Per-conversation pricing. Templates required for outbound &gt;24h.</td></tr>
+                <tr><td>WhatsApp (managed)</td><td class="mono">Twilio WhatsApp</td><td>If client wants managed billing</td><td>+30% margin, less setup pain.</td></tr>
+                <tr><td>WhatsApp (budget)</td><td class="mono">Baileys (open-source)</td><td>Demos / very small clients</td><td><span class="pill warn">RISK</span> Unofficial; use only with disclosure.</td></tr>
+                <tr><td>Email</td><td class="mono">Amazon SES inbound + outbound</td><td>All clients</td><td>SPF + DKIM + DMARC required.</td></tr>
+                <tr><td>Web chat widget</td><td class="mono">Chatwoot SDK script</td><td>All clients</td><td>One-line embed on client site.</td></tr>
+                <tr><td>Instagram DM / Facebook</td><td class="mono">Meta Messenger Platform</td><td>Per-client opt-in</td><td>Requires client FB business mgr access.</td></tr>
+                <tr><td>SMS</td><td class="mono">Twilio Programmable Messaging</td><td>US/UK clients</td><td>10DLC registration required (US).</td></tr>
+                <tr><td>Voice (optional)</td><td class="mono">Twilio Voice / Vapi</td><td>Add-on</td><td>For AI voice agent. Quote separately.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">AI ticket responder &mdash; standard config</h3>
+        <ul class="bul">
+            <li><strong>Routing:</strong> incoming message hits Chatwoot &rarr; n8n webhook fires &rarr; n8n calls Cortex with conversation history + customer record from Atlas &rarr; Cortex returns suggested reply + confidence score.</li>
+            <li><strong>Confidence &gt;0.85:</strong> auto-reply sent. Logged with "Sent by AI" tag.</li>
+            <li><strong>Confidence 0.5&ndash;0.85:</strong> draft reply pre-filled in agent inbox. Agent reviews + sends in one click.</li>
+            <li><strong>Confidence &lt;0.5:</strong> escalated to human queue. Cortex still suggests likely intent + relevant docs in sidebar.</li>
+            <li><strong>Guardrails:</strong> never auto-quote prices, never auto-confirm refunds &gt;$X, never reply to anything tagged <code class="inline">legal</code> or <code class="inline">complaint</code>.</li>
+            <li><strong>Knowledge source:</strong> always Cortex (the client's private brain). Never general internet search. PII redaction on by default.</li>
+        </ul>
+
+        <h3 class="section">Standard SLA tiers shipped</h3>
+        <table class="spec">
+            <thead><tr><th>Priority</th><th>First response</th><th>Resolution target</th><th>After-hours behaviour</th></tr></thead>
+            <tbody>
+                <tr><td><span class="pill bad">P1 &middot; Urgent</span></td><td>15 min</td><td>4 hrs</td><td>WhatsApp on-call escalation</td></tr>
+                <tr><td><span class="pill warn">P2 &middot; High</span></td><td>1 hr</td><td>1 business day</td><td>AI auto-acknowledge, human next morning</td></tr>
+                <tr><td><span class="pill info">P3 &middot; Normal</span></td><td>4 hrs</td><td>3 business days</td><td>AI auto-acknowledge</td></tr>
+                <tr><td><span class="pill ok">P4 &middot; Low</span></td><td>1 business day</td><td>1 week</td><td>Queued</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Pricing &mdash; Echo standalone</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Setup</th><th>Monthly</th><th>WhatsApp Business cost</th></tr></thead>
+            <tbody>
+                <tr><td>Small (&lt;5 agents)</td><td>$6,000 &ndash; $10,000</td><td>$300 &ndash; $500</td><td>Pass-through Meta pricing + 10%</td></tr>
+                <tr><td>Medium (5&ndash;20 agents)</td><td>$12,000 &ndash; $22,000</td><td>$600 &ndash; $1,000</td><td>Pass-through Meta pricing + 10%</td></tr>
+                <tr><td>Enterprise (20+ agents)</td><td>$28,000+</td><td>$1,200+</td><td>Custom &mdash; usually direct Meta contract</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>07</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 8: ECHO RUNBOOK ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">05 &middot; Echo</div>
+                <h2 class="page-title">Echo &mdash; <span>Deployment Runbook.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>ECHO</strong>RUNBOOK v1.0</div>
+        </div>
+
+        <p class="intro">Standard sequence for Echo deployment. Most steps are common with Atlas; only Echo-specific actions are listed. Estimated time end-to-end: <strong>1.5 working days</strong> + WhatsApp Business API approval lag (3&ndash;7 days).</p>
+
+        <h3 class="section">Step 1 &mdash; Fork &amp; provision (same as Atlas)</h3>
+        <pre class="code">gh repo create sentra/client-{slug}-echo --private --source=master-echo
+cd cdk && cdk deploy SentraEchoStack-{slug}</pre>
+
+        <h3 class="section">Step 2 &mdash; Chatwoot stack up</h3>
+        <pre class="code">ssh ec2-user@{echo-ec2-ip}
+git pull
+sudo docker compose up -d   <span class="cmt"># brings up: chatwoot-rails, chatwoot-sidekiq, postgres, redis, n8n</span>
+<span class="cmt"># Run rails migration on first boot</span>
+sudo docker compose exec rails bundle exec rails db:chatwoot_prepare</pre>
+
+        <h3 class="section">Step 3 &mdash; WhatsApp Business API setup (Meta direct)</h3>
+        <ol class="bul">
+            <li>Client creates Meta Business Manager account (we cannot do this for them &mdash; legal owner).</li>
+            <li>Client adds Sentra as a partner with <code class="inline">manage_whatsapp_settings</code> permission.</li>
+            <li>Verify business via Meta's verification process (5&ndash;7 days &mdash; allow buffer in timeline).</li>
+            <li>Apply for WhatsApp Business API access. Use template request boilerplate in <code class="inline">docs/wa-bm-application.md</code>.</li>
+            <li>Once approved: register phone number (must NOT be already on consumer WhatsApp).</li>
+            <li>Generate permanent System User token. Store in Secrets Manager <code class="inline">/sentra/{slug}/echo/wa-token</code>.</li>
+            <li>Configure webhook in Meta dev console &rarr; <code class="inline">https://echo.{client-domain}/webhooks/whatsapp</code>.</li>
+            <li>Create at least 3 message templates (welcome, order-confirm, support-handoff). Submit for Meta approval (24&ndash;48hrs).</li>
+        </ol>
+
+        <h3 class="section">Step 4 &mdash; Channel wire-up in Chatwoot</h3>
+        <ul class="bul">
+            <li>Settings &rarr; Inboxes &rarr; New &mdash; one inbox per channel (WhatsApp, Email, Web Widget, etc.).</li>
+            <li>Email inbox &rarr; configure SES inbound rule to forward to <code class="inline">support+{inbox-id}@{client-domain}</code>.</li>
+            <li>Web widget &rarr; copy embed snippet to client website team.</li>
+        </ul>
+
+        <h3 class="section">Step 5 &mdash; AI responder activation</h3>
+        <ol class="bul">
+            <li>In n8n, import flow <code class="inline">echo-ai-responder.json</code> from <code class="inline">sentra/master-flows</code>.</li>
+            <li>Set Cortex endpoint URL + API key (from Cortex deploy on adjacent EC2 / VPC peer).</li>
+            <li>Set confidence thresholds in flow settings (defaults: 0.85 / 0.5).</li>
+            <li>Add guardrail rules: refund cap, legal-tag block, language whitelist.</li>
+            <li>Activate flow. Test by sending message from internal WhatsApp number.</li>
+        </ol>
+
+        <h3 class="section">Step 6 &mdash; Atlas + Cortex integration</h3>
+        <ul class="bul">
+            <li>Configure Chatwoot &rarr; Atlas customer sync via <code class="inline">sentra_n8n_bridge</code>: every new contact in Chatwoot creates/links a <code class="inline">res.partner</code> in Atlas Odoo.</li>
+            <li>Configure Cortex &mdash; ingest Chatwoot conversation history nightly into Cortex vector store. Helps AI replies stay on-brand.</li>
+        </ul>
+
+        <h3 class="section">Step 7 &mdash; Smoke tests</h3>
+        <ol class="bul">
+            <li>Send WhatsApp to client number from your phone &rarr; conversation appears in Chatwoot.</li>
+            <li>AI responder either auto-replies (if confident) or drafts reply.</li>
+            <li>Reply manually &rarr; arrives back on your WhatsApp within 5 seconds.</li>
+            <li>Send email to <code class="inline">support@{client-domain}</code> &rarr; appears as new conversation.</li>
+            <li>Verify Atlas <code class="inline">res.partner</code> created/linked. Verify dashboard counts increment.</li>
+        </ol>
+
+        <h3 class="section">Common issues &amp; fixes</h3>
+        <table class="spec">
+            <thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
+            <tbody>
+                <tr><td>WA messages don't arrive</td><td>Webhook not registered or signature mismatch</td><td>Re-register webhook + verify <code class="inline">app_secret</code> in Secrets Manager.</td></tr>
+                <tr><td>AI replies in wrong language</td><td>Cortex prompt not language-aware</td><td>Update <code class="inline">prompts/echo_responder.md</code> with language detection clause.</td></tr>
+                <tr><td>SES bounces</td><td>SPF/DKIM not propagated</td><td>Wait 24h, re-verify with <code class="inline">dig</code>.</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>08</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 9: CORTEX SPEC ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">06 &middot; Cortex</div>
+                <h2 class="page-title">Cortex &mdash; <span>Product Specification.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>CORTEX</strong>COMPANY BRAIN</div>
+        </div>
+
+        <p class="intro">
+            <strong>Cortex</strong> is Sentra's private AI brain product. Every client gets a fully isolated LLM stack trained / grounded on their own data. The chat interface is OpenWebUI rebuilt with the client's branding (OpenWebUI's branding is fully stripped &mdash; see runbook). Cortex powers the AI assistants in Atlas and Echo, the question-answer chat, and the daily executive summary in Lens.
+        </p>
+
+        <h3 class="section">Component stack</h3>
+        <table class="spec">
+            <thead><tr><th>Layer</th><th>Component</th><th>Why</th></tr></thead>
+            <tbody>
+                <tr><td>LLM runtime</td><td class="mono">Ollama</td><td>Self-hosts open weights on EC2 GPU. No data leaves the client VPC.</td></tr>
+                <tr><td>Default models</td><td class="mono">Llama 3.1 8B (chat), Mistral 7B (summarisation)</td><td>Best quality/cost balance on g5.xlarge.</td></tr>
+                <tr><td>Heavy-context model</td><td class="mono">Llama 3.1 70B</td><td>Optional. Requires g5.4xlarge or g6.2xlarge minimum.</td></tr>
+                <tr><td>Specialist models</td><td class="mono">Mixtral 8x7B, Qwen 2.5 / Qwen 3, DeepSeek, DeepSeek Coder</td><td>Loaded on demand. Coder for client-side code generation tasks.</td></tr>
+                <tr><td>Hybrid (optional)</td><td class="mono">Anthropic Claude API / OpenAI</td><td>For clients with no PII concern + premium quality requirement. Cost is passed through.</td></tr>
+                <tr><td>Vector DB</td><td class="mono">Qdrant</td><td>Faster + simpler ops than pgvector at scale. Per-client isolated collection.</td></tr>
+                <tr><td>RAG orchestration</td><td class="mono">LangChain (Python)</td><td>Standard. Custom chains live in <code class="inline">sentra/master-cortex/chains/</code>.</td></tr>
+                <tr><td>Chat UI</td><td class="mono">OpenWebUI (white-labeled fork)</td><td>Mature, theme-able. Sentra fork removes upstream branding.</td></tr>
+                <tr><td>Docs / wiki base</td><td class="mono">Outline</td><td>Modern UI, markdown-native, easy SSO. Where the human-curated knowledge lives.</td></tr>
+                <tr><td>Embeddings</td><td class="mono">nomic-embed-text via Ollama</td><td>Local, free, decent quality. Switch to BAAI/bge-m3 for multilingual.</td></tr>
+                <tr><td>Reranker</td><td class="mono">BAAI/bge-reranker-v2-m3</td><td>Boosts answer relevance ~15%. Optional but recommended.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Document connectors (ingestion sources)</h3>
+        <ul class="bul">
+            <li><strong>Outline pages</strong> &mdash; native ingest via Outline API. Re-indexed nightly via n8n.</li>
+            <li><strong>Google Drive</strong> &mdash; service account read access, scoped to specific folders.</li>
+            <li><strong>SharePoint / OneDrive</strong> &mdash; Microsoft Graph API, app registration in client tenant.</li>
+            <li><strong>Slack</strong> &mdash; bot token, ingests selected channels.</li>
+            <li><strong>S3</strong> &mdash; bucket of PDFs, docs, slides. Walked daily.</li>
+            <li><strong>Atlas (Odoo) records</strong> &mdash; via the standard <code class="inline">sentra_n8n_bridge</code>. SOPs, customer notes, invoices.</li>
+            <li><strong>Echo conversations</strong> &mdash; resolved tickets ingested nightly to improve responder accuracy.</li>
+        </ul>
+
+        <h3 class="section">RAG pipeline (default)</h3>
+        <ol class="bul">
+            <li><strong>Chunking:</strong> 512 tokens with 64-token overlap, semantic-aware splitter for markdown / PDFs.</li>
+            <li><strong>Embedding:</strong> nomic-embed-text (768-dim) per chunk, stored in Qdrant.</li>
+            <li><strong>Retrieval:</strong> top-20 by cosine similarity &rarr; rerank to top-5 by bge-reranker.</li>
+            <li><strong>Generation:</strong> top-5 chunks + question + system prompt &rarr; Llama 3.1 8B.</li>
+            <li><strong>Citation:</strong> every answer returns source chunk IDs &rarr; rendered as clickable refs in OpenWebUI.</li>
+            <li><strong>PII redaction:</strong> Microsoft Presidio runs on every chunk before embedding. Configurable allow-list per client.</li>
+        </ol>
+
+        <h3 class="section">Inference cost calculator (rule of thumb)</h3>
+        <ul class="bul">
+            <li><strong>Self-hosted on g5.xlarge:</strong> ~$480/mo fixed regardless of usage (1xA10G GPU). Effective tokens are essentially free at this point.</li>
+            <li><strong>Hybrid Claude/OpenAI usage:</strong> price per million tokens varies; client pays AWS Bedrock or vendor list + 10%.</li>
+            <li><strong>Heavy summarisation jobs (e.g. weekly board report):</strong> budget ~$2&ndash;$5/run on hosted models. Negligible on self-hosted.</li>
+        </ul>
+
+        <h3 class="section">Pricing &mdash; Cortex standalone (add-on to Atlas/Echo also priced like this)</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Setup</th><th>Monthly (incl. GPU EC2)</th></tr></thead>
+            <tbody>
+                <tr><td>Small (light usage)</td><td>$6,000 &ndash; $9,000</td><td>$700 &ndash; $1,100</td></tr>
+                <tr><td>Medium (15&ndash;100 daily users)</td><td>$10,000 &ndash; $16,000</td><td>$1,200 &ndash; $1,800</td></tr>
+                <tr><td>Enterprise (100+, larger model, multi-language)</td><td>$18,000+</td><td>$2,200+</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>09</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 10: CORTEX RUNBOOK ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">06 &middot; Cortex</div>
+                <h2 class="page-title">Cortex &mdash; <span>Deployment Runbook.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>CORTEX</strong>RUNBOOK v1.0</div>
+        </div>
+
+        <p class="intro">Cortex is the most infrastructure-heavy product because of the GPU EC2. Allow <strong>3 working days</strong> end-to-end (mostly model download + ingestion).</p>
+
+        <h3 class="section">Step 1 &mdash; GPU EC2 provisioning</h3>
+        <pre class="code">cdk deploy SentraCortexStack-{slug}
+<span class="cmt"># spins up: g5.xlarge GPU instance, NVIDIA driver bootstrap, 200GB EBS gp3,</span>
+<span class="cmt"># Qdrant on adjacent t3.medium, security group locked to APP-SG only</span></pre>
+
+        <h3 class="section">Step 2 &mdash; Ollama install + model pull</h3>
+        <pre class="code">ssh ec2-user@{cortex-gpu-ip}
+curl -fsSL https://ollama.com/install.sh | sh && sudo systemctl enable --now ollama
+
+<span class="cmt"># Standard set (always)</span>
+for m in llama3.1:8b mistral:7b nomic-embed-text; do ollama pull $m; done
+
+<span class="cmt"># Optional, pull on demand: mixtral:8x7b, qwen2.5:14b, deepseek-coder:6.7b, deepseek-r1:7b</span>
+ollama list && curl http://localhost:11434/api/tags  <span class="cmt"># verify</span></pre>
+
+        <h3 class="section">Step 3 &mdash; Qdrant setup</h3>
+        <pre class="code">KEY=$(aws secretsmanager get-secret-value --secret-id /sentra/{slug}/cortex/qdrant-key --query SecretString --output text)
+sudo docker run -d --name qdrant -p 6333:6333 -v /data/qdrant:/qdrant/storage \
+  -e QDRANT__SERVICE__API_KEY=$KEY qdrant/qdrant:latest</pre>
+
+        <h3 class="section">Step 4 &mdash; OpenWebUI deploy + branding strip</h3>
+        <ol class="bul">
+            <li>Clone Sentra fork: <code class="inline">git clone git@github.com:sentra/openwebui-whitelabel</code></li>
+            <li>Apply client brand kit: <code class="inline">./scripts/apply-brand.sh {slug}</code> &mdash; this script:
+                <ul class="bul" style="margin:4px 0 4px 12px">
+                    <li>Replaces <code class="inline">/static/favicon.png</code>, <code class="inline">/static/splash.png</code>, <code class="inline">/static/logo*.svg</code> with client assets.</li>
+                    <li>Patches <code class="inline">app/manifest.json</code> name/short_name.</li>
+                    <li>Patches <code class="inline">app/static/i18n/en/translation.json</code> "Open WebUI" &rarr; client product name (e.g. "Atlas Brain" or whatever the client called it).</li>
+                    <li>Patches <code class="inline">tailwind.config.js</code> color palette to client primary/accent.</li>
+                    <li>Replaces footer "Open WebUI" link &rarr; client support URL.</li>
+                </ul>
+            </li>
+            <li>Build &amp; run: <code class="inline">docker compose up -d openwebui</code>.</li>
+            <li>Configure backend in OpenWebUI: Settings &rarr; Connections &rarr; add Ollama URL <code class="inline">http://{cortex-gpu-ip}:11434</code>.</li>
+            <li>Visual QA: load login screen, chat screen, settings &mdash; <strong>zero "Open WebUI" strings should remain</strong>. Run <code class="inline">grep -r "Open WebUI" /app</code> to confirm.</li>
+        </ol>
+
+        <h3 class="section">Step 5 &mdash; Outline (wiki) deploy</h3>
+        <pre class="code">cd /opt/outline
+docker compose up -d
+<span class="cmt"># Configure SSO via Authentik. Apply Sentra brand kit (logo, primary color).</span></pre>
+
+        <h3 class="section">Step 6 &mdash; Initial ingestion</h3>
+        <ol class="bul">
+            <li>Configure data sources in <code class="inline">cortex/config/sources.yaml</code> &mdash; one block per connector (Outline, Drive, SharePoint, Slack, S3, Atlas).</li>
+            <li>Run initial ingestion: <code class="inline">python -m cortex.ingest --all --client {slug}</code>. Expect ~30 min&ndash;2 hours depending on document volume.</li>
+            <li>Verify Qdrant collection count: <code class="inline">curl -H "api-key: $KEY" http://localhost:6333/collections/{slug}</code>.</li>
+            <li>Schedule nightly re-index: n8n flow <code class="inline">cortex-reindex</code>, cron <code class="inline">0 2 * * *</code>.</li>
+        </ol>
+
+        <h3 class="section">Step 7 &mdash; Atlas integration (sidebar widget)</h3>
+        <ul class="bul">
+            <li>Install <code class="inline">sentra_cortex_assistant</code> module in Atlas Odoo (already in master).</li>
+            <li>Configure Cortex API URL + API key in <code class="inline">Settings &rarr; Sentra Cortex</code>.</li>
+            <li>Verify: open any record in Odoo &rarr; Cortex sidebar appears &rarr; ask "summarise this customer's history" &rarr; answer with citations.</li>
+        </ul>
+
+        <h3 class="section">Step 8 &mdash; Smoke tests &amp; cost monitor</h3>
+        <ol class="bul">
+            <li>Ask 5 questions covering: a customer policy, a SOP, a recent invoice, a Slack thread, a Drive PDF. All must return correct answers with citations.</li>
+            <li>Trigger weekly board report flow manually. Verify Cortex generates 1-page summary &rarr; arrives on WhatsApp.</li>
+            <li>Set CloudWatch budget alarm at 110% of expected monthly EC2 cost.</li>
+        </ol>
+
+        <div class="callout warn"><span class="lbl">WHITE LABEL</span>
+            The OpenWebUI branding strip is the single most important step. <strong>If a client sees "Open WebUI" anywhere &mdash; favicon, browser tab, footer, login screen &mdash; the illusion of bespoke software is broken.</strong> Run the brand QA script (<code class="inline">scripts/brand-qa.sh</code>) before every handover.
+        </div>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>10</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 11: LENS SPEC ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">07 &middot; Lens</div>
+                <h2 class="page-title">Lens &mdash; <span>Product Specification.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>LENS</strong>EXEC ANALYTICS</div>
+        </div>
+
+        <p class="intro">
+            <strong>Lens</strong> is the Sentra executive analytics product. Default base is <strong>Metabase</strong> (best UX for non-technical execs). For clients with analyst-heavy teams who want notebook-style exploration, swap to <strong>Apache Superset</strong>. Lens always pairs with Atlas (it reads from the Atlas Postgres replica). It can also pair with Echo and Cortex telemetry.
+        </p>
+
+        <h3 class="section">When to use which base</h3>
+        <table class="spec">
+            <thead><tr><th>Base</th><th>Choose when</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Metabase</strong> (default)</td><td>Execs who want a clean dashboard and the occasional "ask a question" feature. SMEs to mid-market.</td></tr>
+                <tr><td><strong>Apache Superset</strong></td><td>Companies with a data team. Need SQL Lab, Jinja templates, advanced viz, dbt integration.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Standard dashboards shipped (Metabase)</h3>
+        <table class="spec">
+            <thead><tr><th>Dashboard</th><th>Audience</th><th>Refresh</th><th>Default panels</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Sales Pulse</strong></td><td>Sales leadership</td><td>15 min</td><td>Pipeline funnel, week-on-week revenue, top-10 deals, conversion rate, lead sources</td></tr>
+                <tr><td><strong>Operations Live</strong></td><td>COO / Ops</td><td>5 min</td><td>Open orders, WIP, on-time delivery rate, SLA breach count, staff utilisation</td></tr>
+                <tr><td><strong>Finance Snapshot</strong></td><td>CFO</td><td>1 hr</td><td>Cash position, AR ageing, AP due, MRR, gross margin trend, expense outliers</td></tr>
+                <tr><td><strong>Customer Health</strong></td><td>CS / Account mgmt</td><td>15 min</td><td>NPS, ticket volume, response time SLA, churn risk score (Cortex), NRR</td></tr>
+                <tr><td><strong>Inventory Watch</strong></td><td>Purchasing</td><td>1 hr</td><td>Stock-on-hand, reorder triggers, slow movers, supplier lead times</td></tr>
+                <tr><td><strong>HR &amp; People</strong></td><td>HR / CEO</td><td>Daily</td><td>Headcount, time-off, recruitment funnel, training compliance</td></tr>
+                <tr><td><strong>CEO Cockpit</strong></td><td>CEO</td><td>Real time</td><td>5 KPIs only &mdash; the ones the CEO chose. Plus the AI daily summary.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Data plumbing</h3>
+        <ul class="bul">
+            <li><strong>Source:</strong> Atlas Postgres (Odoo). We create a read replica in RDS so Metabase queries don't impact production.</li>
+            <li><strong>Materialised views:</strong> for any dashboard query taking &gt;3s, create a materialised view refreshed via n8n cron. Lives in schema <code class="inline">sentra_lens</code>.</li>
+            <li><strong>Echo data:</strong> Chatwoot replica → joined into Customer Health dashboard.</li>
+            <li><strong>Cortex telemetry:</strong> usage stats, popular questions, knowledge gaps → "Brain Insights" board.</li>
+        </ul>
+
+        <h3 class="section">AI alert engine</h3>
+        <p class="intro">The Lens differentiator vs vanilla Metabase. Implemented entirely in n8n.</p>
+        <ul class="bul">
+            <li>Every scheduled metric query runs through n8n <code class="inline">lens-anomaly-detector</code> flow.</li>
+            <li>Compares current value vs 30-day rolling baseline + 2&sigma; band.</li>
+            <li>Anomaly &rarr; sent to Cortex with context. Cortex generates a 2-sentence English explanation.</li>
+            <li>Delivered via WhatsApp to the metric's owner. Severity tag (info / warning / urgent) in the message.</li>
+            <li>Daily 07:00: <code class="inline">lens-daily-briefing</code> flow &mdash; Cortex summarises last 24h across all dashboards into a 60-second exec voice note (Vapi optional) + WhatsApp text.</li>
+        </ul>
+
+        <h3 class="section">Embedding into Atlas</h3>
+        <ul class="bul">
+            <li>Module <code class="inline">sentra_lens_embed</code> iframes the relevant Metabase dashboard inside Odoo screens.</li>
+            <li>Auth: signed JWT (1-hour expiry) &mdash; user logs into Odoo, dashboard appears already authenticated.</li>
+            <li>Examples: Sales pipeline screen &rarr; Sales Pulse panel; Project page &rarr; Project KPIs; Helpdesk page (Echo) &rarr; Customer Health.</li>
+        </ul>
+
+        <h3 class="section">Pricing &mdash; Lens standalone</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Setup</th><th>Monthly</th></tr></thead>
+            <tbody>
+                <tr><td>Small (5 dashboards, &lt;15 users)</td><td>$5,000 &ndash; $8,000</td><td>$300 &ndash; $500</td></tr>
+                <tr><td>Medium (10&ndash;15 dashboards, alerts on)</td><td>$10,000 &ndash; $15,000</td><td>$600 &ndash; $1,000</td></tr>
+                <tr><td>Enterprise (multi-source, predictive layer, voice briefing)</td><td>$18,000+</td><td>$1,200+</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>11</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 12: LENS RUNBOOK ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">07 &middot; Lens</div>
+                <h2 class="page-title">Lens &mdash; <span>Deployment Runbook.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>LENS</strong>RUNBOOK v1.0</div>
+        </div>
+
+        <p class="intro">Lens is the lightest of the four products to deploy. Estimated time: <strong>1 working day</strong>, plus dashboard tuning per client (1&ndash;2 days).</p>
+
+        <h3 class="section">Step 1 &mdash; Provision read replica</h3>
+        <pre class="code"><span class="cmt"># Add a read replica to Atlas RDS</span>
+aws rds create-db-instance-read-replica \
+  --db-instance-identifier sentra-{slug}-atlas-replica \
+  --source-db-instance-identifier sentra-{slug}-atlas-primary \
+  --db-instance-class db.t3.medium</pre>
+
+        <h3 class="section">Step 2 &mdash; Metabase up</h3>
+        <pre class="code">ssh ec2-user@{lens-ec2-ip}
+git clone git@github.com:sentra/client-{slug}-lens.git
+cd client-{slug}-lens
+sudo docker compose up -d  <span class="cmt"># brings up: metabase, postgres (metabase metadata)</span>
+<span class="cmt"># wait for metabase to finish init &mdash; check logs for "Metabase started"</span></pre>
+
+        <h3 class="section">Step 3 &mdash; Connect data source</h3>
+        <ol class="bul">
+            <li>In Metabase admin: Data &rarr; Add database &rarr; PostgreSQL.</li>
+            <li>Host: replica endpoint. Database: <code class="inline">{slug}_odoo</code>. User: <code class="inline">lens_readonly</code> (created by CDK).</li>
+            <li>Verify connection. Sync schema (~5 min).</li>
+        </ol>
+
+        <h3 class="section">Step 4 &mdash; Import standard dashboards</h3>
+        <pre class="code"><span class="cmt"># Sentra dashboards are versioned as Metabase serialised export.</span>
+docker exec metabase java -jar /app/metabase.jar load \
+  /sentra-dashboards/v1 --on-error continue
+<span class="cmt"># Then re-map each card's database ID to the new connection.</span>
+python scripts/remap-database-ids.py --client {slug}</pre>
+
+        <h3 class="section">Step 5 &mdash; Brand kit</h3>
+        <ol class="bul">
+            <li>Apply Sentra Metabase whitelabel patch (Enterprise edition feature, but achievable in Community via custom CSS overlay):
+                <ul class="bul" style="margin:4px 0 4px 12px">
+                    <li>Inject <code class="inline">/app/dist/css/sentra-brand-{slug}.css</code> via reverse proxy.</li>
+                    <li>Replace logo, favicon, login background.</li>
+                    <li>Hide the "Powered by Metabase" footer via CSS <code class="inline">display: none</code>.</li>
+                </ul>
+            </li>
+            <li>Verify: login screen, dashboard chrome, embedded view all show client branding.</li>
+        </ol>
+
+        <h3 class="section">Step 6 &mdash; AI alert flows</h3>
+        <ol class="bul">
+            <li>In n8n, import flows <code class="inline">lens-anomaly-detector.json</code> and <code class="inline">lens-daily-briefing.json</code>.</li>
+            <li>Configure metric watch list with the client during discovery (which 5&ndash;10 numbers does the CEO want pinged about?).</li>
+            <li>Configure WhatsApp recipients per metric (owner mapping).</li>
+            <li>Test by manually injecting an outlier into a test metric &rarr; alert should arrive on phone within 60 seconds.</li>
+        </ol>
+
+        <h3 class="section">Step 7 &mdash; Embed into Atlas</h3>
+        <ul class="bul">
+            <li>In Atlas: Settings &rarr; Sentra Lens &rarr; paste Metabase URL + secret signing key.</li>
+            <li>Configure embed mappings (which Odoo screen shows which dashboard panel).</li>
+            <li>Verify: open Sales pipeline in Odoo &rarr; Sales Pulse panel renders embedded.</li>
+        </ul>
+
+        <h3 class="section">Step 8 &mdash; CEO cockpit configuration</h3>
+        <p class="intro">This is the white-glove step. Sit with the CEO for 30 min, ask "what 5 numbers do you want on your phone every morning?" &mdash; then build exactly that dashboard, no more, no less. Set the AI daily briefing to summarise it in 60 seconds.</p>
+
+        <h3 class="section">Smoke tests</h3>
+        <ol class="bul">
+            <li>All 7 standard dashboards render in &lt;3 seconds.</li>
+            <li>One metric anomaly fires correctly to test WhatsApp number.</li>
+            <li>Daily briefing arrives on schedule with correct content.</li>
+            <li>Embedded view in Atlas shows the right dashboard for the right user role.</li>
+        </ol>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>12</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 13: N8N WORKFLOW LIBRARY ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">08 &middot; Automation</div>
+                <h2 class="page-title">n8n &mdash; <span>Standard Workflow Library.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>n8n</strong>FLOW CATALOG</div>
+        </div>
+
+        <p class="intro">
+            All workflows live in <code class="inline">sentra/master-flows</code> and are imported into each client's n8n instance during deploy. <strong>If you build a flow more than once, promote it to the master library.</strong> Standard flows are versioned (<code class="inline">v1.json</code>) and changelog'd.
+        </p>
+
+        <table class="spec">
+            <thead>
+                <tr><th>Flow ID</th><th>Trigger</th><th>Nodes</th><th>Output</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>echo-ai-responder</strong> <span class="pill ok">v1</span></td>
+                    <td>Chatwoot webhook (new message)</td>
+                    <td>Webhook &rarr; Atlas customer lookup &rarr; Cortex chain (with conv history) &rarr; Confidence gate &rarr; Auto-send / Draft / Escalate</td>
+                    <td>Reply sent or drafted in Chatwoot inbox</td>
+                </tr>
+                <tr>
+                    <td><strong>invoice-on-payment</strong> <span class="pill ok">v2</span></td>
+                    <td>Stripe / bank payment webhook</td>
+                    <td>Webhook &rarr; Match Atlas invoice &rarr; Mark paid &rarr; WhatsApp template send</td>
+                    <td>Receipt on customer WhatsApp + Odoo invoice paid</td>
+                </tr>
+                <tr>
+                    <td><strong>so-to-whatsapp</strong> <span class="pill ok">v1</span></td>
+                    <td>Atlas SO confirmed event</td>
+                    <td>Atlas hook &rarr; Render PDF &rarr; Upload to S3 &rarr; WhatsApp template with link</td>
+                    <td>Customer gets order confirmation + tracking link</td>
+                </tr>
+                <tr>
+                    <td><strong>low-stock-alert</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron 0 8 * * * (daily 8 AM)</td>
+                    <td>Atlas query: products below reorder &rarr; group by supplier &rarr; WhatsApp + draft PO link</td>
+                    <td>Purchasing manager WhatsApp summary</td>
+                </tr>
+                <tr>
+                    <td><strong>lens-anomaly-detector</strong> <span class="pill ok">v2</span></td>
+                    <td>Cron every 15 min</td>
+                    <td>Run watched metric queries &rarr; compare to baseline &rarr; if outlier &rarr; Cortex explain &rarr; WhatsApp send</td>
+                    <td>Alert to metric owner with explanation</td>
+                </tr>
+                <tr>
+                    <td><strong>lens-daily-briefing</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron 0 7 * * * (daily 7 AM)</td>
+                    <td>Pull all dashboard summaries &rarr; Cortex compose 60s briefing &rarr; WhatsApp send (text + optional Vapi voice)</td>
+                    <td>Exec daily briefing on WhatsApp</td>
+                </tr>
+                <tr>
+                    <td><strong>weekly-board-report</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron 0 7 * * 1 (Monday 7 AM)</td>
+                    <td>Cortex compose 1-pager &rarr; render PDF &rarr; email + WhatsApp to leadership</td>
+                    <td>Weekly board PDF in inbox + WhatsApp</td>
+                </tr>
+                <tr>
+                    <td><strong>cortex-reindex</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron 0 2 * * * (daily 2 AM)</td>
+                    <td>Walk all configured sources &rarr; diff against last index &rarr; embed new chunks &rarr; upsert Qdrant</td>
+                    <td>Cortex stays current</td>
+                </tr>
+                <tr>
+                    <td><strong>backup-verifier</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron 0 4 * * * (daily 4 AM)</td>
+                    <td>List recent RDS snapshots + S3 backup objects &rarr; check freshness + integrity hash &rarr; alert if stale</td>
+                    <td>Slack/WhatsApp alert if backup missing or stale</td>
+                </tr>
+                <tr>
+                    <td><strong>new-lead-router</strong> <span class="pill ok">v1</span></td>
+                    <td>Echo new conversation tagged "sales"</td>
+                    <td>Cortex extract intent + budget signals &rarr; create Atlas lead &rarr; assign to round-robin &rarr; WhatsApp salesperson</td>
+                    <td>Lead in CRM + salesperson notified</td>
+                </tr>
+                <tr>
+                    <td><strong>sla-breach-watch</strong> <span class="pill ok">v1</span></td>
+                    <td>Cron every 5 min</td>
+                    <td>Echo open conversations &rarr; check SLA &rarr; if breach imminent &rarr; escalate + WhatsApp owner + manager</td>
+                    <td>SLA breaches caught before they happen</td>
+                </tr>
+                <tr>
+                    <td><strong>onboarding-helper</strong> <span class="pill warn">v1-beta</span></td>
+                    <td>New employee created in Atlas HR</td>
+                    <td>Cortex generate personalised onboarding plan &rarr; create tasks in Project &rarr; WhatsApp the new hire welcome</td>
+                    <td>Day-1 onboarding kit auto-deployed</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout note"><span class="lbl">CONTRIBUTING</span>
+            New flows submitted via PR to <code class="inline">sentra/master-flows</code>. Required: <code class="inline">README.md</code>, <code class="inline">v{n}.json</code>, secrets template, two-engineer code review, smoke test in staging. <strong>Do not import un-reviewed flows into client n8n.</strong>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>13</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 14: PRICING & SKU REFERENCE ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">09 &middot; Commercials</div>
+                <h2 class="page-title">Pricing &amp; <span>SKU Reference.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>FY26</strong>INTERNAL PRICE SHEET</div>
+        </div>
+
+        <p class="intro">The internal source of truth. <strong>Never share this exact sheet with clients.</strong> Client-facing prices and ranges are in the Client Brochure. Use this to scope, quote, and protect margin.</p>
+
+        <h3 class="section">Setup tiers (one-time, per product)</h3>
+        <table class="spec">
+            <thead><tr><th>Product</th><th>Small</th><th>Medium</th><th>Enterprise</th><th>Notes</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Atlas</strong></td><td>$9K&ndash;$15K</td><td>$18K&ndash;$32K</td><td>$45K&ndash;$90K+</td><td>Add custom modules at $8K&ndash;$15K each</td></tr>
+                <tr><td><strong>Echo</strong></td><td>$6K&ndash;$10K</td><td>$12K&ndash;$22K</td><td>$28K+</td><td>WhatsApp BSP setup +$1.5K (one-time)</td></tr>
+                <tr><td><strong>Cortex</strong></td><td>$6K&ndash;$9K</td><td>$10K&ndash;$16K</td><td>$18K+</td><td>Initial corpus &gt;100GB &rarr; +$3K ingest fee</td></tr>
+                <tr><td><strong>Lens</strong></td><td>$5K&ndash;$8K</td><td>$10K&ndash;$15K</td><td>$18K+</td><td>Custom dashboards beyond standard 7 &rarr; $1.2K each</td></tr>
+                <tr><td><strong>Suite (all 4)</strong></td><td>~$21K</td><td>~$42K</td><td>~$95K+</td><td><span class="pill ok">25% off</span> applied automatically</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Monthly hosting + support tiers</h3>
+        <table class="spec">
+            <thead><tr><th>Tier</th><th>Atlas</th><th>Echo</th><th>Cortex</th><th>Lens</th><th>Suite total</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Small</strong></td><td>$400&ndash;$700</td><td>$300&ndash;$500</td><td>$700&ndash;$1.1K</td><td>$300&ndash;$500</td><td>~$1.7K&ndash;$2.8K</td></tr>
+                <tr><td><strong>Medium</strong></td><td>$800&ndash;$1.4K</td><td>$600&ndash;$1K</td><td>$1.2K&ndash;$1.8K</td><td>$600&ndash;$1K</td><td>~$3.2K&ndash;$5.2K</td></tr>
+                <tr><td><strong>Enterprise</strong></td><td>$1.5K&ndash;$2.5K</td><td>$1.2K+</td><td>$2.2K+</td><td>$1.2K+</td><td>~$6.1K+</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Other line items</h3>
+        <table class="spec">
+            <thead><tr><th>Item</th><th>Internal cost</th><th>Client price</th><th>Margin</th></tr></thead>
+            <tbody>
+                <tr><td>Custom Odoo module (1 dev-week)</td><td>~$3.5K loaded cost</td><td>$8K&ndash;$15K</td><td>~55%+</td></tr>
+                <tr><td>Custom n8n flow (medium complexity)</td><td>~$1K loaded cost</td><td>$2.5K&ndash;$5K</td><td>~60%</td></tr>
+                <tr><td>Bespoke Cortex chain / fine-tune</td><td>~$5K loaded cost</td><td>$12K&ndash;$25K</td><td>~55%+</td></tr>
+                <tr><td>AWS infra pass-through</td><td>AWS list</td><td>AWS list + 10%</td><td>10% management fee</td></tr>
+                <tr><td>Services day rate (senior eng)</td><td>~$700 loaded</td><td>$1.2K&ndash;$1.8K/day</td><td>~50%</td></tr>
+                <tr><td>Training session (per session)</td><td>~$400</td><td>$1.2K</td><td>~65%</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Payment schedule (default)</h3>
+        <ul class="bul">
+            <li>Setup: <strong>50% on kickoff</strong> (signed SOW), <strong>50% on go-live</strong>.</li>
+            <li>Monthly hosting + support: invoiced in advance on the 1st, net-15.</li>
+            <li>Custom modules / bespoke work: 50/50 against milestone delivery.</li>
+            <li>Wire / ACH / SEPA. Stripe for &lt;$10K invoices. Crypto on request, with 10% surcharge.</li>
+        </ul>
+
+        <h3 class="section">First-milestone refund guarantee (always offer)</h3>
+        <div class="callout note"><span class="lbl">POLICY</span>
+            "If Milestone 1 doesn't meet the written specification, the milestone payment is waived and the kickoff payment is refunded. You walk away whole." This is our most important sales-closing tool. <strong>Quoting any deal without it requires partner approval.</strong>
+        </div>
+
+        <h3 class="section">Discount authority matrix</h3>
+        <table class="spec">
+            <thead><tr><th>Discount %</th><th>Approval needed</th></tr></thead>
+            <tbody>
+                <tr><td>0&ndash;10%</td><td>Sales lead can authorise</td></tr>
+                <tr><td>10&ndash;20%</td><td>Director sign-off</td></tr>
+                <tr><td>20&ndash;25% (suite default)</td><td>Auto, no approval needed (suite discount)</td></tr>
+                <tr><td>&gt;25% off list</td><td>Two-partner sign-off, written justification, deal review</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>14</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 15: SALES PLAYBOOK ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">10 &middot; Sales</div>
+                <h2 class="page-title">Sales Playbook &mdash; <span>Cheat Sheet.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>v1.0</strong>SECTION 10</div>
+        </div>
+
+        <h3 class="section">Discovery questions (ask all of these on call 1)</h3>
+        <ol class="bul">
+            <li>How many people on the team? Across how many locations / entities?</li>
+            <li>Which 3 tools / spreadsheets does your team complain about most?</li>
+            <li>How do customers reach you today? Which channels? What % is unanswered &gt;24h?</li>
+            <li>What's your current monthly software bill (everything &mdash; CRM, accounting, support, BI, AI tools)?</li>
+            <li>If we built one platform that replaced 80% of those tools and gave you AI on top, what would that be worth annually?</li>
+            <li>Who's the executive sponsor? Who'll use it daily? Who's the technical owner on your side?</li>
+            <li>Do you have a preferred AWS account or do you want us to host?</li>
+            <li>What's the deadline driving this? (Always probe for the real why-now.)</li>
+            <li>Have you tried to fix this before? What happened? (Important &mdash; previous failures = scars.)</li>
+            <li>What does success look like to you 6 months after go-live?</li>
+        </ol>
+
+        <h3 class="section">Qualifying yes/no checks</h3>
+        <table class="spec">
+            <thead><tr><th>Check</th><th>Pass</th><th>Fail = walk</th></tr></thead>
+            <tbody>
+                <tr><td>Team size</td><td>20&ndash;500</td><td>&lt;15 (too price-sensitive) or &gt;1000 (too political)</td></tr>
+                <tr><td>Budget reality</td><td>$15K+ for setup, $400+/mo</td><td>"Just exploring", no number, asks for free PoC</td></tr>
+                <tr><td>Decision authority</td><td>CEO / Founder / COO on the call by week 2</td><td>Stuck talking to junior procurement</td></tr>
+                <tr><td>Timeline</td><td>Wants to start within 60 days</td><td>"Maybe Q3 next year"</td></tr>
+                <tr><td>Sponsor pain</td><td>Can name 2+ painful symptoms in their own words</td><td>Vague "we want AI" or "we want digital transformation"</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Red flags (walk politely)</h3>
+        <ul class="bul">
+            <li>"We need this in 2 weeks" &mdash; no, even our 4-week is the minimum and we don't ship slop.</li>
+            <li>"Can we pay you in equity?" &mdash; no equity-only deals. Cash + small equity considered for strategic accounts only.</li>
+            <li>"We just need a quick PoC for free" &mdash; charge for the ASSESS engagement or walk.</li>
+            <li>"We'll send you our 70-page RFP" &mdash; if they won't take a 30-min call first, they're shopping price not partner.</li>
+            <li>"Our IT will install everything" &mdash; OK in theory, but watch for them turning into the bottleneck during deploy.</li>
+            <li>Refusal to use AWS or refusal to put data on cloud &mdash; quote 2&times; for on-prem and add 90 days to timeline.</li>
+        </ul>
+
+        <h3 class="section">Top objections + answers</h3>
+        <table class="spec">
+            <thead><tr><th>Objection</th><th>Answer (short)</th></tr></thead>
+            <tbody>
+                <tr><td>"It's too expensive."</td><td>Compare to current monthly tool spend &times; 12 + 1 ops hire &times; salary. We're cheaper in year 1 and pay back in 5&ndash;6 months.</td></tr>
+                <tr><td>"What if you go bust?"</td><td>You own the IP and the AWS account. The platform is yours forever. Hand-off docs included.</td></tr>
+                <tr><td>"We already have Salesforce / SAP."</td><td>Great. We don't replace those. We layer the AI brain (Cortex) and customer comms (Echo) on top, or build the missing pieces. Cherry-pick.</td></tr>
+                <tr><td>"AI is over-hyped."</td><td>Agree it is. Show the boring AI &mdash; SLA breach alert, AI-drafted reply approved by human, weekly board summary. Boring + measurable wins.</td></tr>
+                <tr><td>"We need a PoC first."</td><td>Yes &mdash; that's what the ASSESS engagement is. $9K, 3 weeks, fully refunded against TRANSFORM if you proceed.</td></tr>
+                <tr><td>"How fast really?"</td><td>Discovery week 1. Live in week 6. Friday demos every week. You see real progress every 7 days.</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Demo script (30-min slot)</h3>
+        <ol class="bul">
+            <li><strong>0&ndash;3 min:</strong> Recap their pain in their own words (always).</li>
+            <li><strong>3&ndash;5 min:</strong> Show the model in one slide (foundation + AI + brand = your platform). Don't mention Odoo unless asked technical.</li>
+            <li><strong>5&ndash;15 min:</strong> Live demo against the relevant pain. Atlas dashboard for tool sprawl; Echo conversation for customer chaos; Cortex Q&amp;A for knowledge silos; Lens dashboard for visibility.</li>
+            <li><strong>15&ndash;20 min:</strong> Show the WhatsApp + AI assistant magic moment (their CEO will get a daily briefing on his phone).</li>
+            <li><strong>20&ndash;25 min:</strong> Pricing band. Suite discount. Risk-reversal guarantee.</li>
+            <li><strong>25&ndash;30 min:</strong> Next step &mdash; written proposal in 5 days. Confirm decision-maker on next call.</li>
+        </ol>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>15</strong></span>
+    </div>
+</div>
+
+<!-- ============ PAGE 16: GLOSSARY + CONTACTS ============ -->
+<div class="page">
+    <div class="page-inner">
+        <div class="page-header">
+            <div class="page-header-l">
+                <div class="page-label">11 &middot; Reference</div>
+                <h2 class="page-title">Glossary &amp; <span>Internal Contacts.</span></h2>
+            </div>
+            <div class="page-header-r"><strong>v1.0</strong>SECTION 11</div>
+        </div>
+
+        <h3 class="section">Glossary &amp; acronyms</h3>
+        <div class="two-col">
+            <table class="spec">
+                <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Atlas</strong></td><td>Sentra's business OS product (Odoo-based)</td></tr>
+                    <tr><td><strong>Echo</strong></td><td>Sentra's omnichannel support product (Chatwoot)</td></tr>
+                    <tr><td><strong>Cortex</strong></td><td>Sentra's private AI brain product (Ollama + RAG)</td></tr>
+                    <tr><td><strong>Lens</strong></td><td>Sentra's exec analytics product (Metabase)</td></tr>
+                    <tr><td><strong>Suite</strong></td><td>All four products sold together (25% off)</td></tr>
+                    <tr><td><strong>Master</strong></td><td>The maintained reference repo per product</td></tr>
+                    <tr><td><strong>Brand kit</strong></td><td>The client's logo + colors + email templates</td></tr>
+                    <tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation (Cortex pattern)</td></tr>
+                    <tr><td><strong>BSP</strong></td><td>Business Solution Provider (WhatsApp gateway)</td></tr>
+                    <tr><td><strong>SES</strong></td><td>AWS Simple Email Service</td></tr>
+                </tbody>
+            </table>
+            <table class="spec">
+                <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>RPO / RTO</strong></td><td>Recovery Point / Time Objective</td></tr>
+                    <tr><td><strong>SLA</strong></td><td>Service Level Agreement</td></tr>
+                    <tr><td><strong>NRR</strong></td><td>Net Revenue Retention</td></tr>
+                    <tr><td><strong>SOW</strong></td><td>Statement of Work (signed scope doc)</td></tr>
+                    <tr><td><strong>ASSESS</strong></td><td>Our paid PoC / discovery engagement</td></tr>
+                    <tr><td><strong>TRANSFORM</strong></td><td>Full build engagement</td></tr>
+                    <tr><td><strong>PARTNER</strong></td><td>Ongoing monthly relationship</td></tr>
+                    <tr><td><strong>White-label</strong></td><td>Branded as the client's, no Sentra/upstream marks</td></tr>
+                    <tr><td><strong>ICP</strong></td><td>Ideal Customer Profile</td></tr>
+                    <tr><td><strong>PII</strong></td><td>Personally Identifiable Information</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section">Internal tools we use</h3>
+        <table class="spec">
+            <thead><tr><th>Tool</th><th>Purpose</th><th>Where it lives</th></tr></thead>
+            <tbody>
+                <tr><td>GitHub Org</td><td>All code, masters and client forks</td><td><code class="inline">github.com/sentra</code></td></tr>
+                <tr><td>1Password</td><td>Shared credentials, client vaults</td><td>Sentra business account</td></tr>
+                <tr><td>Notion</td><td>Internal docs, meeting notes, client onboarding boards</td><td><code class="inline">notion.so/sentra</code></td></tr>
+                <tr><td>Linear</td><td>Engineering issue tracker</td><td><code class="inline">linear.app/sentra</code></td></tr>
+                <tr><td>Slack</td><td>Internal comms + client shared channels</td><td><code class="inline">sentra.slack.com</code></td></tr>
+                <tr><td>HubSpot (free)</td><td>Sales CRM, deal pipeline, demo scheduling</td><td>Sales lead</td></tr>
+                <tr><td>Stripe</td><td>Invoicing for &lt;$10K transactions</td><td>Finance</td></tr>
+                <tr><td>AWS Org</td><td>Multi-account: hq, staging, per-client</td><td>DevOps lead</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">Product owners</h3>
+        <table class="spec">
+            <thead><tr><th>Product</th><th>Tech lead</th><th>Sales lead</th><th>Runbook location</th></tr></thead>
+            <tbody>
+                <tr><td>Atlas</td><td>(assign)</td><td>(assign)</td><td>Notion &raquo; Engineering &raquo; Atlas</td></tr>
+                <tr><td>Echo</td><td>(assign)</td><td>(assign)</td><td>Notion &raquo; Engineering &raquo; Echo</td></tr>
+                <tr><td>Cortex</td><td>(assign)</td><td>(assign)</td><td>Notion &raquo; Engineering &raquo; Cortex</td></tr>
+                <tr><td>Lens</td><td>(assign)</td><td>(assign)</td><td>Notion &raquo; Engineering &raquo; Lens</td></tr>
+                <tr><td>n8n flows</td><td>(assign)</td><td>n/a</td><td><code class="inline">github.com/sentra/master-flows</code></td></tr>
+                <tr><td>AWS / DevOps</td><td>(assign)</td><td>n/a</td><td>Notion &raquo; DevOps &raquo; Runbooks</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="section">On-call &amp; incident response</h3>
+        <ul class="bul">
+            <li><strong>Rotation:</strong> weekly, Mon 09:00&ndash;Mon 09:00, by SMS + WhatsApp escalation.</li>
+            <li><strong>P1 (client down):</strong> respond &lt;15 min, restore &lt;4 hrs.</li>
+            <li><strong>P2 (degraded):</strong> respond &lt;1 hr, restore &lt;1 business day.</li>
+            <li><strong>Post-mortem:</strong> any P1 within 5 business days, written + shared with affected client + internal team.</li>
+            <li><strong>Status page:</strong> <code class="inline">status.sentra.tech</code> &mdash; updated for any P1 or scheduled maintenance.</li>
+        </ul>
+
+        <h3 class="section">Contact for this document</h3>
+        <div class="callout note"><span class="lbl">DOC OWNER</span>
+            Engineering &middot; Sentra HQ &middot; <code class="inline">contact.sentra.technologies@gmail.com</code> &middot; WhatsApp +94 70 466 9834. <strong>This document is versioned. Suggest changes via PR to <code class="inline">sentra/internal-docs</code>.</strong>
+        </div>
+    </div>
+    <div class="page-footer">
+        <span class="conf">CONFIDENTIAL</span><span>SENTRA SUITE &middot; INTERNAL TECHNICAL REFERENCE</span><span>PAGE <strong>16</strong></span>
+    </div>
+</div>
+
+</body>
+</html>
