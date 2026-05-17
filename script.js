@@ -102,19 +102,42 @@
         fadeTargets.forEach(revealNow);
     }
 
-    /* ---------- Contact form → mailto delivery ----------
-       Builds a pre-filled mailto: link from the form fields and opens
-       the user's email client. Reliable, no third-party dependency.
-       Swap to Formspree / Web3Forms later for in-page submission. */
+    /* ---------- Contact form → Formspree AJAX, mailto fallback ----------
+       Primary: POST to Formspree, in-page success state.
+       Fallback: build a mailto: link and open user's mail client. */
     const form = document.getElementById('contactForm');
     const success = document.getElementById('formSuccess');
     const submitBtn = document.getElementById('submitBtn');
+
+    const buildMailto = () => {
+        const get = (id) => (document.getElementById(id) || {}).value || '';
+        const name = get('name').trim();
+        const email = get('email').trim();
+        const company = get('company').trim();
+        const interest = get('interest').trim();
+        const message = get('message').trim();
+        const to = form.dataset.email || 'contact.sentra.technologies@gmail.com';
+        const subject = `New enquiry — ${name || 'sentra-technologies.com'}`;
+        const body = [
+            `Full Name:     ${name}`,
+            `Email:         ${email}`,
+            `Organisation:  ${company || '—'}`,
+            `Interest:      ${interest || '—'}`,
+            '',
+            'Message:',
+            message || '(none provided)',
+            '',
+            '— Sent via sentratechnologies.com contact form'
+        ].join('\n');
+        return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
     if (form && success) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             // Honeypot
-            const honey = form.querySelector('[name="_honey"]');
+            const honey = form.querySelector('[name="_gotcha"]');
             if (honey && honey.value) return;
 
             // Validate required fields
@@ -129,42 +152,30 @@
             });
             if (!ok) return;
 
-            const get = (id) => (document.getElementById(id) || {}).value || '';
-            const name = get('name').trim();
-            const email = get('email').trim();
-            const company = get('company').trim();
-            const interest = get('interest').trim();
-            const message = get('message').trim();
-
-            const to = form.dataset.email || 'contact.sentra.technologies@gmail.com';
-            const subject = `New enquiry — ${name || 'sentra-technologies.com'}`;
-            const bodyLines = [
-                `Full Name:     ${name}`,
-                `Email:         ${email}`,
-                `Organisation:  ${company || '—'}`,
-                `Interest:      ${interest || '—'}`,
-                '',
-                'Message:',
-                message || '(none provided)',
-                '',
-                '— Sent via sentratechnologies.com contact form'
-            ];
-            const mailto = `mailto:${to}` +
-                `?subject=${encodeURIComponent(subject)}` +
-                `&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-
             if (submitBtn) submitBtn.setAttribute('data-loading', 'true');
 
-            // Open the mail client
-            window.location.href = mailto;
+            try {
+                const data = new FormData(form);
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('Formspree returned ' + res.status);
 
-            // Show the success state after a short delay
-            setTimeout(() => {
-                if (submitBtn) submitBtn.removeAttribute('data-loading');
                 form.style.display = 'none';
                 success.style.display = 'block';
                 success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 600);
+            } catch (err) {
+                // Fall back to mailto so the visitor still gets through.
+                if (submitBtn) submitBtn.removeAttribute('data-loading');
+                window.location.href = buildMailto();
+                setTimeout(() => {
+                    form.style.display = 'none';
+                    success.style.display = 'block';
+                    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 600);
+            }
         });
     }
 
