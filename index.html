@@ -505,12 +505,8 @@
 
                 <form class="contact-form"
                       id="contactForm"
-                      action="https://formsubmit.co/ajax/contact.sentra.technologies@gmail.com"
-                      method="POST">
-                    <input type="hidden" name="_subject" value="New enquiry — sentra-technologies.com">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="text" name="_honey" style="display:none">
+                      data-email="contact.sentra.technologies@gmail.com">
+                    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
                     <div class="form-row">
                         <label for="name">Full name</label>
@@ -549,8 +545,9 @@
                     <p class="form-note">Submissions are delivered directly to a senior engineer. We respond within one business day. Your information is treated as strictly confidential.</p>
                 </form>
                 <div class="form-success" id="formSuccess" style="display:none;">
-                    <h3>Thank you.</h3>
-                    <p>Your enquiry has been received and delivered to a senior engineer. We will be in touch within one business day.</p>
+                    <h3>Almost there.</h3>
+                    <p>Your email client just opened with the enquiry pre-filled. Press <strong>Send</strong> to deliver it to a senior engineer &mdash; we will be in touch within one business day.</p>
+                    <p class="fs-alt">No email client opened? Write to us directly at <a href="mailto:contact.sentra.technologies@gmail.com">contact.sentra.technologies@gmail.com</a>.</p>
                 </div>
             </div>
         </div>

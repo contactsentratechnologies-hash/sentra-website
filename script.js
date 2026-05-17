@@ -102,17 +102,22 @@
         fadeTargets.forEach(revealNow);
     }
 
-    /* ---------- AJAX form submit (FormSubmit) ---------- */
+    /* ---------- Contact form → mailto delivery ----------
+       Builds a pre-filled mailto: link from the form fields and opens
+       the user's email client. Reliable, no third-party dependency.
+       Swap to Formspree / Web3Forms later for in-page submission. */
     const form = document.getElementById('contactForm');
     const success = document.getElementById('formSuccess');
     const submitBtn = document.getElementById('submitBtn');
     if (form && success) {
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
 
             // Honeypot
-            if (form.querySelector('[name="_honey"]').value) return;
+            const honey = form.querySelector('[name="_honey"]');
+            if (honey && honey.value) return;
 
+            // Validate required fields
             const required = form.querySelectorAll('[required]');
             let ok = true;
             required.forEach(r => {
@@ -124,27 +129,42 @@
             });
             if (!ok) return;
 
+            const get = (id) => (document.getElementById(id) || {}).value || '';
+            const name = get('name').trim();
+            const email = get('email').trim();
+            const company = get('company').trim();
+            const interest = get('interest').trim();
+            const message = get('message').trim();
+
+            const to = form.dataset.email || 'contact.sentra.technologies@gmail.com';
+            const subject = `New enquiry — ${name || 'sentra-technologies.com'}`;
+            const bodyLines = [
+                `Full Name:     ${name}`,
+                `Email:         ${email}`,
+                `Organisation:  ${company || '—'}`,
+                `Interest:      ${interest || '—'}`,
+                '',
+                'Message:',
+                message || '(none provided)',
+                '',
+                '— Sent via sentratechnologies.com contact form'
+            ];
+            const mailto = `mailto:${to}` +
+                `?subject=${encodeURIComponent(subject)}` +
+                `&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
             if (submitBtn) submitBtn.setAttribute('data-loading', 'true');
 
-            try {
-                const data = new FormData(form);
-                const res = await fetch(form.action, {
-                    method: 'POST',
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                });
-                if (!res.ok) throw new Error('Network response was not ok');
+            // Open the mail client
+            window.location.href = mailto;
 
+            // Show the success state after a short delay
+            setTimeout(() => {
+                if (submitBtn) submitBtn.removeAttribute('data-loading');
                 form.style.display = 'none';
                 success.style.display = 'block';
                 success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } catch (err) {
-                if (submitBtn) submitBtn.removeAttribute('data-loading');
-                alert(
-                    'Sorry — the form could not be submitted right now. ' +
-                    'Please email us directly at contact.sentra.technologies@gmail.com.'
-                );
-            }
+            }, 600);
         });
     }
 

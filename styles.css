@@ -880,7 +880,19 @@ em { font-style: italic; color: var(--accent); }
 .form-success p {
     color: rgba(255,255,255,0.7);
     font-size: 15px;
+    margin-bottom: 12px;
 }
+.form-success p:last-child { margin-bottom: 0; }
+.form-success strong { color: #fff; }
+.form-success .fs-alt {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+.form-success .fs-alt a { color: var(--accent); }
+.form-success .fs-alt a:hover { color: #fff; }
 
 /* ==========================================================
    FOOTER
