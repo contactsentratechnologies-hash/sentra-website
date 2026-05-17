@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentra Technologies — Enterprise Software, Built Around Your Operations</title>
-    <meta name="description" content="Sentra Technologies builds the operating platform your enterprise should already have — designed around your workflow, branded as your own, delivered in weeks. Atlas, Echo, Cortex, Lens — the Sentra Suite.">
+    <meta name="description" content="Sentra Technologies builds the operating platform your enterprise should already have — designed around your workflow, delivered in 5-12 business days. The Sentra Suite: Atlas, Echo, Cortex, Lens.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -26,8 +26,10 @@
             <div class="nav-menu" id="navMenu">
                 <a href="#problems" class="nav-link">The Problem</a>
                 <a href="#suite" class="nav-link">The Suite</a>
-                <a href="#approach" class="nav-link">Our Approach</a>
-                <a href="#trust" class="nav-link">Trust</a>
+                <a href="#industries" class="nav-link">Industries</a>
+                <a href="#approach" class="nav-link">Approach</a>
+                <a href="#stack" class="nav-link">Stack</a>
+                <a href="#trust" class="nav-link">Security</a>
                 <a href="#contact" class="nav-link nav-cta">Get In Touch</a>
             </div>
         </div>
@@ -42,7 +44,7 @@
                 built around <em>your</em> operations.
             </h1>
             <p class="hero-subtitle">
-                The four-product platform your business should already have &mdash; designed around how your team actually works, branded as your own, delivered in weeks. Sentra serves enterprises across the USA, EU, and UK.
+                The four-product platform your business should already have &mdash; designed around how your team actually works, branded as your own, delivered in <strong>5&ndash;12 business days</strong>. Sentra serves enterprises across the USA, EU, and UK.
             </p>
             <div class="hero-cta-group">
                 <a href="#contact" class="btn btn-primary">Request a Conversation</a>
@@ -54,7 +56,7 @@
                     <span class="hm-lbl">Flagship products</span>
                 </div>
                 <div class="hero-meta-item">
-                    <span class="hm-num">4&ndash;6 wks</span>
+                    <span class="hm-num">5&ndash;12 days</span>
                     <span class="hm-lbl">Typical delivery</span>
                 </div>
                 <div class="hero-meta-item">
@@ -69,7 +71,7 @@
         </div>
     </section>
 
-    <!-- ===================== PROBLEMS / PAINS ===================== -->
+    <!-- ===================== PROBLEMS ===================== -->
     <section class="section problems" id="problems">
         <div class="container">
             <div class="section-head">
@@ -105,109 +107,216 @@
         </div>
     </section>
 
-    <!-- ===================== SENTRA SUITE ===================== -->
+    <!-- ===================== SENTRA SUITE (interactive accordion) ===================== -->
     <section class="section suite" id="suite">
         <div class="container">
             <div class="section-head">
                 <span class="eyebrow">The platform</span>
                 <h2 class="section-title">The Sentra Suite. Four products. One platform.</h2>
                 <p class="section-lede">
-                    Each product is engineered to resolve a specific operational pain. Used together, they form an integrated platform that runs your entire business &mdash; under your brand, in your cloud, owned by you.
+                    Each product is engineered to resolve a specific operational pain. Used together, they form an integrated platform that runs your entire business &mdash; under your brand, in your cloud, owned by you. Click any product to explore.
                 </p>
             </div>
 
-            <div class="suite-grid">
-                <article class="suite-product">
-                    <div class="sp-head">
-                        <span class="sp-marker">01</span>
-                        <h3 class="sp-name">Atlas</h3>
-                        <span class="sp-tag">Business Operating System</span>
+            <div class="suite-list">
+                <article class="suite-row" data-expanded="true">
+                    <button class="sr-trigger" aria-expanded="true">
+                        <span class="sr-marker">01</span>
+                        <div class="sr-heads">
+                            <h3 class="sr-name">Atlas</h3>
+                            <span class="sr-tag">Business Operating System</span>
+                        </div>
+                        <span class="sr-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="sr-panel">
+                        <div class="sr-panel-inner">
+                            <p class="sr-pain"><strong>For when:</strong> sales, inventory, accounting, HR, projects and fleet are scattered across half a dozen tools that don't agree with each other.</p>
+                            <p class="sr-body">A single, unified platform that holds your entire operation in one place. Your team logs in once and sees the whole business. Reports come from the same live data. The data-shuffling work simply disappears.</p>
+                            <ul class="sr-points">
+                                <li>End-to-end ERP &mdash; sales, finance, inventory, HR, projects, fleet</li>
+                                <li>Live, single source of truth across every team</li>
+                                <li>Built around your products, prices and terminology</li>
+                                <li>Integrates with your bank, suppliers, channels and existing tools</li>
+                            </ul>
+                        </div>
                     </div>
-                    <p class="sp-pain"><strong>For when:</strong> sales, inventory, accounting, HR, projects and fleet are scattered across half a dozen tools that don't agree with each other.</p>
-                    <p class="sp-body">A single, unified platform that holds your entire operation in one place. Your team logs in once and sees the whole business. Reports come from the same live data. The data-shuffling work simply disappears.</p>
-                    <ul class="sp-points">
-                        <li>End-to-end ERP &mdash; sales, finance, inventory, HR, projects, fleet</li>
-                        <li>Live, single source of truth across every team</li>
-                        <li>Built around your products, prices and terminology</li>
-                        <li>Integrates with your bank, suppliers, channels and existing tools</li>
-                    </ul>
                 </article>
 
-                <article class="suite-product">
-                    <div class="sp-head">
-                        <span class="sp-marker">02</span>
-                        <h3 class="sp-name">Echo</h3>
-                        <span class="sp-tag">Customer Support Platform</span>
+                <article class="suite-row">
+                    <button class="sr-trigger" aria-expanded="false">
+                        <span class="sr-marker">02</span>
+                        <div class="sr-heads">
+                            <h3 class="sr-name">Echo</h3>
+                            <span class="sr-tag">Customer Support Platform</span>
+                        </div>
+                        <span class="sr-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="sr-panel">
+                        <div class="sr-panel-inner">
+                            <p class="sr-pain"><strong>For when:</strong> customers reach you across seven channels, your team checks five inboxes, and conversations regularly go unanswered.</p>
+                            <p class="sr-body">A single command centre for every customer conversation &mdash; WhatsApp, email, web chat, social, voice. AI drafts replies in your tone, your team approves and sends in one click. Nothing falls through the cracks.</p>
+                            <ul class="sr-points">
+                                <li>Omnichannel inbox &mdash; every channel, one screen, full history</li>
+                                <li>AI assistant drafts replies in your voice, escalates the rest</li>
+                                <li>Auto-routing, SLA monitoring, escalation alerts</li>
+                                <li>Connected to your customer record in Atlas</li>
+                            </ul>
+                        </div>
                     </div>
-                    <p class="sp-pain"><strong>For when:</strong> customers reach you across seven channels, your team checks five inboxes, and conversations regularly go unanswered.</p>
-                    <p class="sp-body">A single command centre for every customer conversation &mdash; WhatsApp, email, web chat, social, voice. AI drafts replies in your tone, your team approves and sends in one click. Nothing falls through the cracks.</p>
-                    <ul class="sp-points">
-                        <li>Omnichannel inbox &mdash; every channel, one screen, full history</li>
-                        <li>AI assistant drafts replies in your voice, escalates the rest</li>
-                        <li>Auto-routing, SLA monitoring, escalation alerts</li>
-                        <li>Connected to your customer record in Atlas</li>
-                    </ul>
                 </article>
 
-                <article class="suite-product">
-                    <div class="sp-head">
-                        <span class="sp-marker">03</span>
-                        <h3 class="sp-name">Cortex</h3>
-                        <span class="sp-tag">Private AI Brain</span>
+                <article class="suite-row">
+                    <button class="sr-trigger" aria-expanded="false">
+                        <span class="sr-marker">03</span>
+                        <div class="sr-heads">
+                            <h3 class="sr-name">Cortex</h3>
+                            <span class="sr-tag">Private AI Brain</span>
+                        </div>
+                        <span class="sr-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="sr-panel">
+                        <div class="sr-panel-inner">
+                            <p class="sr-pain"><strong>For when:</strong> your company's knowledge lives in scattered documents, inboxes and people's heads &mdash; and onboarding a new hire takes months.</p>
+                            <p class="sr-body">A private AI assistant trained on your documents, your processes, and your way of working. Anyone in your team can ask anything and get the right answer in seconds, with the source. Your knowledge stops walking out the door.</p>
+                            <ul class="sr-points">
+                                <li>Private LLM &mdash; your data never leaves your environment</li>
+                                <li>Answers with citations to the source document</li>
+                                <li>Connects to your documents, drives, wikis and chat history</li>
+                                <li>Available in chat, on WhatsApp, and inside every Sentra product</li>
+                            </ul>
+                        </div>
                     </div>
-                    <p class="sp-pain"><strong>For when:</strong> your company's knowledge lives in scattered documents, inboxes and people's heads &mdash; and onboarding a new hire takes months.</p>
-                    <p class="sp-body">A private AI assistant trained on your documents, your processes, and your way of working. Anyone in your team can ask anything and get the right answer in seconds, with the source. Your knowledge stops walking out the door.</p>
-                    <ul class="sp-points">
-                        <li>Private LLM &mdash; your data never leaves your environment</li>
-                        <li>Answers with citations to the source document</li>
-                        <li>Connects to your documents, drives, wikis and chat history</li>
-                        <li>Available in chat, on WhatsApp, and inside every Sentra product</li>
-                    </ul>
                 </article>
 
-                <article class="suite-product">
-                    <div class="sp-head">
-                        <span class="sp-marker">04</span>
-                        <h3 class="sp-name">Lens</h3>
-                        <span class="sp-tag">Executive Analytics</span>
+                <article class="suite-row">
+                    <button class="sr-trigger" aria-expanded="false">
+                        <span class="sr-marker">04</span>
+                        <div class="sr-heads">
+                            <h3 class="sr-name">Lens</h3>
+                            <span class="sr-tag">Executive Analytics</span>
+                        </div>
+                        <span class="sr-icon" aria-hidden="true"></span>
+                    </button>
+                    <div class="sr-panel">
+                        <div class="sr-panel-inner">
+                            <p class="sr-pain"><strong>For when:</strong> the numbers leadership needs arrive days late, in different formats, and rarely agree with each other.</p>
+                            <p class="sr-body">A live executive dashboard built around the metrics that matter to your business, monitored continuously. When something looks off, you receive a clear explanation on your phone &mdash; before the issue compounds.</p>
+                            <ul class="sr-points">
+                                <li>Real-time dashboards across sales, ops, finance, customer health</li>
+                                <li>Automated anomaly detection with plain-English explanations</li>
+                                <li>Daily executive briefing delivered to your phone</li>
+                                <li>Embedded directly inside Atlas for in-context decisions</li>
+                            </ul>
+                        </div>
                     </div>
-                    <p class="sp-pain"><strong>For when:</strong> the numbers leadership needs arrive days late, in different formats, and rarely agree with each other.</p>
-                    <p class="sp-body">A live executive dashboard built around the metrics that matter to your business, monitored continuously. When something looks off, you receive a clear explanation on your phone &mdash; before the issue compounds.</p>
-                    <ul class="sp-points">
-                        <li>Real-time dashboards across sales, ops, finance, customer health</li>
-                        <li>Automated anomaly detection with plain-English explanations</li>
-                        <li>Daily executive briefing delivered to your phone</li>
-                        <li>Embedded directly inside Atlas for in-context decisions</li>
-                    </ul>
                 </article>
             </div>
 
-            <div class="suite-services">
-                <div class="ss-text">
+            <!-- Services beyond the suite -->
+            <div class="services-block">
+                <div class="services-head">
                     <span class="eyebrow">Beyond the platform</span>
-                    <h3>Standalone AI &amp; automation engagements.</h3>
-                    <p>For organisations that already have established systems, we deliver targeted AI integration, custom model deployment, private knowledge brains, and bespoke automation engineering &mdash; without requiring a full platform replacement.</p>
+                    <h3 class="services-title">Specialist services for organisations with existing systems.</h3>
                 </div>
-                <ul class="ss-list">
-                    <li>AI integration into existing ERP, CRM and operational tools</li>
-                    <li>Custom model training and deployment on your data</li>
-                    <li>Standalone Company Brain (Cortex) deployment</li>
-                    <li>Workflow automation engineering</li>
-                    <li>Custom module and integration development</li>
-                    <li>Managed hosting, monitoring and support</li>
-                </ul>
+                <div class="services-grid">
+                    <div class="service-col">
+                        <h4>AI &amp; Automation</h4>
+                        <ul>
+                            <li>AI integration into existing ERP, CRM and operational tools</li>
+                            <li>Custom model training and deployment on your data</li>
+                            <li>Standalone Company Brain (Cortex) deployment</li>
+                            <li>Workflow automation engineering</li>
+                            <li>Custom module and integration development</li>
+                        </ul>
+                    </div>
+                    <div class="service-col">
+                        <h4>Cybersecurity Services</h4>
+                        <ul>
+                            <li>Penetration testing &mdash; web, API, network, infrastructure</li>
+                            <li>Security audits &amp; vulnerability assessments</li>
+                            <li>Cloud security hardening (AWS, Azure, GCP)</li>
+                            <li>Identity, access &amp; secrets management review</li>
+                            <li>Incident response &amp; threat hunting retainers</li>
+                            <li>SOC 2, ISO 27001 &amp; HIPAA readiness programmes</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===================== APPROACH / HOW WE WORK ===================== -->
+    <!-- ===================== INDUSTRIES ===================== -->
+    <section class="section industries" id="industries">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Industries we serve</span>
+                <h2 class="section-title">Built for the operational realities of regulated, growth-stage industries.</h2>
+                <p class="section-lede">
+                    Sentra deployments run inside healthcare networks, logistics operators, regulated financial firms, and high-volume retail. The Suite adapts to your sector; the security baseline does not.
+                </p>
+            </div>
+
+            <div class="industries-grid">
+                <a href="#contact" class="industry-card">
+                    <img src="images/healthcare.jpg" alt="Healthcare" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">01</span>
+                        <h3>Healthcare &amp; Clinics</h3>
+                        <p>Appointment automation, patient records, lab notifications and HIPAA-aligned operations for clinics, dental centres and labs.</p>
+                    </div>
+                </a>
+                <a href="#contact" class="industry-card">
+                    <img src="images/logistics.jpg" alt="Logistics" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">02</span>
+                        <h3>Logistics &amp; Fleet</h3>
+                        <p>Route optimisation, driver performance, delivery tracking and predictive maintenance for transport operators.</p>
+                    </div>
+                </a>
+                <a href="#contact" class="industry-card">
+                    <img src="images/retail.jpg" alt="Retail" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">03</span>
+                        <h3>Retail &amp; E-commerce</h3>
+                        <p>Inventory across stores and channels, customer omnichannel support, and live margin analytics for retail chains.</p>
+                    </div>
+                </a>
+                <a href="#contact" class="industry-card">
+                    <img src="images/manufacturing.jpg" alt="Manufacturing" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">04</span>
+                        <h3>Manufacturing &amp; Trade</h3>
+                        <p>Production scheduling, BOM &amp; inventory, supplier integration and full ERP for manufacturers and import/export firms.</p>
+                    </div>
+                </a>
+                <a href="#contact" class="industry-card">
+                    <img src="images/financial.jpg" alt="Financial Services" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">05</span>
+                        <h3>Financial Services</h3>
+                        <p>Compliance-first workflows, client onboarding automation, secure document handling and audit-ready records.</p>
+                    </div>
+                </a>
+                <a href="#contact" class="industry-card">
+                    <img src="images/professional.jpg" alt="Professional Services" loading="lazy">
+                    <div class="industry-overlay">
+                        <span class="industry-tag">06</span>
+                        <h3>Professional Services</h3>
+                        <p>Project tracking, billable hours, client portals and proposal automation for agencies, consultancies and IT firms.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== APPROACH ===================== -->
     <section class="section approach" id="approach">
         <div class="container">
             <div class="section-head">
                 <span class="eyebrow">Our approach</span>
-                <h2 class="section-title">From signed engagement to live platform &mdash; in weeks, not years.</h2>
+                <h2 class="section-title">From signed engagement to live platform &mdash; in 5 to 12 business days.</h2>
                 <p class="section-lede">
-                    Every engagement follows the same disciplined sequence. Weekly progress demos. No discovery black box. A senior engineer accountable from day one to day live.
+                    Every engagement follows the same disciplined sequence. Daily progress, no discovery black box, a senior engineer accountable from day one to day live. Larger custom builds run longer &mdash; the standard Suite deployments do not.
                 </p>
             </div>
 
@@ -215,26 +324,26 @@
                 <div class="step">
                     <span class="step-num">01</span>
                     <h3 class="step-title">Discovery</h3>
-                    <p>A senior engineer maps your operations, language and existing systems. You leave week one with a written plan and a fixed price.</p>
-                    <span class="step-time">Week 1</span>
+                    <p>A senior engineer maps your operations, language and existing systems. You leave day one with a written plan and a fixed price.</p>
+                    <span class="step-time">Day 1</span>
                 </div>
                 <div class="step">
                     <span class="step-num">02</span>
                     <h3 class="step-title">Design &amp; configure</h3>
-                    <p>The platform takes shape with your branding, your terminology and your workflow. You see live progress every week &mdash; never a surprise at the end.</p>
-                    <span class="step-time">Weeks 2&ndash;3</span>
+                    <p>The platform takes shape with your branding, your terminology and your workflow. You see live progress every day &mdash; never a surprise at the end.</p>
+                    <span class="step-time">Days 2&ndash;5</span>
                 </div>
                 <div class="step">
                     <span class="step-num">03</span>
                     <h3 class="step-title">AI &amp; integrate</h3>
                     <p>Your assistants learn your data and tone. We connect the platform to your existing tools, channels, banking and suppliers. Your team begins live test drives.</p>
-                    <span class="step-time">Weeks 3&ndash;5</span>
+                    <span class="step-time">Days 5&ndash;9</span>
                 </div>
                 <div class="step">
                     <span class="step-num">04</span>
                     <h3 class="step-title">Launch &amp; aftercare</h3>
                     <p>We move the platform to production with full training, written documentation and a senior engineer on call. The platform is yours &mdash; full IP, no lock-in.</p>
-                    <span class="step-time">Week 5&ndash;6</span>
+                    <span class="step-time">Days 10&ndash;12</span>
                 </div>
             </div>
 
@@ -244,51 +353,123 @@
         </div>
     </section>
 
+    <!-- ===================== TECH STACK ===================== -->
+    <section class="section stack" id="stack">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Technology stack</span>
+                <h2 class="section-title">Built on the systems your CTO already trusts.</h2>
+                <p class="section-lede">
+                    We build on proven, enterprise-grade infrastructure and open platforms &mdash; the same stack chosen by Fortune 500 engineering teams. Nothing exotic. Nothing that won't still be running, supportable and maintainable in five years.
+                </p>
+            </div>
+
+            <div class="stack-grid">
+                <div class="stack-cat">
+                    <h4 class="stack-cat-title">Cloud &amp; Infrastructure</h4>
+                    <div class="stack-items">
+                        <div class="stack-item"><img src="logos/aws.svg" alt="AWS"><span>AWS</span></div>
+                        <div class="stack-item"><img src="logos/azure.svg" alt="Azure"><span>Azure</span></div>
+                        <div class="stack-item"><img src="logos/gcp.svg" alt="Google Cloud"><span>Google Cloud</span></div>
+                        <div class="stack-item"><img src="logos/oracle.svg" alt="Oracle Cloud"><span>Oracle</span></div>
+                        <div class="stack-item"><img src="logos/docker.svg" alt="Docker"><span>Docker</span></div>
+                        <div class="stack-item"><img src="logos/kubernetes.svg" alt="Kubernetes"><span>Kubernetes</span></div>
+                        <div class="stack-item"><img src="logos/terraform.svg" alt="Terraform"><span>Terraform</span></div>
+                    </div>
+                </div>
+                <div class="stack-cat">
+                    <h4 class="stack-cat-title">Platforms &amp; ERP Foundations</h4>
+                    <div class="stack-items">
+                        <div class="stack-item"><img src="logos/odoo.svg" alt="Odoo"><span>Odoo</span></div>
+                        <div class="stack-item"><img src="logos/sap.svg" alt="SAP"><span>SAP</span></div>
+                        <div class="stack-item"><img src="logos/n8n.svg" alt="n8n"><span>n8n</span></div>
+                        <div class="stack-item"><img src="logos/metabase.svg" alt="Metabase"><span>Metabase</span></div>
+                        <div class="stack-item"><img src="logos/grafana.svg" alt="Grafana"><span>Grafana</span></div>
+                    </div>
+                </div>
+                <div class="stack-cat">
+                    <h4 class="stack-cat-title">AI &amp; Data</h4>
+                    <div class="stack-items">
+                        <div class="stack-item"><img src="logos/openai.svg" alt="OpenAI"><span>OpenAI</span></div>
+                        <div class="stack-item"><img src="logos/anthropic.svg" alt="Anthropic"><span>Anthropic</span></div>
+                        <div class="stack-item"><img src="logos/langchain.svg" alt="LangChain"><span>LangChain</span></div>
+                        <div class="stack-item"><img src="logos/tensorflow.svg" alt="TensorFlow"><span>TensorFlow</span></div>
+                        <div class="stack-item"><img src="logos/pytorch.svg" alt="PyTorch"><span>PyTorch</span></div>
+                    </div>
+                </div>
+                <div class="stack-cat">
+                    <h4 class="stack-cat-title">Engineering &amp; Data Layer</h4>
+                    <div class="stack-items">
+                        <div class="stack-item"><img src="logos/python.svg" alt="Python"><span>Python</span></div>
+                        <div class="stack-item"><img src="logos/nodejs.svg" alt="Node.js"><span>Node.js</span></div>
+                        <div class="stack-item"><img src="logos/react.svg" alt="React"><span>React</span></div>
+                        <div class="stack-item"><img src="logos/postgresql.svg" alt="PostgreSQL"><span>PostgreSQL</span></div>
+                        <div class="stack-item"><img src="logos/mongodb.svg" alt="MongoDB"><span>MongoDB</span></div>
+                        <div class="stack-item"><img src="logos/redis.svg" alt="Redis"><span>Redis</span></div>
+                    </div>
+                </div>
+                <div class="stack-cat">
+                    <h4 class="stack-cat-title">Security &amp; Compliance</h4>
+                    <div class="stack-items">
+                        <div class="stack-item"><img src="logos/burpsuite.svg" alt="Burp Suite"><span>Burp Suite</span></div>
+                        <div class="stack-item"><img src="logos/nessus.svg" alt="Nessus"><span>Nessus</span></div>
+                        <div class="stack-item"><img src="logos/owasp.svg" alt="OWASP"><span>OWASP ZAP</span></div>
+                        <div class="stack-item"><img src="logos/snyk.svg" alt="Snyk"><span>Snyk</span></div>
+                        <div class="stack-item"><img src="logos/crowdstrike.svg" alt="CrowdStrike"><span>CrowdStrike</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ===================== TRUST / SECURITY ===================== -->
     <section class="section trust" id="trust">
         <div class="container">
             <div class="section-head">
                 <span class="eyebrow">Security &amp; trust</span>
-                <h2 class="section-title">Engineered to enterprise security and compliance standards.</h2>
+                <h2 class="section-title">Engineered to the same standards your security team already audits against.</h2>
                 <p class="section-lede">
-                    The platforms we deliver protect customer data, financial records and operational continuity. Security is not a layer we apply at the end &mdash; it is part of the architecture.
+                    The platforms we deliver protect customer data, financial records and operational continuity. Security is not a layer we apply at the end &mdash; it is part of the architecture, the delivery process, and the way our engineers think.
                 </p>
             </div>
 
             <div class="trust-grid">
                 <div class="trust-card">
                     <h4>Data residency &amp; ownership</h4>
-                    <p>Deployments run in your AWS account by default. Your data, your encryption keys, your control. Available regions across USA, EU and UK to satisfy data-residency requirements.</p>
+                    <p>Deployments run in your AWS, Azure or Oracle Cloud account by default. Your data, your encryption keys, your control. Regions across USA, EU and UK to satisfy data-residency obligations.</p>
                 </div>
                 <div class="trust-card">
                     <h4>Encryption end to end</h4>
-                    <p>AES-256 at rest, TLS 1.3 in transit. Secrets stored in AWS Secrets Manager. No service is exposed to the public internet other than the application gateway.</p>
+                    <p>AES-256 at rest, TLS 1.3 in transit. Secrets stored in AWS Secrets Manager or HashiCorp Vault. No service exposed to the public internet other than the application gateway.</p>
                 </div>
                 <div class="trust-card">
                     <h4>Private AI by design</h4>
-                    <p>Your Cortex deployment runs on dedicated infrastructure inside your environment. Your documents and customer data are never sent to external model providers.</p>
+                    <p>Your Cortex deployment runs on dedicated infrastructure inside your environment. Your documents and customer data are never sent to external model providers without explicit configuration.</p>
                 </div>
                 <div class="trust-card">
                     <h4>Compliance-aligned delivery</h4>
-                    <p>SOC 2, ISO 27001, GDPR and HIPAA-aligned development practices. Audit-ready documentation produced as part of every engagement.</p>
+                    <p>SOC 2 Type II, ISO 27001, GDPR, HIPAA, PCI-DSS and NIST CSF-aligned development practices. Audit-ready documentation produced as part of every engagement.</p>
                 </div>
                 <div class="trust-card">
-                    <h4>Independent code &amp; security review</h4>
-                    <p>Every release is reviewed by a second senior engineer. Quarterly third-party penetration testing for clients on continued support contracts.</p>
+                    <h4>Independent code &amp; pen-test review</h4>
+                    <p>Every release is reviewed by a second senior engineer. OWASP Top 10 and ASVS coverage. Quarterly third-party penetration testing available for clients on continued support contracts.</p>
                 </div>
                 <div class="trust-card">
                     <h4>Operational continuity</h4>
-                    <p>Daily automated backups, cross-region replication, documented disaster recovery procedures. Defined RPO and RTO targets per engagement.</p>
+                    <p>Daily automated backups, cross-region replication, documented disaster recovery procedures. Defined RPO and RTO targets per engagement. 24-hour breach notification protocols.</p>
                 </div>
             </div>
 
             <div class="compliance-row">
                 <span class="compliance-label">Aligned with</span>
-                <span class="compliance-tag">SOC 2</span>
+                <span class="compliance-tag">SOC 2 Type II</span>
                 <span class="compliance-tag">ISO 27001</span>
                 <span class="compliance-tag">GDPR</span>
                 <span class="compliance-tag">HIPAA</span>
+                <span class="compliance-tag">PCI-DSS</span>
+                <span class="compliance-tag">NIST CSF</span>
                 <span class="compliance-tag">OWASP ASVS</span>
+                <span class="compliance-tag">CIS Benchmarks</span>
             </div>
         </div>
     </section>
@@ -321,42 +502,55 @@
                         <span class="cl-sub">Teams in Kuwait, Colombo &amp; London</span>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm">
+
+                <form class="contact-form"
+                      id="contactForm"
+                      action="https://formsubmit.co/ajax/contact.sentra.technologies@gmail.com"
+                      method="POST">
+                    <input type="hidden" name="_subject" value="New enquiry — sentra-technologies.com">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="text" name="_honey" style="display:none">
+
                     <div class="form-row">
                         <label for="name">Full name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="Full Name" required>
                     </div>
                     <div class="form-row">
                         <label for="email">Work email</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="Email" required>
                     </div>
                     <div class="form-row">
                         <label for="company">Organisation</label>
-                        <input type="text" id="company" name="company">
+                        <input type="text" id="company" name="Organisation">
                     </div>
                     <div class="form-row">
                         <label for="interest">What you are exploring</label>
-                        <select id="interest" name="interest">
+                        <select id="interest" name="Area of Interest">
                             <option value="">Select an area</option>
-                            <option value="atlas">Atlas &mdash; Business Operating System</option>
-                            <option value="echo">Echo &mdash; Customer Support Platform</option>
-                            <option value="cortex">Cortex &mdash; Private AI Brain</option>
-                            <option value="lens">Lens &mdash; Executive Analytics</option>
-                            <option value="suite">The full Sentra Suite</option>
-                            <option value="services">AI &amp; automation services only</option>
-                            <option value="other">Something else</option>
+                            <option value="Atlas — Business Operating System">Atlas &mdash; Business Operating System</option>
+                            <option value="Echo — Customer Support Platform">Echo &mdash; Customer Support Platform</option>
+                            <option value="Cortex — Private AI Brain">Cortex &mdash; Private AI Brain</option>
+                            <option value="Lens — Executive Analytics">Lens &mdash; Executive Analytics</option>
+                            <option value="The full Sentra Suite">The full Sentra Suite</option>
+                            <option value="AI & automation services only">AI &amp; automation services only</option>
+                            <option value="Cybersecurity services">Cybersecurity services</option>
+                            <option value="Something else">Something else</option>
                         </select>
                     </div>
                     <div class="form-row">
                         <label for="message">A short note on the problem</label>
-                        <textarea id="message" name="message" rows="4"></textarea>
+                        <textarea id="message" name="Message" rows="4"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">Send Enquiry</button>
-                    <p class="form-note">We respond within one business day. Your information is treated as strictly confidential.</p>
+                    <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                        <span class="btn-label">Send Enquiry</span>
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                    </button>
+                    <p class="form-note">Submissions are delivered directly to a senior engineer. We respond within one business day. Your information is treated as strictly confidential.</p>
                 </form>
                 <div class="form-success" id="formSuccess" style="display:none;">
                     <h3>Thank you.</h3>
-                    <p>Your enquiry has been received. A senior engineer will be in touch within one business day.</p>
+                    <p>Your enquiry has been received and delivered to a senior engineer. We will be in touch within one business day.</p>
                 </div>
             </div>
         </div>
@@ -369,7 +563,7 @@
                 <div class="footer-brand">
                     <img src="logo-icon.png" alt="Sentra Technologies" class="footer-logo">
                     <p class="footer-tag">Smart. Secure. Sentra.</p>
-                    <p class="footer-desc">Enterprise software, designed around your operations and delivered in weeks. The Sentra Suite &mdash; Atlas, Echo, Cortex, Lens.</p>
+                    <p class="footer-desc">Enterprise software, designed around your operations and delivered in days. The Sentra Suite &mdash; Atlas, Echo, Cortex, Lens.</p>
                 </div>
                 <div class="footer-col">
                     <h5>Suite</h5>
@@ -381,7 +575,9 @@
                 <div class="footer-col">
                     <h5>Sentra</h5>
                     <a href="#problems">The problem</a>
+                    <a href="#industries">Industries</a>
                     <a href="#approach">Our approach</a>
+                    <a href="#stack">Technology stack</a>
                     <a href="#trust">Security &amp; trust</a>
                     <a href="#contact">Contact</a>
                 </div>
